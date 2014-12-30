@@ -13,16 +13,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true" >
+        android:layout_alignParentTop="true"
+        android:layout_weight="1" >
 
-        
-        
         <Spinner
             android:id="@+id/serverSpinner"
             android:layout_width="66dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.07" />
+            android:layout_weight="0.01" />
 
+        <Button
+            android:id="@+id/filterButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.01"
+            android:text="@string/filter_button" 
+            android:textColor="#ffffff" />
         
     </LinearLayout>
 
@@ -46,8 +52,9 @@
             android:id="@+id/button1"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:text="@string/search_button" 
-            android:textColor="#ffffff"/>
+            android:text="@string/refresh_button"
+            android:textColor="#ffffff" />
+
     </LinearLayout>
 
 </RelativeLayout>

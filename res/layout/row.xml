@@ -7,8 +7,8 @@
     <ImageView
         android:id="@+id/serverImage"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_launcher" >
+        android:layout_height="match_parent"
+        android:src="@drawable/scania" >
     </ImageView>
 
     <TextView

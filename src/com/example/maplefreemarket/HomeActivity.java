@@ -99,7 +99,7 @@ public class HomeActivity extends ActionBarActivity {
 					selection = "Renegades";
 		
 				}
-				Toast.makeText(myApp, selection +"is selected", Toast.LENGTH_SHORT).show();
+				Toast.makeText(myApp, selection +" is selected", Toast.LENGTH_SHORT).show();
 				
 			}
 

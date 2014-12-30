@@ -15,7 +15,7 @@ public class LoadingScreenActivity extends Activity {
 		final Intent i = new Intent(this, HomeActivity.class);
 		setContentView(R.layout.loading_screen);
 
-		CountDownTimer timer = new CountDownTimer(3000, 1000) {
+		CountDownTimer timer = new CountDownTimer(2000, 1000) {
 
 			@Override
 			public void onTick(long millisUntilFinished) {
