@@ -49,7 +49,7 @@
         </EditText>
 
         <Button
-            android:id="@+id/button1"
+            android:id="@+id/refreshButton"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:text="@string/refresh_button"
