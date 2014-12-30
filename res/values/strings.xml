@@ -4,5 +4,17 @@
     <string name="app_name">Maple Free Market</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-
+    <string name="search_text">Search</string>
+    <string name="search_button">Search</string>
+	<string-array name="servers">
+        <item>Scania</item>
+        <item>Windia</item>
+        <item>Bera</item>
+        <item>Broa</item>
+        <item>Khaini</item>
+        <item>YMCK</item>
+        <item>GAZED</item>
+        <item>BelloNova</item>
+        <item>Renegades</item>
+    </string-array>
 </resources>

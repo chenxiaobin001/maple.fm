@@ -3,13 +3,13 @@ package com.example.maplefreemarket;
 import android.app.Application;
 
 public class MapleFreeMarketApplication extends Application{
-	private String server;
+	private int server;
 
-    public String getServer() {
+    public int getServer() {
         return server;
     }
 
-    public void setServer(String server) {
+    public void setServer(int server) {
         this.server = server;
     }
     
