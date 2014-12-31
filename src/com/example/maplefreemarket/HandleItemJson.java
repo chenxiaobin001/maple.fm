@@ -9,6 +9,8 @@ import org.json.JSONObject;
 
 public class HandleItemJson {
 	private String secondsAgo;
+	private List<Item> items;
+	
 	public String getSecondsAgo() {
 		return secondsAgo;
 	}
@@ -16,20 +18,25 @@ public class HandleItemJson {
 	public List<Item> getItems() {
 		return items;
 	}
+	
+	public Item[] getItemsArray() {
+		Item[] itemArr = items.toArray(new Item[items.size()]);
+		return itemArr;
+	}
 
-	private List<Item> items;
+	
 	public HandleItemJson(String itemJson) throws JSONException{
 		items = new ArrayList<Item>();
 		handleJson(itemJson);
 	}
 	
 	private void handleJson(String result) throws JSONException{
-		
+		result = "{\"result\":" + result + "}";
 		JSONObject jObject = new JSONObject(result);
 		JSONArray resultArray = jObject.getJSONArray("result");
 		secondsAgo = resultArray.getJSONObject(1).getString("seconds_ago");
 		JSONArray jArray = resultArray.getJSONObject(0).getJSONArray("fm_items");
-		for (int i=0; i < jArray.length(); i++)
+		for (int i=0; i < 20; i++)
 		{
 		    try {
 		        JSONObject oneObject = jArray.getJSONObject(i);
