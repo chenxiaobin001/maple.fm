@@ -1,6 +1,9 @@
 package com.example.maplefreemarket;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.json.JSONException;
 
 import android.support.v7.app.ActionBarActivity;
@@ -55,6 +58,8 @@ public class HomeActivity extends ActionBarActivity {
 		client = new OkHttpClient();
 		spinner = (Spinner) findViewById(R.id.serverSpinner);
 		listView = (ListView) findViewById(R.id.itemListView);
+		adapter = new ItemArrayAdapter(HomeActivity.this, new ArrayList<Item>());
+		listView.setAdapter(adapter);
 		refreshButton = (Button) findViewById(R.id.refreshButton);
 		myApp = (MapleFreeMarketApplication) this.getApplication();
 		serverImages = new Integer[] { R.drawable.scania, R.drawable.windia,
@@ -65,17 +70,15 @@ public class HomeActivity extends ActionBarActivity {
 		
 		String result = "[{\"fm_items\":[{\"U\":\"1102484\",\"a\":\"1\",\"b\":\"1\",\"c\":\"3750000000\",\"d\":\"4\",\"e\":\"4\",\"f\":\"NUT SHOPz\",\"g\":\"DotaMagina\",\"O\":\"Tyrant Lycaon Cloak\",\"T\":\"1102481\",\"X\":3471928570,\"Q\":\"Equip\",\"R\":\"Armor\",\"S\":\"Cape\",\"Y\":\"0\",\"h\":\"2\",\"j\":\"50\",\"k\":\"50\",\"l\":\"50\",\"m\":\"50\",\"p\":\"30\",\"q\":\"30\",\"r\":\"150\",\"s\":\"150\",\"F\":\"0\",\"G\":\"0\",\"H\":\"0\",\"W\":\"150\"},{\"U\":\"1012306\",\"a\":\"1\",\"b\":\"1\",\"c\":\"700000000\",\"d\":\"4\",\"e\":\"4\",\"f\":\"NUT SHOPz\",\"g\":\"DotaMagina\",\"O\":\"Lucky Tree Branch Nose\",\"T\":\"1012058\",\"X\":136666666,\"Q\":\"Equip\",\"R\":\"Accessory\",\"S\":\"Face Accessory\",\"i\":\"10\",\"j\":\"10\",\"k\":\"10\",\"l\":\"10\",\"m\":\"14\",\"p\":\"10\",\"r\":\"6\",\"s\":\"6\",\"t\":\"3\",\"u\":\"3\",\"F\":\"0\",\"G\":\"0\",\"H\":\"0\",\"W\":\"10\"},{\"U\":\"1432187\",\"a\":\"1\",\"b\":\"1\",\"c\":\"1500000000\",\"d\":\"4\",\"e\":\"4\",\"f\":\"NUT SHOPz\",\"g\":\"DotaMagina\",\"O\":\"Sweetwater Spear\",\"T\":\"1432187\",\"X\":91365064,\"Q\":\"Equip\",\"R\":\"Two-Handed Weapon\",\"S\":\"Spear\",\"Y\":\"0\",\"i\":\"6\",\"j\":\"97\",\"k\":\"85\",\"n\":\"255\",\"o\":\"255\",\"p\":\"294\",\"t\":\"173\",\"C\":\"30\",\"D\":\"10\",\"F\":\"0\",\"G\":\"0\",\"H\":\"0\",\"W\":\"160\"},{\"U\":\"1122057\",\"a\":\"1\",\"b\":\"1\",\"c\":\"5000000000\",\"d\":\"4\",\"e\":\"4\",\"f\":\"NUT SHOPz\",\"g\":\"DotaMagina\",\"O\":\"Awakening Mind of Maple Necklace\",\"T\":\"1122052\",\"P\":\"A Mind of Maple Necklace that is beginning to be restored. One more gem, and its mystical powers will be amplified and awakened into a power on another level.\",\"Q\":\"Equip\",\"R\":\"Accessory\",\"S\":\"Pendant\",\"Y\":\"0\",\"p\":\"15\",\"q\":\"15\",\"r\":\"5\",\"F\":\"0\",\"G\":\"0\",\"H\":\"0\",\"W\":\"70\"}]},{\"seconds_ago\":\"797\"}]";
 		try {
-			obj = new HandleItemJson(result);
-			Toast.makeText(myApp, obj.getSecondsAgo(), Toast.LENGTH_SHORT).show();
+			obj = new HandleItemJson(HomeActivity.this);
+			obj.execute(result);
 			
 		} catch (JSONException e) {
 			Toast.makeText(myApp, "aaa", Toast.LENGTH_SHORT).show();
 			e.printStackTrace();
 		}
 		
-		adapter = new ItemArrayAdapter(HomeActivity.this, obj.getItems());
-		listView.setAdapter(adapter);
-		
+
 		refreshButton.setOnClickListener(new OnClickListener() {
 			
 			private String urlToRssFeed;

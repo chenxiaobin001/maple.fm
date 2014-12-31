@@ -39,13 +39,8 @@ public class RetrieveJSonTask extends AsyncTask<String, Void, String> {
     	try {
 			
     		HandleItemJson obj = ((HomeActivity)mContext).getObj();
-    		obj = new HandleItemJson(result);
-			Toast.makeText(((HomeActivity)mContext).getMyApp(), "updated " + obj.getSecondsAgo() + "s ago", Toast.LENGTH_SHORT).show();
-			((HomeActivity)mContext).getAdapter();
-			ItemArrayAdapter adapter = ((HomeActivity)mContext).getAdapter();
-			adapter.clear();
-			adapter.addAll(obj.getItemsArray());
-			adapter.notifyDataSetChanged();
+    		obj = new HandleItemJson(mContext);
+    		obj.execute(result);
 			
 		} catch (JSONException e) {
 			Toast.makeText(mContext, "please check your Internet connection", Toast.LENGTH_SHORT).show();
