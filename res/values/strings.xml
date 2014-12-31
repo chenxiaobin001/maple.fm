@@ -11,6 +11,7 @@
     <string name="api_rankings">http://maple.fm/api/rankings?</string>
     <string name="api_pricecheck">http://maple.fm/api/pricecheck?</string>
     <string name="api_list_items">http://maple.fm/api/list/items?</string>
+    <string name="item_icon_url">http://maple.fm/static/image/icon/</string>
     <string name="filter_button">Filter</string>
 	<string-array name="servers">
         <item>Scania</item>

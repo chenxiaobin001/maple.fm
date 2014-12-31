@@ -4,7 +4,7 @@ public class Item {
 	private int id;
 	private int quantity;
 	private int bundle;
-	private int price;
+	private long price;
 	private int channel;
 	private int room;
 	private String shopName;
@@ -35,10 +35,10 @@ public class Item {
 	public void setBundle(int bundle) {
 		this.bundle = bundle;
 	}
-	public int getPrice() {
+	public long getPrice() {
 		return price;
 	}
-	public void setPrice(int price) {
+	public void setPrice(long price) {
 		this.price = price;
 	}
 	public int getChannel() {

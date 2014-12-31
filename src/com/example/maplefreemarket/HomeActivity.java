@@ -2,11 +2,18 @@ package com.example.maplefreemarket;
 
 
 
+import java.io.InputStream;
+import java.net.URL;
+import java.text.NumberFormat;
+import java.util.List;
+import java.util.Locale;
+
 import org.json.JSONException;
 
 import android.support.v7.app.ActionBarActivity;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,15 +25,18 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Toast;
+import com.squareup.picasso.Picasso;
 
 public class HomeActivity extends ActionBarActivity {
 
 	private Spinner spinner;
 	private Button refreshButton;
+	private ListView listView;
 	private MapleFreeMarketApplication myApp;
 	private String selection;
 	private Integer[] serverImages;
@@ -38,6 +48,7 @@ public class HomeActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		spinner = (Spinner) findViewById(R.id.serverSpinner);
+		listView = (ListView) findViewById(R.id.itemListView);
 		refreshButton = (Button) findViewById(R.id.refreshButton);
 		myApp = (MapleFreeMarketApplication) this.getApplication();
 		serverImages = new Integer[] { R.drawable.scania, R.drawable.windia,
@@ -45,6 +56,19 @@ public class HomeActivity extends ActionBarActivity {
 				R.drawable.bellocan, R.drawable.renegades};
 		serverNames = getResources().getStringArray(R.array.servers); 
 		setSpinnerContent();
+		
+		String result = "{\"result\":[{\"fm_items\":[{\"U\":\"1102484\",\"a\":\"1\",\"b\":\"1\",\"c\":\"3750000000\",\"d\":\"4\",\"e\":\"4\",\"f\":\"NUT SHOPz\",\"g\":\"DotaMagina\",\"O\":\"Tyrant Lycaon Cloak\",\"T\":\"1102481\",\"X\":3471928570,\"Q\":\"Equip\",\"R\":\"Armor\",\"S\":\"Cape\",\"Y\":\"0\",\"h\":\"2\",\"j\":\"50\",\"k\":\"50\",\"l\":\"50\",\"m\":\"50\",\"p\":\"30\",\"q\":\"30\",\"r\":\"150\",\"s\":\"150\",\"F\":\"0\",\"G\":\"0\",\"H\":\"0\",\"W\":\"150\"},{\"U\":\"1012306\",\"a\":\"1\",\"b\":\"1\",\"c\":\"700000000\",\"d\":\"4\",\"e\":\"4\",\"f\":\"NUT SHOPz\",\"g\":\"DotaMagina\",\"O\":\"Lucky Tree Branch Nose\",\"T\":\"1012058\",\"X\":136666666,\"Q\":\"Equip\",\"R\":\"Accessory\",\"S\":\"Face Accessory\",\"i\":\"10\",\"j\":\"10\",\"k\":\"10\",\"l\":\"10\",\"m\":\"14\",\"p\":\"10\",\"r\":\"6\",\"s\":\"6\",\"t\":\"3\",\"u\":\"3\",\"F\":\"0\",\"G\":\"0\",\"H\":\"0\",\"W\":\"10\"},{\"U\":\"1432187\",\"a\":\"1\",\"b\":\"1\",\"c\":\"1500000000\",\"d\":\"4\",\"e\":\"4\",\"f\":\"NUT SHOPz\",\"g\":\"DotaMagina\",\"O\":\"Sweetwater Spear\",\"T\":\"1432187\",\"X\":91365064,\"Q\":\"Equip\",\"R\":\"Two-Handed Weapon\",\"S\":\"Spear\",\"Y\":\"0\",\"i\":\"6\",\"j\":\"97\",\"k\":\"85\",\"n\":\"255\",\"o\":\"255\",\"p\":\"294\",\"t\":\"173\",\"C\":\"30\",\"D\":\"10\",\"F\":\"0\",\"G\":\"0\",\"H\":\"0\",\"W\":\"160\"},{\"U\":\"1122057\",\"a\":\"1\",\"b\":\"1\",\"c\":\"5000000000\",\"d\":\"4\",\"e\":\"4\",\"f\":\"NUT SHOPz\",\"g\":\"DotaMagina\",\"O\":\"Awakening Mind of Maple Necklace\",\"T\":\"1122052\",\"P\":\"A Mind of Maple Necklace that is beginning to be restored. One more gem, and its mystical powers will be amplified and awakened into a power on another level.\",\"Q\":\"Equip\",\"R\":\"Accessory\",\"S\":\"Pendant\",\"Y\":\"0\",\"p\":\"15\",\"q\":\"15\",\"r\":\"5\",\"F\":\"0\",\"G\":\"0\",\"H\":\"0\",\"W\":\"70\"}]},{\"seconds_ago\":\"797\"}]}";
+		try {
+			obj = new HandleItemJson(result);
+			Toast.makeText(myApp, obj.getSecondsAgo(), Toast.LENGTH_SHORT).show();
+			
+		} catch (JSONException e) {
+			Toast.makeText(myApp, "aaa", Toast.LENGTH_SHORT).show();
+			e.printStackTrace();
+		}
+		Item[] itemArr = obj.getItems().toArray(new Item[obj.getItems().size()]);
+		ItemArrayAdapter adapter =  new ItemArrayAdapter(HomeActivity.this, itemArr);
+		listView.setAdapter(adapter);
 		
 		refreshButton.setOnClickListener(new OnClickListener() {
 			
@@ -55,6 +79,7 @@ public class HomeActivity extends ActionBarActivity {
 				try {
 					obj = new HandleItemJson(result);
 					Toast.makeText(myApp, obj.getSecondsAgo(), Toast.LENGTH_SHORT).show();
+					
 				} catch (JSONException e) {
 					Toast.makeText(myApp, "aaa", Toast.LENGTH_SHORT).show();
 					e.printStackTrace();
@@ -177,5 +202,34 @@ public class HomeActivity extends ActionBarActivity {
 			return getCustomView(position, convertView, parent);
 		}
 	}
+	
+	class ItemArrayAdapter extends ArrayAdapter<Item> {
+		  private final Context context;
+		  private final Item[] items;
+
+		  public ItemArrayAdapter(Context context, Item[] items) {
+		    super(context, R.layout.item_row, items);
+		    this.context = context;
+		    this.items = items;
+		  }
+
+		  @Override
+		  public View getView(int position, View convertView, ViewGroup parent) {
+			
+		    LayoutInflater inflater = (LayoutInflater) context
+		        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		    View rowView = inflater.inflate(R.layout.item_row, parent, false);
+		    TextView itemNameTextView = (TextView) rowView.findViewById(R.id.itemNameTextView);
+		    TextView itemPriceTextView = (TextView) rowView.findViewById(R.id.itemPriceTextView);
+		    ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
+		    itemNameTextView.setText(items[position].getItemName());
+		    itemPriceTextView.setText(NumberFormat.getNumberInstance(Locale.US).format(items[position].getPrice()));
+		    int id = items[position].getIconID();
+		    String url = getString(R.string.item_icon_url) + String.valueOf(id) + ".png";
+		    Picasso.with(context).load(url).into(imageView);
+		    
+		    return rowView;
+		  }
+		}
 	
 }
