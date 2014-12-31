@@ -36,7 +36,7 @@ public class HandleItemJson {
 		JSONArray resultArray = jObject.getJSONArray("result");
 		secondsAgo = resultArray.getJSONObject(1).getString("seconds_ago");
 		JSONArray jArray = resultArray.getJSONObject(0).getJSONArray("fm_items");
-		for (int i=0; i < 20; i++)
+		for (int i=0; i < jArray.length(); i++)
 		{
 		    try {
 		        JSONObject oneObject = jArray.getJSONObject(i);
