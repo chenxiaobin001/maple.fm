@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Locale;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,10 +36,27 @@ class ItemArrayAdapter extends ArrayAdapter<Item> {
 	    ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
 	    itemNameTextView.setText(items.get(position).getItemName());
 	    itemPriceTextView.setText(NumberFormat.getNumberInstance(Locale.US).format(items.get(position).getPrice()));
+	    itemPriceTextView.setTextColor(Color.parseColor(getPriceColor(items.get(position).getPrice())));
 	    int id = items.get(position).getIconID();
 	    String url = context.getResources().getString(R.string.item_icon_url) + String.valueOf(id) + ".png";
 	    Picasso.with(context).load(url).into(imageView);
 	    
 	    return rowView;
+	  }
+	  
+	  private String getPriceColor(long price){
+		  String result = "#000000";
+		  if (price < 1e6){
+			  result = "#0000ff";
+		  }else if (price < 1e7){
+			  result = "#0aa90a";
+		  }else if (price < 1e8){
+			  result = "#f27d0d";
+		  }else if (price < 1e9){
+			  result = "#e56193";
+		  }else{
+			  result = "#a5124a";
+		  }
+		  return result;
 	  }
 }
