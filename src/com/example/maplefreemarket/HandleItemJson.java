@@ -10,8 +10,10 @@ import org.json.JSONObject;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.view.View;
 import android.widget.Toast;
 
 public class HandleItemJson extends AsyncTask<String, Void, String> {
@@ -94,5 +96,7 @@ public class HandleItemJson extends AsyncTask<String, Void, String> {
 		adapter.clear();
 		adapter.addAll(getItemsArray());
 		adapter.notifyDataSetChanged();
+		((Activity) mContext).findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+		((Activity) mContext).findViewById(R.id.refreshButton).setVisibility(View.VISIBLE);
     }
 }

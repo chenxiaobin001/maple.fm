@@ -51,11 +51,21 @@
             android:id="@+id/editText1"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="0.52" />
+            android:layout_weight="0.44" />
+		<RelativeLayout
+		    android:id="@+id/loadingPanel"
+		    android:layout_width="wrap_content"
+		    android:layout_height="match_parent"
+		    android:gravity="center" >
 
+		    <ProgressBar
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:indeterminate="true" />
+		</RelativeLayout>
         <Button
             android:id="@+id/refreshButton"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="50dp"
             android:text="@string/refresh_button"
             android:textColor="#ffffff" />
