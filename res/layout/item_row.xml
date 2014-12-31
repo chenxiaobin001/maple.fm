@@ -57,23 +57,23 @@
         android:text="@string/percentage_text" />
 
     <TextView
-        android:id="@+id/quantity"
+        android:id="@+id/quantityTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingRight="3dp"
         android:layout_alignBaseline="@+id/itemPriceTextView"
         android:layout_alignBottom="@+id/itemPriceTextView"
         android:layout_toLeftOf="@+id/percentageTextView"
+        android:paddingRight="5dp"
         android:text="@string/quantity_text" />
 
     <TextView
         android:id="@+id/roomTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingRight="3dp"
+        android:paddingRight="5dp"
         android:layout_alignBaseline="@+id/itemPriceTextView"
         android:layout_alignBottom="@+id/itemPriceTextView"
-        android:layout_toLeftOf="@+id/quantity"
+        android:layout_toLeftOf="@+id/quantityTextView"
         android:text="@string/room_text" />
 
 	</RelativeLayout> 

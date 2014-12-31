@@ -33,10 +33,18 @@ class ItemArrayAdapter extends ArrayAdapter<Item> {
 	    View rowView = inflater.inflate(R.layout.item_row, parent, false);
 	    TextView itemNameTextView = (TextView) rowView.findViewById(R.id.itemNameTextView);
 	    TextView itemPriceTextView = (TextView) rowView.findViewById(R.id.itemPriceTextView);
+	    TextView channelRoomTextView = (TextView) rowView.findViewById(R.id.roomTextView);
+	    TextView quantityTextView = (TextView) rowView.findViewById(R.id.quantityTextView);
+	    TextView percentageTextView = (TextView) rowView.findViewById(R.id.percentageTextView);
 	    ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
 	    itemNameTextView.setText(items.get(position).getItemName());
 	    itemPriceTextView.setText(NumberFormat.getNumberInstance(Locale.US).format(items.get(position).getPrice()));
 	    itemPriceTextView.setTextColor(Color.parseColor(getPriceColor(items.get(position).getPrice())));
+	    channelRoomTextView.setText(getRoomChannel(position));
+	    quantityTextView.setText(getBundleQuantity(position));
+	    String tmp = getPercentage(position);
+	    percentageTextView.setText(tmp + "%");
+	    percentageTextView.setTextColor(Color.parseColor(getPercentColor(tmp)));
 	    int id = items.get(position).getIconID();
 	    String url = context.getResources().getString(R.string.item_icon_url) + String.valueOf(id) + ".png";
 	    Picasso.with(context).load(url).into(imageView);
@@ -44,6 +52,57 @@ class ItemArrayAdapter extends ArrayAdapter<Item> {
 	    return rowView;
 	  }
 	  
+	  private String getPercentColor(String percent){
+		  String result = "#000000";
+		  int percentage = 0;
+		  if ("N/A".equals(percent)){
+			  result = "#0aa90a";
+		  }else if(">999".equals(percent)){
+			  result = "#ff0000";
+		  }else{ 
+			  percentage = Integer.valueOf(percent);
+			  if (percentage < 100){
+				  result = "#0aa90a";
+			  }else if (percentage < 150){
+				  result = "#f27d0d";
+			  }else{
+				  result = "#ff0000";
+			  }
+		  }
+		  return result;
+	  }
+	  
+	  
+	  private String getPercentage(int position){
+		  long avg = items.get(position).getAvgPrice();
+		  long price = items.get(position).getPrice();
+		  if (avg == 0){
+			  return "N/A";
+		  }else{
+			  if (price*1.0/avg * 100 > 1000){
+				  return ">999";
+			  }else
+				  return String.format( "%.0f", price*1.0/avg * 100);
+		  }
+	  }
+	  private String getBundleQuantity(int position){
+		  StringBuilder sb = new StringBuilder();
+		  sb.append("Qty:");
+		  sb.append(items.get(position).getQuantity());
+/*		  sb.append("(");
+		  sb.append(items.get(position).getBundle());
+		  sb.append(")");*/
+		  return sb.toString();
+	  }
+	  private String getRoomChannel(int position){
+		  StringBuilder sb = new StringBuilder();
+		  sb.append("Ch:");
+		  sb.append(items.get(position).getChannel());
+		  sb.append(" Rm:");
+		  sb.append(items.get(position).getRoom());
+		  return sb.toString();
+		  
+	  }
 	  private String getPriceColor(long price){
 		  String result = "#000000";
 		  if (price < 1e6){

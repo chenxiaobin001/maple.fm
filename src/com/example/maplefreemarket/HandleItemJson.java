@@ -54,6 +54,7 @@ public class HandleItemJson extends AsyncTask<String, Void, String> {
 		        // Pulling items from the array
 		        Item item = new Item();
 		        item.setBundle(oneObject.optInt("b"));
+		        item.setAvgPrice(oneObject.optLong("X"));
 		        item.setCategory(oneObject.optString("Q"));
 		        item.setChannel(oneObject.optInt("d"));
 		        item.setCharacterName(oneObject.optString("g"));

@@ -7,6 +7,7 @@ public class Item {
 	private long price;
 	private int channel;
 	private int room;
+	private long avgPrice;
 	private String shopName;
 	private String characterName;
 	private String itemName;
@@ -17,6 +18,12 @@ public class Item {
 	private int iconID;
 	private int reqLevel;
 	
+	public long getAvgPrice() {
+		return avgPrice;
+	}
+	public void setAvgPrice(long avgPrice) {
+		this.avgPrice = avgPrice;
+	}
 	public int getId() {
 		return id;
 	}

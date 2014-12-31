@@ -1219,7 +1219,7 @@ containing a value of this type.
         public static final int percentageTextView=0x7f050047;
         public static final int progress_circular=0x7f050018;
         public static final int progress_horizontal=0x7f050019;
-        public static final int quantity=0x7f050048;
+        public static final int quantityTextView=0x7f050048;
         public static final int radio=0x7f05002f;
         public static final int refreshButton=0x7f050044;
         public static final int roomTextView=0x7f050049;
