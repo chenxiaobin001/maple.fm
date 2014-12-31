@@ -7,6 +7,8 @@
     <string name="search_text">Search</string>
     <string name="quantity_text">Quantity</string>
     <string name="percentage_text">Percentage</string>
+    <string name="item_button_search">Search</string>
+    <string name="item_button_no">Cancel</string>
     <string name="room_text">Room</string>
     <string name="refresh_button">Refresh</string>
     <string name="api_search">http://maple.fm/api/search?</string>

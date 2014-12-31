@@ -8,12 +8,15 @@ import org.json.JSONException;
 
 import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
+import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -94,6 +97,21 @@ public class HomeActivity extends ActionBarActivity {
 				refreshButton.setVisibility(View.GONE);
 				new RetrieveJSonTask(HomeActivity.this).execute(getSearchRequestURL());		
 			}
+		});
+		
+		listView.setOnItemClickListener(new OnItemClickListener(){
+
+
+			@Override
+			public void onItemClick(AdapterView<?> adapter, View view, int position,
+					long id) {
+				Item item = (Item) adapter.getAdapter().getItem(position);
+				myApp.setDrawable(item.getDrawableImage());
+				ItemDetailDialog dialog = ItemDetailDialog.newInstance(item.getJSONString());
+				FragmentManager fm = getFragmentManager();
+				dialog.show(fm, "language");
+			}
+
 		});
 	}
 

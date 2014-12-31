@@ -53,6 +53,7 @@ public class HandleItemJson extends AsyncTask<String, Void, String> {
 		        JSONObject oneObject = jArray.getJSONObject(i);
 		        // Pulling items from the array
 		        Item item = new Item();
+		        item.setJSONString(oneObject.toString());
 		        item.setBundle(oneObject.optInt("b"));
 		        item.setAvgPrice(oneObject.optLong("X"));
 		        item.setCategory(oneObject.optString("Q"));

@@ -5,7 +5,10 @@ import java.util.List;
 import java.util.Locale;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
+import com.squareup.picasso.Picasso.LoadedFrom;
 
 class ItemArrayAdapter extends ArrayAdapter<Item> {
 	  private final Context context;
@@ -28,6 +33,7 @@ class ItemArrayAdapter extends ArrayAdapter<Item> {
 	  @Override
 	  public View getView(int position, View convertView, ViewGroup parent) {
 		
+		final Item cur = items.get(position);
 	    LayoutInflater inflater = (LayoutInflater) context
 	        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	    View rowView = inflater.inflate(R.layout.item_row, parent, false);
@@ -36,7 +42,7 @@ class ItemArrayAdapter extends ArrayAdapter<Item> {
 	    TextView channelRoomTextView = (TextView) rowView.findViewById(R.id.roomTextView);
 	    TextView quantityTextView = (TextView) rowView.findViewById(R.id.quantityTextView);
 	    TextView percentageTextView = (TextView) rowView.findViewById(R.id.percentageTextView);
-	    ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
+	    final ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
 	    itemNameTextView.setText(items.get(position).getItemName());
 	    itemPriceTextView.setText(NumberFormat.getNumberInstance(Locale.US).format(items.get(position).getPrice()));
 	    itemPriceTextView.setTextColor(Color.parseColor(getPriceColor(items.get(position).getPrice())));
@@ -47,7 +53,29 @@ class ItemArrayAdapter extends ArrayAdapter<Item> {
 	    percentageTextView.setTextColor(Color.parseColor(getPercentColor(tmp)));
 	    int id = items.get(position).getIconID();
 	    String url = context.getResources().getString(R.string.item_icon_url) + String.valueOf(id) + ".png";
-	    Picasso.with(context).load(url).into(imageView);
+	    Picasso.with(context).load(url).into(new Target() {
+
+            @Override
+            public void onPrepareLoad(Drawable arg0) {
+
+
+            }
+
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, LoadedFrom arg1) {
+            	Drawable d = new BitmapDrawable(context.getResources(),bitmap);
+            	imageView.setImageBitmap(bitmap);
+            	cur.setDrawableImage(d);
+            }
+
+            @Override
+            public void onBitmapFailed(Drawable arg0) {
+
+
+            }
+
+			
+        });
 	    
 	    return rowView;
 	  }

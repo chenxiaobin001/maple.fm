@@ -1,11 +1,21 @@
 package com.example.maplefreemarket;
 
 import android.app.Application;
+import android.graphics.drawable.Drawable;
 
 public class MapleFreeMarketApplication extends Application{
 	private int server;
+	private Drawable drawable;
+	
+    public Drawable getDrawable() {
+		return drawable;
+	}
 
-    public int getServer() {
+	public void setDrawable(Drawable drawable) {
+		this.drawable = drawable;
+	}
+
+	public int getServer() {
         return server;
     }
 

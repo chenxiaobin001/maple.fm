@@ -1,5 +1,7 @@
 package com.example.maplefreemarket;
 
+import android.graphics.drawable.Drawable;
+
 public class Item {
 	private int id;
 	private int quantity;
@@ -15,9 +17,23 @@ public class Item {
 	private String category;
 	private String subcategory;
 	private String detailcategory;
+	private String JSONString;
 	private int iconID;
 	private int reqLevel;
+	private Drawable drawableImage;
 	
+	public Drawable getDrawableImage() {
+		return drawableImage;
+	}
+	public void setDrawableImage(Drawable drawableImage) {
+		this.drawableImage = drawableImage;
+	}
+	public String getJSONString() {
+		return JSONString;
+	}
+	public void setJSONString(String jSONString) {
+		JSONString = jSONString;
+	}
 	public long getAvgPrice() {
 		return avgPrice;
 	}
