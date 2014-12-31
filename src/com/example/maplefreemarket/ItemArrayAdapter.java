@@ -63,6 +63,7 @@ class ItemArrayAdapter extends ArrayAdapter<Item> {
 
             @Override
             public void onBitmapLoaded(Bitmap bitmap, LoadedFrom arg1) {
+            	bitmap = Bitmap.createScaledBitmap(bitmap, 100, 100, false);
             	Drawable d = new BitmapDrawable(context.getResources(),bitmap);
             	imageView.setImageBitmap(bitmap);
             	cur.setDrawableImage(d);

@@ -3,21 +3,14 @@ package com.example.maplefreemarket;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Picasso.LoadedFrom;
-import com.squareup.picasso.Target;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 
 public class ItemDetailDialog extends DialogFragment {
 	
@@ -50,9 +43,7 @@ public class ItemDetailDialog extends DialogFragment {
 		}
     	String itemName = jObject.optString("O");
     	String desc = jObject.optString("P");
-    	int id = jObject.optInt("T");
-	    String url = getActivity().getResources().getString(R.string.item_icon_url) + String.valueOf(id) + ".png";
-    	
+	    
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         
         LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -71,7 +62,6 @@ public class ItemDetailDialog extends DialogFragment {
                    }
                });
         // Create the AlertDialog object and return it
-        ImageView image = (ImageView) view.findViewById(R.id.itemImage);
         return builder.create();
     }
 }
