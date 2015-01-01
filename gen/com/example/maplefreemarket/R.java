@@ -1167,8 +1167,9 @@ containing a value of this type.
         public static final int mesos=0x7f0200aa;
         public static final int renegades=0x7f0200ab;
         public static final int scania=0x7f0200ac;
-        public static final int welcome_screen=0x7f0200ad;
-        public static final int windia=0x7f0200ae;
+        public static final int spider=0x7f0200ad;
+        public static final int welcome_screen=0x7f0200ae;
+        public static final int windia=0x7f0200af;
     }
     public static final class id {
         public static final int action_bar=0x7f05001c;

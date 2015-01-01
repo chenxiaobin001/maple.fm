@@ -18,7 +18,7 @@ public class Item {
 	private String subcategory;
 	private String detailcategory;
 	private String JSONString;
-	private int iconID;
+	private String iconID;
 	private int reqLevel;
 	private Drawable drawableImage;
 	
@@ -120,10 +120,10 @@ public class Item {
 	public void setDetailcategory(String detailcategory) {
 		this.detailcategory = detailcategory;
 	}
-	public int getIconID() {
+	public String getIconID() {
 		return iconID;
 	}
-	public void setIconID(int iconID) {
+	public void setIconID(String iconID) {
 		this.iconID = iconID;
 	}
 	public int getReqLevel() {

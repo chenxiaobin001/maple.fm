@@ -69,8 +69,8 @@ class ItemArrayAdapter extends ArrayAdapter<Item> {
 		    String tmp = getPercentage(position);
 		    percentageTextView.setText(tmp + "%");
 		    percentageTextView.setTextColor(Color.parseColor(getPercentColor(tmp)));
-		    int id = filteredData.get(position).getIconID();
-		    String url = context.getResources().getString(R.string.item_icon_url) + String.valueOf(id) + ".png";
+		    String id = filteredData.get(position).getIconID();
+		    String url = context.getResources().getString(R.string.item_icon_url) + id + ".png";
 		    Picasso.with(context).load(url).into(new Target() {
 
             @Override
@@ -81,7 +81,9 @@ class ItemArrayAdapter extends ArrayAdapter<Item> {
 
             @Override
             public void onBitmapLoaded(Bitmap bitmap, LoadedFrom arg1) {
-            	bitmap = Bitmap.createScaledBitmap(bitmap, 100, 100, false);
+            	int height = 130;
+            	int width = (int) (bitmap.getWidth()*1.0/bitmap.getHeight()*height);
+            	bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
             	Drawable d = new BitmapDrawable(context.getResources(),bitmap);
             	imageView.setImageBitmap(bitmap);
             	cur.setDrawableImage(d);

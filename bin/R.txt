@@ -322,8 +322,9 @@ int drawable mardia 0x7f0200a9
 int drawable mesos 0x7f0200aa
 int drawable renegades 0x7f0200ab
 int drawable scania 0x7f0200ac
-int drawable welcome_screen 0x7f0200ad
-int drawable windia 0x7f0200ae
+int drawable spider 0x7f0200ad
+int drawable welcome_screen 0x7f0200ae
+int drawable windia 0x7f0200af
 int id action_bar 0x7f05001c
 int id action_bar_activity_content 0x7f050015
 int id action_bar_container 0x7f05001b

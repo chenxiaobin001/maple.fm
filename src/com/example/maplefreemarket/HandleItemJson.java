@@ -61,7 +61,7 @@ public class HandleItemJson extends AsyncTask<String, Void, String> {
 		        item.setCharacterName(oneObject.optString("g"));
 		        item.setDescription(oneObject.optString("P"));
 		        item.setDetailcategory(oneObject.optString("S"));
-		        item.setIconID(oneObject.optInt("T"));
+		        item.setIconID(oneObject.optString("T"));
 		        item.setId(oneObject.optInt("U"));
 		        item.setItemName(oneObject.optString("O"));
 		        item.setPrice(oneObject.optLong("c"));
