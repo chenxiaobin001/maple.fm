@@ -133,11 +133,55 @@ public class ItemDetailDialog extends DialogFragment {
     	}else{
     		sb.append(NOFOUND);
     	}
+    	sb.append("\n");
     	return sb.toString();
     }
     
+    private String getPropertyValue(JSONObject jObject, String key, String desc){
+    	StringBuilder sb = new StringBuilder();
+    	if (jObject.optString(key) != ""){
+    		sb.append(desc + ": +");
+    		sb.append(jObject.optString(key));
+    		sb.append("\n");		
+    	}
+    	return sb.toString();
+    	
+    }
+    
     private String getItemDetails(JSONObject jObject){
-    	String result = "N/A";
-    	return result;
+
+    	StringBuilder sb = new StringBuilder();
+    	sb.append(getPropertyValue(jObject, "k", "STR"));
+    	sb.append(getPropertyValue(jObject, "j", "DEX"));
+    	sb.append(getPropertyValue(jObject, "l", "INT"));
+    	sb.append(getPropertyValue(jObject, "m", "LUK"));
+    	sb.append(getPropertyValue(jObject, "n", "Max HP"));
+    	sb.append(getPropertyValue(jObject, "o", "Max MP"));
+    	sb.append(getPropertyValue(jObject, "p", "Weapon attack"));
+    	sb.append(getPropertyValue(jObject, "q", "Magic attack"));
+    	sb.append(getPropertyValue(jObject, "r", "Weapon defense"));
+    	sb.append(getPropertyValue(jObject, "s", "Magic defense"));
+    	sb.append(getPropertyValue(jObject, "t", "Accuracy"));
+    	sb.append(getPropertyValue(jObject, "u", "Avoidability"));
+    	sb.append(getPropertyValue(jObject, "v", "Diligence"));
+    	sb.append(getPropertyValue(jObject, "w", "Speed"));
+    	sb.append(getPropertyValue(jObject, "x", "Jump"));
+  //  	sb.append(getPropertyValue(jObject, "y", "STR"));
+    	sb.append(getPropertyValue(jObject, "A", "Hammers applied"));
+    	sb.append(getPropertyValue(jObject, "B", "Battle Mode attack"));
+    	sb.append(getPropertyValue(jObject, "C", "Boss damage"));
+    	sb.append(getPropertyValue(jObject, "D", "Enemy's defense ignored"));
+    	sb.append(getPropertyValue(jObject, "E", "Crafter"));
+   // 	sb.append(getPropertyValue(jObject, "F", "Potential"));
+   // 	sb.append(getPropertyValue(jObject, "G", "Rank"));
+   // 	sb.append(getPropertyValue(jObject, "H", "Enhancements applied"));
+    	sb.append(getPropertyValue(jObject, "I", "1st potential"));
+    	sb.append(getPropertyValue(jObject, "J", "2st potential"));
+    	sb.append(getPropertyValue(jObject, "K", "3st potential"));
+    	sb.append(getPropertyValue(jObject, "L", "1st bonus potential"));
+    	sb.append(getPropertyValue(jObject, "M", "2st bonus potential"));
+    	sb.append(getPropertyValue(jObject, "N", "3st bonus potential"));
+ //   	sb.append(getPropertyValue(jObject, "X", "STR"));	
+    	return sb.toString();
     }
 }
