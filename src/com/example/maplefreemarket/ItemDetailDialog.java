@@ -195,10 +195,9 @@ public class ItemDetailDialog extends DialogFragment {
     	sb.append(getPropertyValue(jObject, "w", "SPEED"));
     	sb.append(getPropertyValue(jObject, "x", "JUMP"));
   //  	sb.append(getPropertyValue(jObject, "y", "STR"));
-    	sb.append(getPropertyValue(jObject, "A", "HAMMERS APPLIED"));
     	sb.append(getPropertyValue(jObject, "B", "BATTLE MODE ATTACK"));
-    	sb.append(getPropertyValue(jObject, "C", "BOSS DAMAGE"));
-    	sb.append(getPropertyValue(jObject, "D", "ENEMY'S DEFENSE IGNORED"));
+    	sb.append(getPropertyValue(jObject, "C", "When attacking bosses, damage"));
+    	sb.append(getPropertyValue(jObject, "D", "Ignore Monster DEF"));
     	sb.append(getPropertyValue(jObject, "E", "CRAFTER"));
    // 	sb.append(getPropertyValue(jObject, "F", "Potential"));
    // 	sb.append(getPropertyValue(jObject, "G", "Rank"));
@@ -210,6 +209,7 @@ public class ItemDetailDialog extends DialogFragment {
     	sb.append(getPropertyValue(jObject, "M", "2st BONUS POTENTIAL"));
     	sb.append(getPropertyValue(jObject, "N", "3st BONUS POTENTIAL"));
     	sb.append(getPropertyValue(jObject, "h", "NUMBER OF UPGRADES AVAILABLE"));
+    	sb.append(getPropertyValue(jObject, "A", "HAMMERS APPLIED"));
  //   	sb.append(getPropertyValue(jObject, "X", "STR"));	
     	return sb.toString();
     }
