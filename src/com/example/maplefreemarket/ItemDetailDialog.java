@@ -16,6 +16,7 @@ import android.text.Html;
 import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class ItemDetailDialog extends DialogFragment {
@@ -48,6 +49,7 @@ public class ItemDetailDialog extends DialogFragment {
 			return null;
 		}
     	String itemName = jObject.optString("O");
+    	final String itemName1 = itemName;
     	String desc = jObject.optString("P");
     	String scroll = jObject.optString("i");
     	if (scroll != ""){
@@ -69,7 +71,7 @@ public class ItemDetailDialog extends DialogFragment {
         builder.setTitle(itemName).setIcon(myApp.getDrawable())
                .setPositiveButton(R.string.item_button_search, new DialogInterface.OnClickListener() {
                    public void onClick(DialogInterface dialog, int id) {
-                       // FIRE ZE MISSILES!
+                	   myApp.getItemAdapter().getFilter().filter(itemName1);   
                    }
                })
                .setNegativeButton(R.string.item_button_no, new DialogInterface.OnClickListener() {
@@ -134,6 +136,7 @@ public class ItemDetailDialog extends DialogFragment {
     	final String NOFOUND = "N/A";
     	if (jObject == null)	return result;
     	StringBuilder sb = new StringBuilder();
+    	sb.append("Category: ");
     	String category = jObject.optString("Q");
     	if (category != null){
     		sb.append(category);
@@ -161,7 +164,9 @@ public class ItemDetailDialog extends DialogFragment {
     private String getPropertyValue(JSONObject jObject, String key, String desc){
     	StringBuilder sb = new StringBuilder();
     	if (jObject.optString(key) != ""){
-    		sb.append(desc + ": +");
+    		sb.append(desc + ": ");
+    		if (key != "h")
+    			sb.append("+");
     		sb.append(jObject.optString(key));
     		if (key == "C" || key == "D")
     			sb.append("%");
@@ -180,30 +185,31 @@ public class ItemDetailDialog extends DialogFragment {
     	sb.append(getPropertyValue(jObject, "m", "LUK"));
     	sb.append(getPropertyValue(jObject, "n", "Max HP"));
     	sb.append(getPropertyValue(jObject, "o", "Max MP"));
-    	sb.append(getPropertyValue(jObject, "p", "Weapon attack"));
-    	sb.append(getPropertyValue(jObject, "q", "Magic attack"));
-    	sb.append(getPropertyValue(jObject, "r", "Weapon defense"));
-    	sb.append(getPropertyValue(jObject, "s", "Magic defense"));
-    	sb.append(getPropertyValue(jObject, "t", "Accuracy"));
-    	sb.append(getPropertyValue(jObject, "u", "Avoidability"));
-    	sb.append(getPropertyValue(jObject, "v", "Diligence"));
-    	sb.append(getPropertyValue(jObject, "w", "Speed"));
-    	sb.append(getPropertyValue(jObject, "x", "Jump"));
+    	sb.append(getPropertyValue(jObject, "p", "WEAPON ATTACK"));
+    	sb.append(getPropertyValue(jObject, "q", "MAGIC ATTACK"));
+    	sb.append(getPropertyValue(jObject, "r", "WEAPON DEFENSE"));
+    	sb.append(getPropertyValue(jObject, "s", "MAGIC DEFENSE"));
+    	sb.append(getPropertyValue(jObject, "t", "ACCURACY"));
+    	sb.append(getPropertyValue(jObject, "u", "AVOIDABILITY"));
+    	sb.append(getPropertyValue(jObject, "v", "DILIGENCE"));
+    	sb.append(getPropertyValue(jObject, "w", "SPEED"));
+    	sb.append(getPropertyValue(jObject, "x", "JUMP"));
   //  	sb.append(getPropertyValue(jObject, "y", "STR"));
-    	sb.append(getPropertyValue(jObject, "A", "Hammers applied"));
-    	sb.append(getPropertyValue(jObject, "B", "Battle Mode attack"));
-    	sb.append(getPropertyValue(jObject, "C", "Boss damage"));
-    	sb.append(getPropertyValue(jObject, "D", "Enemy's defense ignored"));
-    	sb.append(getPropertyValue(jObject, "E", "Crafter"));
+    	sb.append(getPropertyValue(jObject, "A", "HAMMERS APPLIED"));
+    	sb.append(getPropertyValue(jObject, "B", "BATTLE MODE ATTACK"));
+    	sb.append(getPropertyValue(jObject, "C", "BOSS DAMAGE"));
+    	sb.append(getPropertyValue(jObject, "D", "ENEMY'S DEFENSE IGNORED"));
+    	sb.append(getPropertyValue(jObject, "E", "CRAFTER"));
    // 	sb.append(getPropertyValue(jObject, "F", "Potential"));
    // 	sb.append(getPropertyValue(jObject, "G", "Rank"));
    // 	sb.append(getPropertyValue(jObject, "H", "Enhancements applied"));
-    	sb.append(getPropertyValue(jObject, "I", "1st potential"));
-    	sb.append(getPropertyValue(jObject, "J", "2st potential"));
-    	sb.append(getPropertyValue(jObject, "K", "3st potential"));
-    	sb.append(getPropertyValue(jObject, "L", "1st bonus potential"));
-    	sb.append(getPropertyValue(jObject, "M", "2st bonus potential"));
-    	sb.append(getPropertyValue(jObject, "N", "3st bonus potential"));
+    	sb.append(getPropertyValue(jObject, "I", "1st POTENTIAL"));
+    	sb.append(getPropertyValue(jObject, "J", "2st POTENTIAL"));
+    	sb.append(getPropertyValue(jObject, "K", "3st POTENTIAL"));
+    	sb.append(getPropertyValue(jObject, "L", "1st BONUS POTENTIAL"));
+    	sb.append(getPropertyValue(jObject, "M", "2st BONUS POTENTIAL"));
+    	sb.append(getPropertyValue(jObject, "N", "3st BONUS POTENTIAL"));
+    	sb.append(getPropertyValue(jObject, "h", "NUMBER OF UPGRADES AVAILABLE"));
  //   	sb.append(getPropertyValue(jObject, "X", "STR"));	
     	return sb.toString();
     }

@@ -123,8 +123,8 @@ class ItemArrayAdapter extends ArrayAdapter<Item> {
 	  
 	  
 	  private String getPercentage(int position){
-		  long avg = items.get(position).getAvgPrice();
-		  long price = items.get(position).getPrice();
+		  long avg = filteredData.get(position).getAvgPrice();
+		  long price = filteredData.get(position).getPrice();
 		  if (avg == 0){
 			  return "N/A";
 		  }else{
@@ -137,7 +137,7 @@ class ItemArrayAdapter extends ArrayAdapter<Item> {
 	  private String getBundleQuantity(int position){
 		  StringBuilder sb = new StringBuilder();
 		  sb.append("Qty:");
-		  sb.append(items.get(position).getQuantity());
+		  sb.append(filteredData.get(position).getQuantity());
 /*		  sb.append("(");
 		  sb.append(items.get(position).getBundle());
 		  sb.append(")");*/
@@ -146,9 +146,9 @@ class ItemArrayAdapter extends ArrayAdapter<Item> {
 	  private String getRoomChannel(int position){
 		  StringBuilder sb = new StringBuilder();
 		  sb.append("Ch:");
-		  sb.append(items.get(position).getChannel());
+		  sb.append(filteredData.get(position).getChannel());
 		  sb.append(" Rm:");
-		  sb.append(items.get(position).getRoom());
+		  sb.append(filteredData.get(position).getRoom());
 		  return sb.toString();
 		  
 	  }

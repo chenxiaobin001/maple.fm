@@ -6,8 +6,17 @@ import android.graphics.drawable.Drawable;
 public class MapleFreeMarketApplication extends Application{
 	private int server;
 	private Drawable drawable;
+	private ItemArrayAdapter itemAdapter;
 	
-    public Drawable getDrawable() {
+    public ItemArrayAdapter getItemAdapter() {
+		return itemAdapter;
+	}
+
+	public void setItemAdapter(ItemArrayAdapter itemAdapter) {
+		this.itemAdapter = itemAdapter;
+	}
+
+	public Drawable getDrawable() {
 		return drawable;
 	}
 

@@ -61,15 +61,16 @@ public class HomeActivity extends ActionBarActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		myApp = (MapleFreeMarketApplication) this.getApplication();
 		setContentView(R.layout.activity_main);
 		client = new OkHttpClient();
 		spinner = (Spinner) findViewById(R.id.serverSpinner);
 		listView = (ListView) findViewById(R.id.itemListView);
 		findViewById(R.id.loadingPanel).setVisibility(View.GONE);
 		adapter = new ItemArrayAdapter(HomeActivity.this, new ArrayList<Item>());
+		myApp.setItemAdapter(adapter);
 		listView.setAdapter(adapter);
 		refreshButton = (Button) findViewById(R.id.refreshButton);
-		myApp = (MapleFreeMarketApplication) this.getApplication();
 		serverImages = new Integer[] { R.drawable.scania, R.drawable.windia,
 				R.drawable.bera, R.drawable.broa, R.drawable.khaini, R.drawable.mardia, R.drawable.arcania,
 				R.drawable.bellocan, R.drawable.renegades};
