@@ -78,7 +78,7 @@ public class ItemDetailDialog extends DialogFragment {
     }
     
     private Spanned formatTheString(String original){
-    	String newStr = original.replace("\\n", "<br />").replace("\\r", "    ");
+    	String newStr = original;
     	String regex = "#c[^#]+#";
     	Spanned result = null;
     	String regex0 = "<.+>";
@@ -120,7 +120,7 @@ public class ItemDetailDialog extends DialogFragment {
     		newStr = sb.toString();
     		result = Html.fromHtml(newStr);
         }
-    	
+    	newStr = newStr.replace("\\n", "<br />").replace("\\r", "    ");
     	return Html.fromHtml(newStr);
     }
     
@@ -159,6 +159,8 @@ public class ItemDetailDialog extends DialogFragment {
     	if (jObject.optString(key) != ""){
     		sb.append(desc + ": +");
     		sb.append(jObject.optString(key));
+    		if (key == "C" || key == "D")
+    			sb.append("%");
     		sb.append("\n");		
     	}
     	return sb.toString();
