@@ -49,6 +49,10 @@ public class ItemDetailDialog extends DialogFragment {
 		}
     	String itemName = jObject.optString("O");
     	String desc = jObject.optString("P");
+    	String scroll = jObject.optString("i");
+    	if (scroll != ""){
+    		itemName += "(+" + scroll + ")";
+    	}
 	    
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         
@@ -89,7 +93,7 @@ public class ItemDetailDialog extends DialogFragment {
     		int end = m0.end();
     		String t = m0.group();
     		String tmp = m0.group().substring(1, m0.group().length() - 1);
-    		tmp = "<font color=#46ea46>"+tmp+"</font> ";
+    		tmp = "["+tmp+"]";
     		StringBuilder sb = new StringBuilder();
     		sb.append(newStr.subSequence(0, start));
     		sb.append(tmp);
