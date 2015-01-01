@@ -81,6 +81,22 @@ public class ItemDetailDialog extends DialogFragment {
     	String newStr = original.replace("\\n", "<br />").replace("\\r", "    ");
     	String regex = "#c[^#]+#";
     	Spanned result = null;
+    	String regex0 = "<.+>";
+    	Pattern p0 = Pattern.compile(regex0);
+    	Matcher m0 = p0.matcher(newStr);
+    	if(m0.find()) {
+    		int start = m0.start();
+    		int end = m0.end();
+    		String t = m0.group();
+    		String tmp = m0.group().substring(1, m0.group().length() - 1);
+    		tmp = "<font color=#46ea46>"+tmp+"</font> ";
+    		StringBuilder sb = new StringBuilder();
+    		sb.append(newStr.subSequence(0, start));
+    		sb.append(tmp);
+    		sb.append(newStr.substring(end, newStr.length()));
+    		newStr = sb.toString();
+    		result = Html.fromHtml(newStr);
+        }
     	Pattern p = Pattern.compile(regex);
     	Matcher m = p.matcher(newStr);
     	if(m.find()) {
@@ -104,6 +120,7 @@ public class ItemDetailDialog extends DialogFragment {
     		newStr = sb.toString();
     		result = Html.fromHtml(newStr);
         }
+    	
     	return Html.fromHtml(newStr);
     }
     
