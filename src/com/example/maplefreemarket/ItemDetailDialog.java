@@ -165,7 +165,7 @@ public class ItemDetailDialog extends DialogFragment {
     	StringBuilder sb = new StringBuilder();
     	if (jObject.optString(key) != ""){
     		sb.append(desc + ": ");
-    		if (key != "h")
+    		if (key != "h" && key != "A")
     			sb.append("+");
     		sb.append(jObject.optString(key));
     		if (key == "C" || key == "D")
@@ -209,7 +209,7 @@ public class ItemDetailDialog extends DialogFragment {
     	sb.append(getPropertyValue(jObject, "M", "2st BONUS POTENTIAL"));
     	sb.append(getPropertyValue(jObject, "N", "3st BONUS POTENTIAL"));
     	sb.append(getPropertyValue(jObject, "h", "NUMBER OF UPGRADES AVAILABLE"));
-    	sb.append(getPropertyValue(jObject, "A", "HAMMERS APPLIED"));
+    	sb.append(getPropertyValue(jObject, "A", "NUMBER OF HAMMER APPLIED"));
  //   	sb.append(getPropertyValue(jObject, "X", "STR"));	
     	return sb.toString();
     }
