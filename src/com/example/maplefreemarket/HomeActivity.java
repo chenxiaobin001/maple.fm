@@ -7,6 +7,8 @@ import java.util.List;
 import org.json.JSONException;
 
 import android.support.v7.app.ActionBarActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Intent;
@@ -18,6 +20,7 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -83,7 +86,26 @@ public class HomeActivity extends ActionBarActivity {
 			e.printStackTrace();
 		}
 		
+		EditText searchEditText = (EditText) findViewById(R.id.searchEditText);
+		searchEditText.addTextChangedListener(new TextWatcher() {
 
+		    @Override
+		    public void onTextChanged(CharSequence s, int start, int before, int count) {
+		        System.out.println("Text ["+s+"]");
+
+		        adapter.getFilter().filter(s.toString());                           
+		    }
+
+		    @Override
+		    public void beforeTextChanged(CharSequence s, int start, int count,
+		            int after) {
+
+		    }
+
+		    @Override
+		    public void afterTextChanged(Editable s) {
+		    }
+		});
 		refreshButton.setOnClickListener(new OnClickListener() {
 			
 			private String urlToRssFeed;

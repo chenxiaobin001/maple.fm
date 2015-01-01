@@ -1,6 +1,7 @@
 package com.example.maplefreemarket;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -19,41 +20,58 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 import com.squareup.picasso.Picasso.LoadedFrom;
-
+import android.widget.Filter;
 class ItemArrayAdapter extends ArrayAdapter<Item> {
 	  private final Context context;
-	  private final List<Item> items;
+	  private List<Item> items;
+	  private List<Item> filteredData = null;
+	  private ItemFilter mFilter = new ItemFilter();
 
 	  public ItemArrayAdapter(Context context, List<Item> items) {
 	    super(context, R.layout.item_row, items);
 	    this.context = context;
 	    this.items = items;
+	    this.filteredData = items;
 	  }
-
+	  public int getCount() {
+		  return filteredData.size();
+	  }
+	  
+	  public void setItems(List<Item> items){
+		  this.items = items;
+		  this.filteredData = items;
+	  }
+	  public Item getItem(int position) {
+		  return filteredData.get(position);
+	  }
+	 
+	  public long getItemId(int position) {
+		  return position;
+	  }
 	  @Override
 	  public View getView(int position, View convertView, ViewGroup parent) {
 		
-		final Item cur = items.get(position);
-	    LayoutInflater inflater = (LayoutInflater) context
-	        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-	    View rowView = inflater.inflate(R.layout.item_row, parent, false);
-	    TextView itemNameTextView = (TextView) rowView.findViewById(R.id.itemNameTextView);
-	    TextView itemPriceTextView = (TextView) rowView.findViewById(R.id.itemPriceTextView);
-	    TextView channelRoomTextView = (TextView) rowView.findViewById(R.id.roomTextView);
-	    TextView quantityTextView = (TextView) rowView.findViewById(R.id.quantityTextView);
-	    TextView percentageTextView = (TextView) rowView.findViewById(R.id.percentageTextView);
-	    final ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
-	    itemNameTextView.setText(items.get(position).getItemName());
-	    itemPriceTextView.setText(NumberFormat.getNumberInstance(Locale.US).format(items.get(position).getPrice()));
-	    itemPriceTextView.setTextColor(Color.parseColor(getPriceColor(items.get(position).getPrice())));
-	    channelRoomTextView.setText(getRoomChannel(position));
-	    quantityTextView.setText(getBundleQuantity(position));
-	    String tmp = getPercentage(position);
-	    percentageTextView.setText(tmp + "%");
-	    percentageTextView.setTextColor(Color.parseColor(getPercentColor(tmp)));
-	    int id = items.get(position).getIconID();
-	    String url = context.getResources().getString(R.string.item_icon_url) + String.valueOf(id) + ".png";
-	    Picasso.with(context).load(url).into(new Target() {
+			final Item cur = filteredData.get(position);
+		    LayoutInflater inflater = (LayoutInflater) context
+		        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		    View rowView = inflater.inflate(R.layout.item_row, parent, false);
+		    TextView itemNameTextView = (TextView) rowView.findViewById(R.id.itemNameTextView);
+		    TextView itemPriceTextView = (TextView) rowView.findViewById(R.id.itemPriceTextView);
+		    TextView channelRoomTextView = (TextView) rowView.findViewById(R.id.roomTextView);
+		    TextView quantityTextView = (TextView) rowView.findViewById(R.id.quantityTextView);
+		    TextView percentageTextView = (TextView) rowView.findViewById(R.id.percentageTextView);
+		    final ImageView imageView = (ImageView) rowView.findViewById(R.id.icon1);
+		    itemNameTextView.setText(filteredData.get(position).getItemName());
+		    itemPriceTextView.setText(NumberFormat.getNumberInstance(Locale.US).format(filteredData.get(position).getPrice()));
+		    itemPriceTextView.setTextColor(Color.parseColor(getPriceColor(filteredData.get(position).getPrice())));
+		    channelRoomTextView.setText(getRoomChannel(position));
+		    quantityTextView.setText(getBundleQuantity(position));
+		    String tmp = getPercentage(position);
+		    percentageTextView.setText(tmp + "%");
+		    percentageTextView.setTextColor(Color.parseColor(getPercentColor(tmp)));
+		    int id = filteredData.get(position).getIconID();
+		    String url = context.getResources().getString(R.string.item_icon_url) + String.valueOf(id) + ".png";
+		    Picasso.with(context).load(url).into(new Target() {
 
             @Override
             public void onPrepareLoad(Drawable arg0) {
@@ -146,5 +164,44 @@ class ItemArrayAdapter extends ArrayAdapter<Item> {
 			  result = "#a5124a";
 		  }
 		  return result;
+	  }
+	  
+	  public Filter getFilter() {
+		  return mFilter;
+	  }
+	 
+	  private class ItemFilter extends Filter {
+		  @Override
+		  protected FilterResults performFiltering(CharSequence constraint) {
+			  String filterString = constraint.toString().toLowerCase();
+			  FilterResults results = new FilterResults();
+				
+			  final List<Item> list = items;
+	 
+			  int count = list.size();
+			  final List<Item> nlist = new ArrayList<Item>(count);
+ 
+			  String filterableString ;
+				
+			  for (int i = 0; i < count; i++) {
+					filterableString = list.get(i).getItemName();
+					if (filterableString.toLowerCase().contains(filterString)) {
+						nlist.add(list.get(i));
+					}
+				}
+				
+				results.values = nlist;
+				results.count = nlist.size();
+	 
+				return results;
+			}
+ 
+			@SuppressWarnings("unchecked")
+			@Override
+			protected void publishResults(CharSequence constraint, FilterResults results) {
+				filteredData = (ArrayList<Item>) results.values;
+				notifyDataSetChanged();
+			}
+ 
 	  }
 }

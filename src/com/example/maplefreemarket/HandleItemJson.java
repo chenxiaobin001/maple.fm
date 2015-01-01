@@ -96,7 +96,7 @@ public class HandleItemJson extends AsyncTask<String, Void, String> {
 		Toast.makeText(((HomeActivity)mContext).getMyApp(), "updated " + getSecondsAgo() + "s ago", Toast.LENGTH_SHORT).show();
 		ItemArrayAdapter adapter = ((HomeActivity)mContext).getAdapter();
 		adapter.clear();
-		adapter.addAll(getItemsArray());
+		adapter.setItems(getItems());
 		adapter.notifyDataSetChanged();
 		((Activity) mContext).findViewById(R.id.loadingPanel).setVisibility(View.GONE);
 		((Activity) mContext).findViewById(R.id.refreshButton).setVisibility(View.VISIBLE);
