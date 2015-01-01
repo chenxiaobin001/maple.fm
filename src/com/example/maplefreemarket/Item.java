@@ -22,6 +22,7 @@ public class Item {
 	private int reqLevel;
 	private Drawable drawableImage;
 	
+	
 	public Drawable getDrawableImage() {
 		return drawableImage;
 	}
@@ -98,6 +99,7 @@ public class Item {
 		return description;
 	}
 	public void setDescription(String description) {
+	//	description = description.replace("\\n", "\n").replace("\\r", "\r");
 		this.description = description;
 	}
 	public String getCategory() {

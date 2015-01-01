@@ -18,7 +18,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentTop="true"
         android:contentDescription="TODO"
-        android:src="@drawable/scania" />
+        android:src="@drawable/mesos" />
 
     <TextView
         android:id="@+id/itemPriceTextView"

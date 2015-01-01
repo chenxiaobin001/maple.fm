@@ -1,5 +1,8 @@
 package com.example.maplefreemarket;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -9,8 +12,11 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
 public class ItemDetailDialog extends DialogFragment {
 	
@@ -48,9 +54,15 @@ public class ItemDetailDialog extends DialogFragment {
         
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.item_detail, null);
+        TextView categoryTextView = (TextView) view.findViewById(R.id.itemCategoryTextView);
+        categoryTextView.setText(getCategory(jObject));
+        TextView itemDescTextView = (TextView) view.findViewById(R.id.itemDescTextView);
+        itemDescTextView.setText(formatTheString(desc));
+        TextView itemDetailTextView = (TextView) view.findViewById(R.id.itemDetailTextView);
+        itemDetailTextView.setText(getItemDetails(jObject));
         builder.setView(view);
         
-        builder.setTitle(itemName).setMessage(desc).setIcon(myApp.getDrawable())
+        builder.setTitle(itemName).setIcon(myApp.getDrawable())
                .setPositiveButton(R.string.item_button_search, new DialogInterface.OnClickListener() {
                    public void onClick(DialogInterface dialog, int id) {
                        // FIRE ZE MISSILES!
@@ -63,5 +75,57 @@ public class ItemDetailDialog extends DialogFragment {
                });
         // Create the AlertDialog object and return it
         return builder.create();
+    }
+    
+    private Spanned formatTheString(String original){
+    	String newStr = original.replace("\\n", "\n").replace("\\r", "\r");
+    	String regex = "#c(.+)#";
+    	Spanned result = null;
+    	Pattern p = Pattern.compile(regex);
+    	Matcher m = p.matcher(newStr);
+    	if(m.find()) {
+    		String tmp = m.group().substring(2, m.group().length() - 1);
+    		tmp = "<font color=#ffa21f>"+tmp+"</font>";
+    		newStr = newStr.replaceAll(regex, tmp);
+    		result = Html.fromHtml(newStr);
+    		;
+        }else{
+        	result = Html.fromHtml(newStr);
+        }
+    	return result;
+    }
+    
+    private String getCategory(JSONObject jObject){
+    	
+    	String result = "";
+    	final String NOFOUND = "N/A";
+    	if (jObject == null)	return result;
+    	StringBuilder sb = new StringBuilder();
+    	String category = jObject.optString("Q");
+    	if (category != null){
+    		sb.append(category);
+    	}else{
+    		sb.append(NOFOUND);
+    	}
+    	sb.append("/");
+    	String subCategory = jObject.optString("R");
+    	if (subCategory != null){
+    		sb.append(subCategory);
+    	}else{
+    		sb.append(NOFOUND);
+    	}
+    	sb.append("/");
+    	String detailCategory = jObject.optString("S");
+    	if (detailCategory != null){
+    		sb.append(detailCategory);
+    	}else{
+    		sb.append(NOFOUND);
+    	}
+    	return sb.toString();
+    }
+    
+    private String getItemDetails(JSONObject jObject){
+    	String result = "N/A";
+    	return result;
     }
 }
