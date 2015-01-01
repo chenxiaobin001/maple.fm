@@ -78,21 +78,33 @@ public class ItemDetailDialog extends DialogFragment {
     }
     
     private Spanned formatTheString(String original){
-    	String newStr = original.replace("\\n", "\n").replace("\\r", "\r");
-    	String regex = "#c(.+)#";
+    	String newStr = original.replace("\\n", "<br />").replace("\\r", "    ");
+    	String regex = "#c[^#]+#";
     	Spanned result = null;
     	Pattern p = Pattern.compile(regex);
     	Matcher m = p.matcher(newStr);
     	if(m.find()) {
     		String tmp = m.group().substring(2, m.group().length() - 1);
-    		tmp = "<font color=#ffa21f>"+tmp+"</font>";
+    		tmp = "<font color=#ffa21f>"+tmp+"</font> ";
     		newStr = newStr.replaceAll(regex, tmp);
     		result = Html.fromHtml(newStr);
-    		;
-        }else{
-        	result = Html.fromHtml(newStr);
         }
-    	return result;
+    	String regex1 = "#\\*[^#]+#";
+    	Pattern p1 = Pattern.compile(regex1);
+    	Matcher m1 = p1.matcher(newStr);
+    	if(m1.find()) {
+    		int start = m1.start();
+    		int end = m1.end();
+    		String tmp = m1.group().substring(2, m1.group().length() - 1);
+    		tmp = "<br /><font color=#612759>* "+tmp+"</font> ";
+    		StringBuilder sb = new StringBuilder();
+    		sb.append(newStr.subSequence(0, start));
+    		sb.append(tmp);
+    		sb.append(newStr.substring(end, newStr.length()));
+    		newStr = sb.toString();
+    		result = Html.fromHtml(newStr);
+        }
+    	return Html.fromHtml(newStr);
     }
     
     private String getCategory(JSONObject jObject){
