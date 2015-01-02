@@ -1,5 +1,7 @@
 package com.example.maplefreemarket;
 
+import java.util.Comparator;
+
 import android.graphics.drawable.Drawable;
 
 public class Item {
@@ -133,4 +135,82 @@ public class Item {
 		this.reqLevel = reqLevel;
 	}
 	
+	static Comparator<Item> getItemNameComparator() {
+        return new Comparator<Item>() {
+
+			@Override
+			public int compare(Item first, Item second) {
+				return first.getItemName().compareTo(second.getItemName());
+			}
+
+        };
+    }
+
+	static Comparator<Item> getPriceComparator() {
+        return new Comparator<Item>() {
+
+			@Override
+			public int compare(Item first, Item second) {
+				
+				if (first.getPrice() < second.getPrice()){
+					return -1;
+				}else if (first.getPrice() > second.getPrice()){
+					return 1;
+				}else{
+					return 0;
+				}
+			}
+
+        };
+    }
+	static Comparator<Item> getChannelComparator() {
+        return new Comparator<Item>() {
+
+			@Override
+			public int compare(Item first, Item second) {
+				return first.getChannel() - second.getChannel();
+			}
+
+        };
+    }
+	static Comparator<Item> getRoomComparator() {
+        return new Comparator<Item>() {
+
+			@Override
+			public int compare(Item first, Item second) {		
+				return first.getRoom() - second.getRoom();
+			}
+
+        };
+    }
+	static Comparator<Item> getPercentComparator() {
+        return new Comparator<Item>() {
+
+			@Override
+			public int compare(Item first, Item second) {	
+				int p1 = getPercent(first.getPrice(), first.getAvgPrice());
+				int p2 = getPercent(second.getPrice(), second.getAvgPrice());
+				return p1 - p2;
+			}
+
+        };
+    }
+	static Comparator<Item> getQtyComparator() {
+        return new Comparator<Item>() {
+
+			@Override
+			public int compare(Item first, Item second) {
+				return first.getQuantity() - second.getQuantity();
+			}
+
+        };
+    }
+	
+	private static int getPercent(long price, long avgPrice){
+		if (avgPrice == 0){
+			  return -1;
+		  }else{
+			  return (int)(price*1.0/avgPrice * 100);
+		  }
+	}
 }

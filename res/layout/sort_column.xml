@@ -1,0 +1,82 @@
+<merge  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:orientation="vertical" >
+
+    <TableRow
+        android:id="@+id/sortableColumn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/itemListView" >
+
+        <TextView
+            android:id="@+id/itemColTextView"
+            android:clickable="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:paddingRight="5dp"
+            android:text="Item"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/QtyColTextView"
+            android:clickable="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:paddingRight="5dp"
+            android:text="Qty"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/priceColTextView"
+            android:clickable="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:paddingRight="5dp"
+            android:text="Price"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/ChColTextView"
+            android:clickable="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:paddingRight="5dp"
+            android:text="Ch"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/RmColTextView"
+            android:clickable="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:paddingRight="5dp"
+            android:text="Rm"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/percentColTextView"
+            android:clickable="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:paddingRight="5dp"
+            android:text="%"
+            android:textStyle="bold" />
+
+    </TableRow>
+
+</merge >

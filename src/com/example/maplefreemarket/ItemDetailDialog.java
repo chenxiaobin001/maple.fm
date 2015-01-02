@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Html;
@@ -17,12 +18,14 @@ import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 public class ItemDetailDialog extends DialogFragment {
 	
 	String item;
 	private MapleFreeMarketApplication myApp;
+	private HomeActivity activity;
 	
 	static ItemDetailDialog newInstance(String jsonString) {
 		ItemDetailDialog f = new ItemDetailDialog();
@@ -40,6 +43,7 @@ public class ItemDetailDialog extends DialogFragment {
     	
     	item = getArguments().getString("item");
     	myApp = (MapleFreeMarketApplication) getActivity().getApplication();
+    	activity = (HomeActivity) getActivity();
     	JSONObject jObject = null;
 		try {
 			jObject = new JSONObject(item);
@@ -71,7 +75,9 @@ public class ItemDetailDialog extends DialogFragment {
         builder.setTitle(itemName).setIcon(myApp.getDrawable())
                .setPositiveButton(R.string.item_button_search, new DialogInterface.OnClickListener() {
                    public void onClick(DialogInterface dialog, int id) {
-                	   myApp.getItemAdapter().getFilter().filter(itemName1);   
+                	   myApp.getItemAdapter().getFilter().filter(itemName1);  
+                	   EditText searchEditText = (EditText) activity.findViewById(R.id.searchEditText);
+                	   searchEditText.setText(itemName1);
                    }
                })
                .setNegativeButton(R.string.item_button_no, new DialogInterface.OnClickListener() {

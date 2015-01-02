@@ -12,24 +12,38 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_weight="1" >
-
-        <Spinner
-            android:id="@+id/serverSpinner"
-            android:layout_width="66dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.01" />
-
-        <Button
-            android:id="@+id/filterButton"
-            android:layout_width="wrap_content"
+        android:layout_alignParentTop="true" 
+        android:orientation="vertical" >
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.01"
-            android:text="@string/filter_button"
-            android:textColor="#ffffff" />
-    </LinearLayout>
+            android:layout_weight="0.01" >
+            <Spinner
+	            android:id="@+id/serverSpinner"
+	            android:layout_width="66dp"
+	            android:layout_height="match_parent"
+	            android:layout_weight="0.01" />
+            <Button
+	            android:id="@+id/filterButton"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="0.01"
+	            android:text="@string/filter_button"
+	            android:textColor="#ffffff" />
+        </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.01" >
+            <include android:id="@+id/sort_column"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				layout="@layout/sort_column"/>
+        </LinearLayout>
+
+    </LinearLayout>
+	
     <ListView
         android:id="@+id/itemListView"
         android:layout_width="match_parent"
@@ -43,15 +57,15 @@
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/listView1"
-        android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/listView1" >
+        android:layout_alignParentBottom="true" >
 
         <EditText
             android:id="@+id/searchEditText"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.44" />
+            android:selectAllOnFocus="true"
+            android:layout_weight="0.44"
+            android:hint="Keyword" />
 		<RelativeLayout
 		    android:id="@+id/loadingPanel"
 		    android:layout_width="wrap_content"
@@ -70,5 +84,6 @@
             android:text="@string/refresh_button"
             android:textColor="#ffffff" />
     </LinearLayout>
+
 
 </RelativeLayout>

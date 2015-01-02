@@ -2,6 +2,8 @@ package com.example.maplefreemarket;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -47,6 +49,21 @@ class ItemArrayAdapter extends ArrayAdapter<Item> {
 	 
 	  public long getItemId(int position) {
 		  return position;
+	  }
+	  
+	  public void sortByAttribute(int idx, boolean desc){
+		  switch (idx){
+		  case 0:	Collections.sort(filteredData, Item.getItemNameComparator()); break;
+		  case 1:	Collections.sort(filteredData, Item.getQtyComparator()); break;
+		  case 2:	Collections.sort(filteredData, Item.getPriceComparator()); break;
+		  case 3:	Collections.sort(filteredData, Item.getChannelComparator()); break;
+		  case 4: 	Collections.sort(filteredData, Item.getRoomComparator()); break;
+		  case 5:	Collections.sort(filteredData, Item.getPercentComparator()); break;
+		  }
+		  if (desc){
+			  Collections.reverse(filteredData);
+		  }
+		  notifyDataSetChanged();
 	  }
 	  @Override
 	  public View getView(int position, View convertView, ViewGroup parent) {
