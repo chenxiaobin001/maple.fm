@@ -15,10 +15,12 @@ public class RetrieveJSonTask extends AsyncTask<String, Void, String> {
     private Exception exception;
     private OkHttpClient client;
     private Context mContext;
+    private AsyncTask<String, Void, String> asyncTask;
     
-    public RetrieveJSonTask (Context context){
+    public RetrieveJSonTask (Context context, AsyncTask<String, Void, String> asyncTask){
          mContext = context;
          client = new OkHttpClient();
+         this.asyncTask = asyncTask;
     }
     protected String doInBackground(String... urls) {
         try {
@@ -36,16 +38,9 @@ public class RetrieveJSonTask extends AsyncTask<String, Void, String> {
     }
 
     protected void onPostExecute(String result) {
-    	try {
-			
-    		HandleItemJson obj = ((HomeActivity)mContext).getObj();
-    		obj = new HandleItemJson(mContext);
-    		obj.execute(result);
-			
-		} catch (JSONException e) {
-			Toast.makeText(mContext, "please check your Internet connection", Toast.LENGTH_SHORT).show();
-			e.printStackTrace();
-		}
+    //	HandleItemListJSON obj = ((HomeActivity)mContext).getObj();
+  	//	obj = new HandleItemListJSON(mContext);
+		asyncTask.execute(result);
     }
     
 

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.code.fm.R;
 
 //Creating an Adapter Class
 	public class MyAdapter extends ArrayAdapter {

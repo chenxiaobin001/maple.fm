@@ -20,12 +20,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import com.code.fm.R;
 
 public class ItemDetailDialog extends DialogFragment {
 	
 	String item;
+	String itemID;
 	private MapleFreeMarketApplication myApp;
 	private HomeActivity activity;
+	private ItemMore itemMore;
 	
 	static ItemDetailDialog newInstance(String jsonString) {
 		ItemDetailDialog f = new ItemDetailDialog();
@@ -35,6 +38,13 @@ public class ItemDetailDialog extends DialogFragment {
         args.putString("item", jsonString);
         f.setArguments(args);
         return f;
+    }
+	
+	@Override 
+    public void onStart() {
+        // TODO Auto-generated method stub
+        super.onStart();
+
     }
 	
     @Override
@@ -52,6 +62,8 @@ public class ItemDetailDialog extends DialogFragment {
 			e.printStackTrace();
 			return null;
 		}
+		itemMore = new ItemMore(jObject);
+		itemID = jObject.optString("U");
     	String itemName = jObject.optString("O");
     	final String itemName1 = itemName;
     	String desc = jObject.optString("P");
@@ -69,7 +81,7 @@ public class ItemDetailDialog extends DialogFragment {
         TextView itemDescTextView = (TextView) view.findViewById(R.id.itemDescTextView);
         itemDescTextView.setText(formatTheString(desc));
         TextView itemDetailTextView = (TextView) view.findViewById(R.id.itemDetailTextView);
-        itemDetailTextView.setText(getItemDetails(jObject));
+        itemDetailTextView.setText(itemMore.toString());
         builder.setView(view);
         
         builder.setTitle(itemName).setIcon(myApp.getDrawable())
@@ -167,7 +179,13 @@ public class ItemDetailDialog extends DialogFragment {
     	return sb.toString();
     }
     
-    private String getPropertyValue(JSONObject jObject, String key, String desc){
+
+    
+    private void updateItemDetails(String itemID){
+    	
+    }
+    
+/*    private String getPropertyValue(JSONObject jObject, String key, String desc){
     	StringBuilder sb = new StringBuilder();
     	if (jObject.optString(key) != ""){
     		sb.append(desc + ": ");
@@ -180,9 +198,8 @@ public class ItemDetailDialog extends DialogFragment {
     	}
     	return sb.toString();
     	
-    }
-    
-    private String getItemDetails(JSONObject jObject){
+    }*/
+   /* private String getItemDetails(JSONObject jObject){
 
     	StringBuilder sb = new StringBuilder();
     	sb.append(getPropertyValue(jObject, "k", "STR"));
@@ -218,5 +235,5 @@ public class ItemDetailDialog extends DialogFragment {
     	sb.append(getPropertyValue(jObject, "A", "NUMBER OF HAMMER APPLIED"));
  //   	sb.append(getPropertyValue(jObject, "X", "STR"));	
     	return sb.toString();
-    }
+    }*/
 }
