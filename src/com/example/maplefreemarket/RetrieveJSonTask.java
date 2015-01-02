@@ -15,12 +15,12 @@ public class RetrieveJSonTask extends AsyncTask<String, Void, String> {
     private Exception exception;
     private OkHttpClient client;
     private Context mContext;
-    private AsyncTask<String, Void, String> asyncTask;
+    private AsyncTask<String, Void, String> parseJSONAsyncTask;
     
     public RetrieveJSonTask (Context context, AsyncTask<String, Void, String> asyncTask){
          mContext = context;
          client = new OkHttpClient();
-         this.asyncTask = asyncTask;
+         this.parseJSONAsyncTask = asyncTask;
     }
     protected String doInBackground(String... urls) {
         try {
@@ -40,7 +40,7 @@ public class RetrieveJSonTask extends AsyncTask<String, Void, String> {
     protected void onPostExecute(String result) {
     //	HandleItemListJSON obj = ((HomeActivity)mContext).getObj();
   	//	obj = new HandleItemListJSON(mContext);
-		asyncTask.execute(result);
+		parseJSONAsyncTask.execute(result);
     }
     
 

@@ -94,6 +94,10 @@ public class HandleItemListJSON extends AsyncTask<String, Void, String> {
 	
 	@Override
 	protected void onPostExecute(String result) {
+		if (result == null){
+			Toast.makeText(mContext, "Failed to get data.", Toast.LENGTH_SHORT).show();
+			return;
+		}
 		Toast.makeText(((HomeActivity)mContext).getMyApp(), "updated " + getSecondsAgo() + "s ago", Toast.LENGTH_SHORT).show();
 		ItemArrayAdapter adapter = ((HomeActivity)mContext).getAdapter();
 		adapter.clear();

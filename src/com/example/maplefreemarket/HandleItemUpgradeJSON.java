@@ -1,66 +1,47 @@
 package com.example.maplefreemarket;
 
-import java.util.ArrayList;
-import java.util.List;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
+import android.R;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.view.View;
-import android.widget.Toast;
-
-import com.code.fm.R;
+import android.widget.TextView;
 
 public class HandleItemUpgradeJSON extends AsyncTask<String, Void, String> {
 	private Exception exception;
 	private Context mContext;
-	
+	private ItemMore itemMore;
+	private ItemMore itemMoreUpgrade;
+	private TextView view;
 
-
-	
 	public HandleItemUpgradeJSON(Context context, View view, ItemMore itemMore) {
-
+		this.itemMore = itemMore;
 		this.mContext = context;
+		this.view = (TextView)view;
+		this.itemMoreUpgrade = new ItemMore();
 	}
 	
 	private void handleJson(String[] strs) throws JSONException{
-		String result = "{\"result\":" + strs[0] + "}";
-		JSONObject jObject = new JSONObject(result);
-		JSONArray resultArray = jObject.getJSONArray("result");
-
-		JSONArray jArray = resultArray.getJSONObject(0).getJSONArray("fm_items");
-		for (int i=0; i < jArray.length(); i++)
-		{
-		    try {
-		        JSONObject oneObject = jArray.getJSONObject(i);
-		        // Pulling items from the array
-		        Item item = new Item();
-		        item.setJSONString(oneObject.toString());
-		        item.setBundle(oneObject.optInt("b"));
-		        item.setAvgPrice(oneObject.optLong("X"));
-		        item.setCategory(oneObject.optString("Q"));
-		        item.setChannel(oneObject.optInt("d"));
-		        item.setCharacterName(oneObject.optString("g"));
-		        item.setDescription(oneObject.optString("P"));
-		        item.setDetailcategory(oneObject.optString("S"));
-		        item.setIconID(oneObject.optString("T"));
-		        item.setId(oneObject.optInt("U"));
-		        item.setItemName(oneObject.optString("O"));
-		        item.setPrice(oneObject.optLong("c"));
-		        item.setQuantity(oneObject.optInt("a"));
-		        item.setReqLevel(oneObject.optInt("W"));
-		        item.setRoom(oneObject.optInt("e"));
-		        item.setShopName(oneObject.optString("f"));
-		        item.setSubcategory(oneObject.optString("R"));
-
-		    } catch (JSONException e) {
-		        // Oops
-		    }
-		}
+		JSONObject jObject = new JSONObject(strs[0]);
+		JSONObject itemJSON = jObject.getJSONObject("item");
+		itemMoreUpgrade.str = itemJSON.optInt("incSTR");
+		itemMoreUpgrade.dex = itemJSON.optInt("incDEX");
+		itemMoreUpgrade.intellegence = itemJSON.optInt("incINT");
+		itemMoreUpgrade.luk = itemJSON.optInt("incLUK");
+		itemMoreUpgrade.maxHP = itemJSON.optInt("incMHP");
+		itemMoreUpgrade.maxMP = itemJSON.optInt("incMMP");
+		itemMoreUpgrade.weaponAttack = itemJSON.optInt("incPAD");
+		itemMoreUpgrade.magicAttack = itemJSON.optInt("incMAD");
+		itemMoreUpgrade.weaponDefence = itemJSON.optInt("incPDD");
+		itemMoreUpgrade.magicDefence = itemJSON.optInt("incMDD");
+		itemMoreUpgrade.accuracy = itemJSON.optInt("incACC");
+		itemMoreUpgrade.avoidability = itemJSON.optInt("incEVA");
+		itemMoreUpgrade.jump = itemJSON.optInt("incJump");
+		itemMoreUpgrade.speed = itemJSON.optInt("incSpeed");
+		
 	}
 
 	@Override
@@ -79,12 +60,7 @@ public class HandleItemUpgradeJSON extends AsyncTask<String, Void, String> {
 	
 	@Override
 	protected void onPostExecute(String result) {
-
-		ItemArrayAdapter adapter = ((HomeActivity)mContext).getAdapter();
-		adapter.clear();
-
-		adapter.notifyDataSetChanged();
-		((Activity) mContext).findViewById(R.id.loadingPanel).setVisibility(View.GONE);
-		((Activity) mContext).findViewById(R.id.refreshButton).setVisibility(View.VISIBLE);
+		if (result == null)	return;
+		view.setText(itemMore.toString(itemMoreUpgrade));
     }
 }

@@ -4,44 +4,73 @@ import org.json.JSONObject;
 
 
 public class ItemMore {
-	private int id;
-    private String shopName;
-	private String characterName;
-	private String itemName;
-	private String description;
-	private String category;
-	private String subcategory;
-	private String detailcategory;
-	private String iconID;
-	private int reqLevel;
-	private int str;
-	private int dex;
-	private int intellegence;
-	private int luk;
-	private int maxHP;
-	private int maxMP;
-	private int weaponAttack;
-	private int magicAttack;
-	private int weaponDefence;
-	private int magicDefence;
-	private int accuracy;
-	private int avoidability;
-	private int diligence;
-	private int speed;
-	private int jump;
-	private int battleModeAttack;
-	private int bossDamage;
-	private int igDEF;
-	private int upgradeAvailable;
-	private int hammerApplied;
-	private String crafter;
-	private String potential1;
-	private String potential2;
-	private String potential3;
-	private String bonusPotential1;
-	private String bonusPotential2;
-	private String bonusPotential3;
+	int id;
+    String shopName;
+	String characterName;
+	String itemName;
+	String description;
+	String category;
+	String subcategory;
+	String detailcategory;
+	String iconID;
+	int reqLevel;
+	int str;
+	int dex;
+	int intellegence;
+	int luk;
+	int maxHP;
+	int maxMP;
+	int weaponAttack;
+	int magicAttack;
+	int weaponDefence;
+	int magicDefence;
+	int accuracy;
+	int avoidability;
+	int diligence;
+	int speed;
+	int jump;
+	int battleModeAttack;
+	int bossDamage;
+	int igDEF;
+	int upgradeAvailable;
+	int hammerApplied;
+	String crafter;
+	String potential1;
+	String potential2;
+	String potential3;
+	String bonusPotential1;
+	String bonusPotential2;
+	String bonusPotential3;
 	
+	public ItemMore(){
+		str = 0;
+		dex = 0;
+		intellegence = 0;
+		luk = 0;
+		maxHP = 0;
+		maxMP = 0;
+		weaponAttack = 0;
+		magicAttack = 0;
+	 	weaponDefence = 0;
+	 	magicDefence = 0;
+	 	accuracy = 0;
+	 	avoidability = 0;
+	 	diligence = 0;
+	 	speed = 0;
+	 	jump = 0;
+	 	battleModeAttack = 0;
+	 	bossDamage = 0;
+	 	igDEF = 0;
+		crafter = "";
+		potential1 = "";
+		potential2 = "";
+		potential3 = "";
+		bonusPotential1 = "";
+		bonusPotential2 = "";
+		bonusPotential3 = "";
+		upgradeAvailable = 0;
+	 	hammerApplied = 0;
+	}
 	public ItemMore(JSONObject jObject){
 		str = jObject.optInt("k");
 		dex = jObject.optInt("j");
@@ -72,26 +101,28 @@ public class ItemMore {
 	 	hammerApplied = jObject.optInt("A");
 	}
 	
-	public String toString(){
+	public String toString(ItemMore upgrade){
+		if (upgrade == null)
+			upgrade = new ItemMore();
 		StringBuilder sb = new StringBuilder();
-		sb.append(getPropertyValue(str, 0, "STR"));
-    	sb.append(getPropertyValue(dex, 0, "DEX"));
-    	sb.append(getPropertyValue(intellegence, 0, "INT"));
-    	sb.append(getPropertyValue(luk, 0, "LUK"));
-    	sb.append(getPropertyValue(maxHP, 0, "Max HP"));
-    	sb.append(getPropertyValue(maxMP, 0, "Max MP"));
-    	sb.append(getPropertyValue(weaponAttack, 0, "WEAPON ATTACK"));
-    	sb.append(getPropertyValue(magicAttack, 0, "MAGIC ATTACK"));
-    	sb.append(getPropertyValue(weaponDefence, 0, "WEAPON DEFENSE"));
-    	sb.append(getPropertyValue(magicDefence, 0, "MAGIC DEFENSE"));
-    	sb.append(getPropertyValue(accuracy, 0, "ACCURACY"));
-    	sb.append(getPropertyValue(avoidability, 0, "AVOIDABILITY"));
-    	sb.append(getPropertyValue(diligence, 0, "DILIGENCE"));
-    	sb.append(getPropertyValue(speed, 0, "SPEED"));
-    	sb.append(getPropertyValue(jump, 0, "JUMP"));
-    	sb.append(getPropertyValue(battleModeAttack, 0, "BATTLE MODE ATTACK"));
-    	sb.append(getPropertyValue(bossDamage, 0,"When attacking bosses, damage"));
-    	sb.append(getPropertyValue(igDEF, 0, "Ignore Monster DEF"));
+		sb.append(getPropertyValue(str, upgrade.str, "STR"));
+    	sb.append(getPropertyValue(dex, upgrade.dex, "DEX"));
+    	sb.append(getPropertyValue(intellegence, upgrade.intellegence, "INT"));
+    	sb.append(getPropertyValue(luk, upgrade.luk, "LUK"));
+    	sb.append(getPropertyValue(maxHP, upgrade.maxHP, "Max HP"));
+    	sb.append(getPropertyValue(maxMP, upgrade.maxMP, "Max MP"));
+    	sb.append(getPropertyValue(weaponAttack, upgrade.weaponAttack, "WEAPON ATTACK"));
+    	sb.append(getPropertyValue(magicAttack, upgrade.magicAttack, "MAGIC ATTACK"));
+    	sb.append(getPropertyValue(weaponDefence, upgrade.weaponDefence, "WEAPON DEFENSE"));
+    	sb.append(getPropertyValue(magicDefence, upgrade.magicDefence, "MAGIC DEFENSE"));
+    	sb.append(getPropertyValue(accuracy, upgrade.accuracy, "ACCURACY"));
+    	sb.append(getPropertyValue(avoidability, upgrade.avoidability, "AVOIDABILITY"));
+    	sb.append(getPropertyValue(diligence, upgrade.diligence, "DILIGENCE"));
+    	sb.append(getPropertyValue(speed, upgrade.speed, "SPEED"));
+    	sb.append(getPropertyValue(jump, upgrade.jump, "JUMP"));
+    	sb.append(getPropertyValue(battleModeAttack, upgrade.battleModeAttack, "BATTLE MODE ATTACK"));
+    	sb.append(getPropertyValue(bossDamage, upgrade.bossDamage,"When attacking bosses, damage"));
+    	sb.append(getPropertyValue(igDEF, upgrade.igDEF, "Ignore Monster DEF"));
     	if (crafter != "")	sb.append("CRAFTER: " + crafter);
    // 	
    // 	sb.append(getPropertyValue("F", "Potential"));
@@ -119,156 +150,20 @@ public class ItemMore {
     			if ("When attacking bosses, damage".equals(desc) || "Ignore Monster DEF".equals(desc))
         			sb.append("%");
     			sb.append("\n");
+    		}else{
+    			if (!("NUMBER OF UPGRADES AVAILABLE".equals(desc) || "NUMBER OF HAMMER APPLIED".equals(desc)))
+        			sb.append("+");
+    			sb.append(String.valueOf(val1));
+    			int original = val1 - val2;
+    			String str = "(" + original + " + " + val2 + ")";
+    			sb.append(str);
+    			if ("When attacking bosses, damage".equals(desc) || "Ignore Monster DEF".equals(desc))
+        			sb.append("%");
+    			sb.append("\n");
     		}
     	}
     	return sb.toString();
     	
     }
-	public int getId() {
-		return id;
-	}
 
-	public String getShopName() {
-		return shopName;
-	}
-
-	public String getCharacterName() {
-		return characterName;
-	}
-
-	public String getItemName() {
-		return itemName;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public String getCategory() {
-		return category;
-	}
-
-	public String getSubcategory() {
-		return subcategory;
-	}
-
-	public String getDetailcategory() {
-		return detailcategory;
-	}
-
-	public String getIconID() {
-		return iconID;
-	}
-
-	public int getReqLevel() {
-		return reqLevel;
-	}
-
-	public int getStr() {
-		return str;
-	}
-
-	public int getDex() {
-		return dex;
-	}
-
-	public int getIntellegence() {
-		return intellegence;
-	}
-
-	public int getLuc() {
-		return luk;
-	}
-
-	public int getMaxHP() {
-		return maxHP;
-	}
-
-	public int getMaxMP() {
-		return maxMP;
-	}
-
-	public int getWeaponAttack() {
-		return weaponAttack;
-	}
-
-	public int getMagicAttack() {
-		return magicAttack;
-	}
-
-	public int getWeaponDefence() {
-		return weaponDefence;
-	}
-
-	public int getMagicDefence() {
-		return magicDefence;
-	}
-
-	public int getAccuracy() {
-		return accuracy;
-	}
-
-	public int getAvoidability() {
-		return avoidability;
-	}
-
-	public int getDiligence() {
-		return diligence;
-	}
-
-	public int getSpeed() {
-		return speed;
-	}
-
-	public int getJUMP() {
-		return jump;
-	}
-
-	public int getBattleModeAttack() {
-		return battleModeAttack;
-	}
-
-	public int getBossDamage() {
-		return bossDamage;
-	}
-
-	public int getIgDEF() {
-		return igDEF;
-	}
-
-	public int getUpgradeAvailable() {
-		return upgradeAvailable;
-	}
-
-	public int getHammerApplied() {
-		return hammerApplied;
-	}
-
-	public String getCrafter() {
-		return crafter;
-	}
-
-	public String getPotential1() {
-		return potential1;
-	}
-
-	public String getPotential2() {
-		return potential2;
-	}
-
-	public String getPotential3() {
-		return potential3;
-	}
-
-	public String getBonusPotential1() {
-		return bonusPotential1;
-	}
-
-	public String getBonusPotential2() {
-		return bonusPotential2;
-	}
-
-	public String getBonusPotential3() {
-		return bonusPotential3;
-	}
 }

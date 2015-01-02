@@ -12,6 +12,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
@@ -29,6 +30,8 @@ public class ItemDetailDialog extends DialogFragment {
 	private MapleFreeMarketApplication myApp;
 	private HomeActivity activity;
 	private ItemMore itemMore;
+	private View view;
+	private TextView itemDetailTextView;
 	
 	static ItemDetailDialog newInstance(String jsonString) {
 		ItemDetailDialog f = new ItemDetailDialog();
@@ -44,7 +47,7 @@ public class ItemDetailDialog extends DialogFragment {
     public void onStart() {
         // TODO Auto-generated method stub
         super.onStart();
-
+        updateItemDetails();
     }
 	
     @Override
@@ -75,13 +78,13 @@ public class ItemDetailDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.item_detail, null);
+        view = inflater.inflate(R.layout.item_detail, null);
         TextView categoryTextView = (TextView) view.findViewById(R.id.itemCategoryTextView);
         categoryTextView.setText(getCategory(jObject));
         TextView itemDescTextView = (TextView) view.findViewById(R.id.itemDescTextView);
         itemDescTextView.setText(formatTheString(desc));
-        TextView itemDetailTextView = (TextView) view.findViewById(R.id.itemDetailTextView);
-        itemDetailTextView.setText(itemMore.toString());
+        itemDetailTextView = (TextView) view.findViewById(R.id.itemDetailTextView);
+        itemDetailTextView.setText(itemMore.toString(null));
         builder.setView(view);
         
         builder.setTitle(itemName).setIcon(myApp.getDrawable())
@@ -181,10 +184,16 @@ public class ItemDetailDialog extends DialogFragment {
     
 
     
-    private void updateItemDetails(String itemID){
-    	
+    private void updateItemDetails(){
+    	AsyncTask<String, Void, String> upgradeAsyncTask = new HandleItemUpgradeJSON(getActivity(), itemDetailTextView, itemMore);
+    	new RetrieveJSonTask(getActivity(), upgradeAsyncTask).execute(getSearchRequestURL());		
     }
     
+    private String getSearchRequestURL(){
+		String URL =  getResources().getString(R.string.api_item);
+		URL = URL + "id=" + itemID;
+		return URL;
+    }
 /*    private String getPropertyValue(JSONObject jObject, String key, String desc){
     	StringBuilder sb = new StringBuilder();
     	if (jObject.optString(key) != ""){
