@@ -84,7 +84,7 @@ public class ItemDetailDialog extends DialogFragment {
         TextView itemDescTextView = (TextView) view.findViewById(R.id.itemDescTextView);
         itemDescTextView.setText(formatTheString(desc));
         itemDetailTextView = (TextView) view.findViewById(R.id.itemDetailTextView);
-        itemDetailTextView.setText(itemMore.toString(null));
+        itemDetailTextView.setText(itemMore.toString(itemMore));
         builder.setView(view);
         
         builder.setTitle(itemName).setIcon(myApp.getDrawable())

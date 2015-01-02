@@ -143,24 +143,20 @@ public class ItemMore {
     	StringBuilder sb = new StringBuilder();
     	if (val1 != 0){
     		sb.append(desc + ": ");
-    		if (val2 == 0){
-    			if (!("NUMBER OF UPGRADES AVAILABLE".equals(desc) || "NUMBER OF HAMMER APPLIED".equals(desc)))
-        			sb.append("+");
-    			sb.append(String.valueOf(val1));
-    			if ("When attacking bosses, damage".equals(desc) || "Ignore Monster DEF".equals(desc))
-        			sb.append("%");
-    			sb.append("\n");
-    		}else{
-    			if (!("NUMBER OF UPGRADES AVAILABLE".equals(desc) || "NUMBER OF HAMMER APPLIED".equals(desc)))
-        			sb.append("+");
-    			sb.append(String.valueOf(val1));
-    			int original = val1 - val2;
-    			String str = "(" + original + " + " + val2 + ")";
-    			sb.append(str);
-    			if ("When attacking bosses, damage".equals(desc) || "Ignore Monster DEF".equals(desc))
-        			sb.append("%");
-    			sb.append("\n");
-    		}
+			if (!("NUMBER OF UPGRADES AVAILABLE".equals(desc) || "NUMBER OF HAMMER APPLIED".equals(desc)))
+    			sb.append("+");
+			sb.append(String.valueOf(val1));
+			if (!("NUMBER OF UPGRADES AVAILABLE".equals(desc) || "NUMBER OF HAMMER APPLIED".equals(desc) || 
+					"When attacking bosses, damage".equals(desc) || "Ignore Monster DEF".equals(desc))){
+				int inc = val1 - val2;
+				if (inc > 0){
+					String str = " (" + val2 + " + " + inc + ")";
+					sb.append(str);
+				}
+			}
+			if ("When attacking bosses, damage".equals(desc) || "Ignore Monster DEF".equals(desc))
+    			sb.append("%");
+			sb.append("\n");
     	}
     	return sb.toString();
     	
