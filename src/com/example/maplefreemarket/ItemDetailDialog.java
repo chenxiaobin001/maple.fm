@@ -10,7 +10,6 @@ import org.json.JSONObject;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -18,10 +17,9 @@ import android.text.Html;
 import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import com.code.fm.R;
+import com.code.freeMarket.R;
 
 public class ItemDetailDialog extends DialogFragment {
 	
@@ -77,14 +75,12 @@ public class ItemDetailDialog extends DialogFragment {
     private Spanned formatTheString(String original){
     	String newStr = original;
     	String regex = "#c[^#]+#";
-    	Spanned result = null;
     	String regex0 = "<.+>";
     	Pattern p0 = Pattern.compile(regex0);
     	Matcher m0 = p0.matcher(newStr);
     	if(m0.find()) {
     		int start = m0.start();
     		int end = m0.end();
-    		String t = m0.group();
     		String tmp = m0.group().substring(1, m0.group().length() - 1);
     		tmp = "["+tmp+"]";
     		StringBuilder sb = new StringBuilder();
@@ -92,7 +88,6 @@ public class ItemDetailDialog extends DialogFragment {
     		sb.append(tmp);
     		sb.append(newStr.substring(end, newStr.length()));
     		newStr = sb.toString();
-    		result = Html.fromHtml(newStr);
         }
     	Pattern p = Pattern.compile(regex);
     	Matcher m = p.matcher(newStr);
@@ -100,7 +95,6 @@ public class ItemDetailDialog extends DialogFragment {
     		String tmp = m.group().substring(2, m.group().length() - 1);
     		tmp = "<font color=#ffa21f>"+tmp+"</font> ";
     		newStr = newStr.replaceAll(regex, tmp);
-    		result = Html.fromHtml(newStr);
         }
     	String regex1 = "#\\*[^#]+#";
     	Pattern p1 = Pattern.compile(regex1);
@@ -115,7 +109,6 @@ public class ItemDetailDialog extends DialogFragment {
     		sb.append(tmp);
     		sb.append(newStr.substring(end, newStr.length()));
     		newStr = sb.toString();
-    		result = Html.fromHtml(newStr);
         }
     	newStr = newStr.replace("\\n", "<br />").replace("\\r", "    ");
     	return Html.fromHtml(newStr);

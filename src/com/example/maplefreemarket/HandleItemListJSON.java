@@ -7,9 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.code.fm.R;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
+import com.code.freeMarket.R;
 
 import android.app.Activity;
 import android.content.Context;
@@ -20,7 +18,6 @@ import android.widget.Toast;
 public class HandleItemListJSON extends AsyncTask<String, Void, String> {
 	private String secondsAgo;
 	private List<Item> items;
-	private Exception exception;
 	private Context mContext;
 	
 	public String getSecondsAgo() {
@@ -85,7 +82,6 @@ public class HandleItemListJSON extends AsyncTask<String, Void, String> {
 			handleJson(JSonString);
 			return secondsAgo;
 	        } catch (Exception e) {
-	            this.exception = e;
 	            e.printStackTrace();
 	            return null;
 	        }

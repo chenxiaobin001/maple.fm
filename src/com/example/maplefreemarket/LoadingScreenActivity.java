@@ -1,13 +1,10 @@
 package com.example.maplefreemarket;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.support.v7.app.ActionBarActivity;
-import android.view.Menu;
-import com.code.fm.R;
+import com.code.freeMarket.R;
 
 public class LoadingScreenActivity extends Activity {
 	@Override

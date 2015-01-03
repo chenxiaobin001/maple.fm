@@ -4,14 +4,12 @@ package com.example.maplefreemarket;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.R;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.TextView;
 
 public class HandleItemUpgradeJSON extends AsyncTask<String, Void, String> {
-	private Exception exception;
 	private Context mContext;
 	private ItemMore itemMore;
 	private ItemMore itemMoreUpgrade;
@@ -51,7 +49,6 @@ public class HandleItemUpgradeJSON extends AsyncTask<String, Void, String> {
 			handleJson(JSonString);
 			return "OK";
 	        } catch (Exception e) {
-	            this.exception = e;
 	            e.printStackTrace();
 	            return null;
 	        }
