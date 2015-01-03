@@ -72,8 +72,8 @@ public class ItemMore {
 	 	hammerApplied = 0;
 	}
 	public ItemMore(JSONObject jObject){
-		str = jObject.optInt("k");
-		dex = jObject.optInt("j");
+		str = jObject.optInt("j");
+		dex = jObject.optInt("k");
 		intellegence = jObject.optInt("l");
 		luk = jObject.optInt("m");
 		maxHP = jObject.optInt("n");

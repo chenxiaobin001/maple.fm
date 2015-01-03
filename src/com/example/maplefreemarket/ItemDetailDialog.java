@@ -32,6 +32,10 @@ public class ItemDetailDialog extends DialogFragment {
 	private ItemMore itemMore;
 	private View view;
 	private TextView itemDetailTextView;
+	private TextView categoryTextView;
+	private TextView itemDescTextView;
+	private TextView sellerTextView;
+	private TextView shopTextView;
 	
 	static ItemDetailDialog newInstance(String jsonString) {
 		ItemDetailDialog f = new ItemDetailDialog();
@@ -66,42 +70,8 @@ public class ItemDetailDialog extends DialogFragment {
 			return null;
 		}
 		itemMore = new ItemMore(jObject);
-		itemID = jObject.optString("U");
-    	String itemName = jObject.optString("O");
-    	final String itemName1 = itemName;
-    	String desc = jObject.optString("P");
-    	String scroll = jObject.optString("i");
-    	if (scroll != ""){
-    		itemName += "(+" + scroll + ")";
-    	}
-	    
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        view = inflater.inflate(R.layout.item_detail, null);
-        TextView categoryTextView = (TextView) view.findViewById(R.id.itemCategoryTextView);
-        categoryTextView.setText(getCategory(jObject));
-        TextView itemDescTextView = (TextView) view.findViewById(R.id.itemDescTextView);
-        itemDescTextView.setText(formatTheString(desc));
-        itemDetailTextView = (TextView) view.findViewById(R.id.itemDetailTextView);
-        itemDetailTextView.setText(itemMore.toString(itemMore));
-        builder.setView(view);
-        
-        builder.setTitle(itemName).setIcon(myApp.getDrawable())
-               .setPositiveButton(R.string.item_button_search, new DialogInterface.OnClickListener() {
-                   public void onClick(DialogInterface dialog, int id) {
-                	   myApp.getItemAdapter().getFilter().filter(itemName1);  
-                	   EditText searchEditText = (EditText) activity.findViewById(R.id.searchEditText);
-                	   searchEditText.setText(itemName1);
-                   }
-               })
-               .setNegativeButton(R.string.item_button_no, new DialogInterface.OnClickListener() {
-                   public void onClick(DialogInterface dialog, int id) {
-                       // User cancelled the dialog
-                   }
-               });
-        // Create the AlertDialog object and return it
-        return builder.create();
+		return setupDialogView(jObject);
+
     }
     
     private Spanned formatTheString(String original){
@@ -182,7 +152,54 @@ public class ItemDetailDialog extends DialogFragment {
     	return sb.toString();
     }
     
-
+    private Dialog setupDialogView(JSONObject jObject){
+    	
+    	this.itemID = jObject.optString("U");
+    	String itemName = jObject.optString("O"); 	
+    	final String itemName1 = jObject.optString("O");
+    	String desc = jObject.optString("P");
+    	String scroll = jObject.optString("i");
+    	String seller = "Seller: " + jObject.optString("g");
+    	String shop = "Shop: " + jObject.optString("f");
+    	if (scroll != ""){
+    		itemName += "(+" + scroll + ")";
+    	}
+    	AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        view = inflater.inflate(R.layout.item_detail, null);
+        categoryTextView = (TextView) view.findViewById(R.id.itemCategoryTextView);
+        categoryTextView.setText(getCategory(jObject));
+        itemDescTextView = (TextView) view.findViewById(R.id.itemDescTextView);
+        itemDescTextView.setText(formatTheString(desc));
+        itemDetailTextView = (TextView) view.findViewById(R.id.itemDetailTextView);
+        String details = itemMore.toString(itemMore);
+        if (details == "")	
+        	itemDetailTextView.setVisibility(View.INVISIBLE);
+        else	
+        	itemDetailTextView.setText(details);
+        sellerTextView = (TextView) view.findViewById(R.id.sellerTextView);
+        sellerTextView.setText(formatTheString(seller));
+        shopTextView = (TextView) view.findViewById(R.id.shopTextView);
+        shopTextView.setText(formatTheString(shop));
+        
+        builder.setView(view);
+        
+        builder.setTitle(itemName).setIcon(myApp.getDrawable())
+               .setPositiveButton(R.string.item_button_search, new DialogInterface.OnClickListener() {
+                   public void onClick(DialogInterface dialog, int id) {
+                	   myApp.getItemAdapter().getFilter().filter(itemName1);  
+                	   EditText searchEditText = (EditText) activity.findViewById(R.id.searchEditText);
+                	   searchEditText.setText(itemName1);
+                   }
+               })
+               .setNegativeButton(R.string.item_button_no, new DialogInterface.OnClickListener() {
+                   public void onClick(DialogInterface dialog, int id) {
+                       // User cancelled the dialog
+                   }
+               });
+        // Create the AlertDialog object and return it
+        return builder.create();
+    }
     
     private void updateItemDetails(){
     	AsyncTask<String, Void, String> upgradeAsyncTask = new HandleItemUpgradeJSON(getActivity(), itemDetailTextView, itemMore);
