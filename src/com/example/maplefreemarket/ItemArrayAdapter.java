@@ -188,11 +188,13 @@ class ItemArrayAdapter extends ArrayAdapter<Item> {
 	  public Filter getFilter() {
 		  return mFilter;
 	  }
-	 
+	  
 	  private class ItemFilter extends Filter {
 		  @Override
 		  protected FilterResults performFiltering(CharSequence constraint) {
-			  String filterString = constraint.toString().toLowerCase();
+			  String str = constraint.toString().toLowerCase();
+			  String filterString = str.substring(0, str.length() - 1);
+			  String tag = str.substring(str.length() - 1, str.length());
 			  FilterResults results = new FilterResults();
 				
 			  final List<Item> list = items;
@@ -200,27 +202,39 @@ class ItemArrayAdapter extends ArrayAdapter<Item> {
 			  int count = list.size();
 			  final List<Item> nlist = new ArrayList<Item>(count);
  
-			  String filterableString ;
+			  String filterableString, filterableString1;
+			  
+			  if ("1".equals(tag)){
+				  for (int i = 0; i < count; i++) {
+						filterableString = list.get(i).getItemName();
+						filterableString1 = list.get(i).getCharacterName();
+						if (filterableString.toLowerCase().contains(filterString) ||
+								filterableString1.toLowerCase().contains(filterString) ) {
+							nlist.add(list.get(i));
+						}
+				  }
+			  }else if ("2".equals(tag)){
+				  for (int i = 0; i < count; i++) {
+						filterableString = list.get(i).getCharacterName();
+						if (filterableString.toLowerCase().contains(filterString) ) {
+							nlist.add(list.get(i));
+						}
+				  }
+			  }
 				
-			  for (int i = 0; i < count; i++) {
-					filterableString = list.get(i).getItemName();
-					if (filterableString.toLowerCase().contains(filterString)) {
-						nlist.add(list.get(i));
-					}
-				}
-				
-				results.values = nlist;
-				results.count = nlist.size();
-	 
-				return results;
-			}
+			  results.values = nlist;
+			  results.count = nlist.size();
  
-			@SuppressWarnings("unchecked")
-			@Override
-			protected void publishResults(CharSequence constraint, FilterResults results) {
-				filteredData = (ArrayList<Item>) results.values;
-				notifyDataSetChanged();
-			}
+			  return results;
+		  }
+ 
+		  @SuppressWarnings("unchecked")
+		  @Override
+		  protected void publishResults(CharSequence constraint, FilterResults results) {
+			  filteredData = (ArrayList<Item>) results.values;
+			  notifyDataSetChanged();
+		  }
  
 	  }
+	  
 }

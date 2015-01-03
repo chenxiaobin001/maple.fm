@@ -104,7 +104,7 @@ public class HomeActivity extends ActionBarActivity {
 		    @Override
 		    public void onTextChanged(CharSequence s, int start, int before, int count) {
 		        System.out.println("Text ["+s+"]");
-		        adapter.getFilter().filter(s.toString());    
+		        adapter.getFilter().filter(s.toString()+"1");    
 		       
 		    }
 
