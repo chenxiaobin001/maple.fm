@@ -33,8 +33,8 @@ public class SellerAndShopActivity extends ActionBarActivity {
 		characterName = myIntent.getStringExtra("charName"); 
 		
 		myApp = (MapleFreeMarketApplication) this.getApplication();
-		setContentView(R.layout.activity_main);
-		listView = (ListView) findViewById(R.id.itemListView);
+		setContentView(R.layout.seller_and_shop);
+		listView = (ListView) findViewById(R.id.itemInShopListView);
 		adapter = new ItemArrayAdapter(SellerAndShopActivity.this, new ArrayList<Item>());
 		myApp.setItemAdapter(adapter);
 		listView.setAdapter(adapter);

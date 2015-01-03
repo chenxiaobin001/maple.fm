@@ -11,13 +11,16 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.code.freeMarket.R;
 
@@ -34,6 +37,7 @@ public class ItemDetailDialog extends DialogFragment {
 	private TextView itemDescTextView;
 	private TextView sellerTextView;
 	private TextView shopTextView;
+	private ImageView sellerImage;
 	
 	static ItemDetailDialog newInstance(String jsonString) {
 		ItemDetailDialog f = new ItemDetailDialog();
@@ -165,6 +169,7 @@ public class ItemDetailDialog extends DialogFragment {
         itemDescTextView = (TextView) view.findViewById(R.id.itemDescTextView);
         itemDescTextView.setText(formatTheString(desc));
         itemDetailTextView = (TextView) view.findViewById(R.id.itemDetailTextView);
+        sellerImage = (ImageView) view.findViewById(R.id.sellerImageView);
         String details = itemMore.toString(itemMore);
         if (details == "")	
         	itemDetailTextView.setVisibility(View.INVISIBLE);
@@ -174,7 +179,28 @@ public class ItemDetailDialog extends DialogFragment {
         sellerTextView.setText(formatTheString(seller));
         shopTextView = (TextView) view.findViewById(R.id.shopTextView);
         shopTextView.setText(formatTheString(shop));
+        sellerImage.setOnClickListener( new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				showCharacterDetail();
+			}
+		} );
         
+        sellerTextView.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				showCharacterDetail();				
+			}
+		});
+        shopTextView.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				showCharacterDetail();
+			}
+		});
         builder.setView(view);
         
         builder.setTitle(itemName).setIcon(myApp.getDrawable())
@@ -192,6 +218,12 @@ public class ItemDetailDialog extends DialogFragment {
                });
         // Create the AlertDialog object and return it
         return builder.create();
+    }
+    private void showCharacterDetail(){
+    	Intent myIntent = new Intent(getActivity(), SellerAndShopActivity.class);
+		myIntent.putExtra("charName", itemMore.characterName);
+		startActivity(myIntent);	
+		dismiss();
     }
     
     private void updateItemDetails(){

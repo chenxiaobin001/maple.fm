@@ -72,6 +72,8 @@ public class ItemMore {
 	 	hammerApplied = 0;
 	}
 	public ItemMore(JSONObject jObject){
+		shopName = jObject.optString("f");
+		characterName = jObject.optString("g");		
 		str = jObject.optInt("j");
 		dex = jObject.optInt("k");
 		intellegence = jObject.optInt("l");
