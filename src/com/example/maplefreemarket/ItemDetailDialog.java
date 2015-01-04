@@ -9,11 +9,11 @@ import org.json.JSONObject;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.text.Html;
 import android.text.Spanned;
 import android.view.LayoutInflater;
@@ -221,7 +221,7 @@ public class ItemDetailDialog extends DialogFragment {
     }
     private void showCharacterDetail(){
     	Intent myIntent = new Intent(getActivity(), SellerAndShopActivity.class);
-		myIntent.putExtra("charName", itemMore.characterName);
+		myIntent.putExtra("charName", itemMore.characterName+"2");
 		startActivity(myIntent);	
 		dismiss();
     }

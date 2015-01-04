@@ -36,6 +36,7 @@ class ItemArrayAdapter extends ArrayAdapter<Item> {
 	    this.filteredData = items;
 	  }
 	  public int getCount() {
+		  if (filteredData == null)	return 0;
 		  return filteredData.size();
 	  }
 	  
@@ -90,32 +91,32 @@ class ItemArrayAdapter extends ArrayAdapter<Item> {
 		    String url = context.getResources().getString(R.string.item_icon_url) + id + ".png";
 		    Picasso.with(context).load(url).into(new Target() {
 
-            @Override
-            public void onPrepareLoad(Drawable arg0) {
-
-
-            }
-
-            @Override
-            public void onBitmapLoaded(Bitmap bitmap, LoadedFrom arg1) {
-            	int height = 130;
-            	int width = (int) (bitmap.getWidth()*1.0/bitmap.getHeight()*height);
-            	bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
-            	Drawable d = new BitmapDrawable(context.getResources(),bitmap);
-            	imageView.setImageBitmap(bitmap);
-            	cur.setDrawableImage(d);
-            }
-
-            @Override
-            public void onBitmapFailed(Drawable arg0) {
-
-
-            }
+	            @Override
+	            public void onPrepareLoad(Drawable arg0) {
+	
+	
+	            }
+	
+	            @Override
+	            public void onBitmapLoaded(Bitmap bitmap, LoadedFrom arg1) {
+	            	int height = 130;
+	            	int width = (int) (bitmap.getWidth()*1.0/bitmap.getHeight()*height);
+	            	bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
+	            	Drawable d = new BitmapDrawable(context.getResources(), bitmap);
+	            	imageView.setImageBitmap(bitmap);
+	            	cur.setDrawableImage(d);
+	            }
+	
+	            @Override
+	            public void onBitmapFailed(Drawable arg0) {
+	
+	
+	            }
 
 			
-        });
+		    });
 	    
-	    return rowView;
+		    return rowView;
 	  }
 	  
 	  private String getPercentColor(String percent){

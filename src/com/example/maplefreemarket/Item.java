@@ -140,6 +140,7 @@ public class Item {
 
 			@Override
 			public int compare(Item first, Item second) {
+				if (first.getItemName() == null || second.getItemName() ==  null)	return	0;
 				return first.getItemName().compareTo(second.getItemName());
 			}
 
@@ -188,9 +189,9 @@ public class Item {
 
 			@Override
 			public int compare(Item first, Item second) {	
-				int p1 = getPercent(first.getPrice(), first.getAvgPrice());
-				int p2 = getPercent(second.getPrice(), second.getAvgPrice());
-				return p1 - p2;
+				Double p1 = getPercent(first.getPrice(), first.getAvgPrice());
+				Double p2 = getPercent(second.getPrice(), second.getAvgPrice());
+				return p1.compareTo(p2);
 			}
 
         };
@@ -206,11 +207,11 @@ public class Item {
         };
     }
 	
-	private static int getPercent(long price, long avgPrice){
+	private static double getPercent(long price, long avgPrice){
 		if (avgPrice == 0){
 			  return -1;
 		  }else{
-			  return (int)(price*1.0/avgPrice * 100);
+			  return price*1.0/avgPrice * 100;
 		  }
 	}
 }

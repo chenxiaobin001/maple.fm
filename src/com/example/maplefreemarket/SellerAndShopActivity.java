@@ -1,12 +1,17 @@
 package com.example.maplefreemarket;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.code.freeMarket.R;
 
-import android.app.FragmentManager;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,58 +24,35 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class SellerAndShopActivity extends ActionBarActivity {
 
-	private Button backButton;
-	private ListView listView;
-	private MapleFreeMarketApplication myApp;
-	private HandleSellerAndShopJSON obj;
-	private ItemArrayAdapter adapter;
 	private String characterName;
+	private Button backButton;
+	private MyAdapter fragmentAdapter;
+	private ViewPager mViewPager;
+	final private int fragmentNum = 2;
+//	private CharacterInfo charInfo;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.seller_and_shop);
 		Intent myIntent = getIntent(); // gets the previously created intent
 		characterName = myIntent.getStringExtra("charName"); 
+		fragmentAdapter = new MyAdapter(getSupportFragmentManager(), characterName);
+		mViewPager = (ViewPager) findViewById(R.id.pager);
+		mViewPager.setAdapter(fragmentAdapter);
 		
-		myApp = (MapleFreeMarketApplication) this.getApplication();
-		setContentView(R.layout.seller_and_shop);
-		listView = (ListView) findViewById(R.id.itemInShopListView);
-		adapter = new ItemArrayAdapter(SellerAndShopActivity.this, new ArrayList<Item>());
-		myApp.setItemAdapter(adapter);
-		listView.setAdapter(adapter);
+		
+		
 		backButton = (Button) findViewById(R.id.ssBackButton);
-		setListView();
-		
 		backButton.setOnClickListener(new OnClickListener() {		
 			@Override
 			public void onClick(View v) {
 				finish();
 			}
 		});
-		
-		listView.setOnItemClickListener(new OnItemClickListener(){
-
-			@Override
-			public void onItemClick(AdapterView<?> adapter, View view, int position,
-					long id) {
-				Item item = (Item) adapter.getAdapter().getItem(position);
-				myApp.setDrawable(item.getDrawableImage());
-				ItemDetailDialog dialog = ItemDetailDialog.newInstance(item.getJSONString());
-				if (dialog == null)	return;
-				FragmentManager fm = getFragmentManager();
-				dialog.show(fm, "language");
-			}
-
-		});
 	}
 	
-	private void setListView(){
-		myApp.getItemAdapter().getFilter().filter(characterName);
-	}
 	
-	private void fetchSellerData(){
-		
-	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -88,6 +70,52 @@ public class SellerAndShopActivity extends ActionBarActivity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	class MyAdapter extends FragmentStatePagerAdapter {
+
+		private List<Fragment> fragments;
+
+		public MyAdapter(FragmentManager fm, String charName) {
+			super(fm);
+			this.fragments = new ArrayList<Fragment>();
+			fragments.add(new SellerInfoFragment());
+			fragments.add(new SellerInfoFragment());
+			for (int i = 0; i < fragments.size(); i++) {
+				Fragment f = fragments.get(i);
+				Bundle bundle = new Bundle();
+				bundle.putString("characterName", charName);
+				f.setArguments(bundle);
+			}
+		}
+
+		@Override
+		public Fragment getItem(int position) {
+			return fragments.get(position);
+
+		}
+
+		@Override
+		public int getCount() {
+			return fragmentNum;
+		}
+
+		@Override
+		public CharSequence getPageTitle(int position) {
+			String title = new String();
+			switch (position) {
+			case 0: {
+				title = "Shop";
+				break;
+			}
+			case 1: {
+				title = "Character";
+				break;
+			}
+			}
+			return title;
+		}
+
 	}
 	
 }
