@@ -40,6 +40,9 @@ class ItemArrayAdapter extends ArrayAdapter<Item> {
 		  return filteredData.size();
 	  }
 	  
+	  public List<Item> getItems(){
+		  return this.items;
+	  }
 	  public void setItems(List<Item> items){
 		  this.items = items;
 		  this.filteredData = items;

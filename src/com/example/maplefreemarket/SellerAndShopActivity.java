@@ -17,10 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ListView;
-import android.widget.AdapterView.OnItemClickListener;
 
 public class SellerAndShopActivity extends ActionBarActivity {
 
@@ -40,8 +37,6 @@ public class SellerAndShopActivity extends ActionBarActivity {
 		fragmentAdapter = new MyAdapter(getSupportFragmentManager(), characterName);
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(fragmentAdapter);
-		
-		
 		
 		backButton = (Button) findViewById(R.id.ssBackButton);
 		backButton.setOnClickListener(new OnClickListener() {		
@@ -79,7 +74,7 @@ public class SellerAndShopActivity extends ActionBarActivity {
 		public MyAdapter(FragmentManager fm, String charName) {
 			super(fm);
 			this.fragments = new ArrayList<Fragment>();
-			fragments.add(new SellerInfoFragment());
+			fragments.add(new ShopItemsFragment());
 			fragments.add(new SellerInfoFragment());
 			for (int i = 0; i < fragments.size(); i++) {
 				Fragment f = fragments.get(i);
