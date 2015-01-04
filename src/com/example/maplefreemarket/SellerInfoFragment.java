@@ -2,6 +2,7 @@ package com.example.maplefreemarket;
 
 
 import com.code.freeMarket.R;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -26,6 +27,8 @@ public class SellerInfoFragment extends Fragment{
 		this.view = view;
 		this.rootFragment = this;
 		myApp = (MapleFreeMarketApplication) this.getActivity().getApplication();
+		Bundle bundle = getArguments();
+		characterName = bundle.getString("characterName");
 		setListView();
 		listView.setOnItemClickListener(new OnItemClickListener(){
 
