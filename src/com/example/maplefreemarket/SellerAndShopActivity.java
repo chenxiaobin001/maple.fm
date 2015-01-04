@@ -22,6 +22,7 @@ import android.widget.Button;
 public class SellerAndShopActivity extends ActionBarActivity implements MyDialogFragmentListener{
 
 	private String characterName;
+	private String shopName;
 	private Button backButton;
 	private MyAdapter fragmentAdapter;
 	private ViewPager mViewPager;
@@ -34,6 +35,7 @@ public class SellerAndShopActivity extends ActionBarActivity implements MyDialog
 		setContentView(R.layout.seller_and_shop);
 		Intent myIntent = getIntent(); // gets the previously created intent
 		characterName = myIntent.getStringExtra("charName"); 
+		shopName = myIntent.getStringExtra("shopName");
 		fragmentAdapter = new MyAdapter(getSupportFragmentManager(), characterName);
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(fragmentAdapter);
@@ -75,11 +77,13 @@ public class SellerAndShopActivity extends ActionBarActivity implements MyDialog
 			super(fm);
 			this.fragments = new ArrayList<Fragment>();
 			fragments.add(new ShopItemsFragment());
+	//		fragments.add(new SellerInfoFragment());
 			fragments.add(new SellerInfoFragment());
 			for (int i = 0; i < fragments.size(); i++) {
 				Fragment f = fragments.get(i);
 				Bundle bundle = new Bundle();
 				bundle.putString("characterName", charName);
+				bundle.putString("shopName", shopName);
 				f.setArguments(bundle);
 			}
 		}

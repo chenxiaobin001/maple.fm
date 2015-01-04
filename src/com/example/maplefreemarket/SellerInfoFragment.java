@@ -15,9 +15,9 @@ import android.widget.Toast;
 
 public class SellerInfoFragment extends Fragment{
 	private View view;
-	private ListView listView;
 	private MapleFreeMarketApplication myApp;
 	private String characterName;
+	private String shopName;
 	private Fragment rootFragment;
 	
 	@Override
@@ -28,16 +28,11 @@ public class SellerInfoFragment extends Fragment{
 		myApp = (MapleFreeMarketApplication) this.getActivity().getApplication();
 		Bundle bundle = getArguments();
 		characterName = bundle.getString("characterName").toLowerCase();
-		setListView();
 		LoadShopItems loading = new LoadShopItems();
 		loading.execute("1");
 		return view;
 	} 
 	
-	
-	private void setListView(){
-
-	}
 	
 	
 	private class LoadShopItems extends AsyncTask<String, Integer, Integer> {

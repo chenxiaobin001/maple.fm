@@ -216,6 +216,7 @@ public class ItemDetailDialog extends DialogFragment {
     private void showCharacterDetail(){
     	Intent myIntent = new Intent(getActivity(), SellerAndShopActivity.class);
 		myIntent.putExtra("charName", itemMore.characterName);
+		myIntent.putExtra("shopName", itemMore.shopName);
 		startActivity(myIntent);	
 		dismiss();
     }

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <ImageView
+            android:id="@+id/sellerImageButton"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/character" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="5dp">
+            
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical" >
+                <TextView
+			        android:id="@+id/sellerAndShopTitleTextView"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:text="Seller's Shop"
+			        android:textColor="#0fa1e0"
+			        android:textAppearance="?android:attr/textAppearanceMedium"  />
+				 <TextView
+			        android:id="@+id/ShopDescTitleTextView"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:text="Seller's Shop"
+	   		     	android:paddingTop="5dp"
+			        android:textColor="#054628"
+			        android:textAppearance="?android:attr/textAppearanceSmall"  />
+            </LinearLayout>
+
+            <LinearLayout
+	            android:id="@+id/shopLoadingPanel"
+	            android:layout_width="wrap_content"
+	            android:layout_height="match_parent"
+	            android:orientation="vertical" >
+	
+	            <ProgressBar
+	                android:id="@+id/progressBar1"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content" />
+	
+	        </LinearLayout>
+
+        </LinearLayout>
+	
+    </LinearLayout>
+	<ListView
+        android:id="@+id/itemInShopListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true" >
+    </ListView>
+    
+
+</LinearLayout>

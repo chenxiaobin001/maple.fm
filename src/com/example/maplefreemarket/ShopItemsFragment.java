@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -23,23 +24,35 @@ public class ShopItemsFragment extends Fragment{
 	private ListView listView;
 	private MapleFreeMarketApplication myApp;
 	private String characterName;
+	private String shopName;
 	private ItemArrayAdapter adapter;
 	private Fragment rootFragment;
 	private List<Item> items;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saveInstanceState){
-		View view = inflater.inflate(R.layout.seller_info_fragment, container, false);
+		View view = inflater.inflate(R.layout.shop_info_fragment, container, false);
 		this.view = view;
 		this.rootFragment = this;
 		myApp = (MapleFreeMarketApplication) this.getActivity().getApplication();
 		Bundle bundle = getArguments();
-		characterName = bundle.getString("characterName").toLowerCase();
-		setListView();
-		LoadShopItems loading = new LoadShopItems();
-		loading.execute("1");
+		characterName = bundle.getString("characterName");
+		shopName = bundle.getString("shopName");
+		TextView sellerTextView = (TextView) view.findViewById(R.id.sellerAndShopTitleTextView);
+		sellerTextView.setText(characterName + "'s shop");
+		TextView shopTextView = (TextView) view.findViewById(R.id.ShopDescTitleTextView);
+		shopTextView.setText(shopName);
+		setListView();	
 		return view;
 	} 
+	
+	@Override
+	public void onStart (){
+		super.onStart();
+		view.findViewById(R.id.shopLoadingPanel).setVisibility(View.VISIBLE);
+		LoadShopItems loading = new LoadShopItems();
+		loading.execute("1");
+	}
 	
 	
 	private void setListView(){
@@ -68,8 +81,8 @@ public class ShopItemsFragment extends Fragment{
 		List<Item> allItems = myApp.getItemAdapter().getItems();
 		List<Item> filteredItems = new ArrayList<Item>();
 		String filterableString;
-		for (int i = 0; i < allItems.size(); i++) {
-			filterableString = characterName;
+		filterableString = characterName.toLowerCase();
+		for (int i = 0; i < allItems.size(); i++) {		
 			if (allItems.get(i).getCharacterName().toLowerCase().contains(filterableString) ) {
 				filteredItems.add(allItems.get(i));
 			}
@@ -79,7 +92,9 @@ public class ShopItemsFragment extends Fragment{
 	
 	private class LoadShopItems extends AsyncTask<String, Integer, List<Item>> {
 	     protected List<Item> doInBackground(String... urls) {
-	         return items = getSellerItems();
+	         items = getSellerItems();
+	         adapter.setItems(items);
+	 		 return items;
 	     }
 
 	     protected void onProgressUpdate(Integer... progress) {
@@ -87,10 +102,11 @@ public class ShopItemsFragment extends Fragment{
 	     }
 
 	     protected void onPostExecute(List<Item> result) {
+	    	 if (getActivity() == null)	 return;
 	         int totalSize = result.size();
-	    	 adapter.setItems(items);
-	 		 adapter.notifyDataSetChanged();
-	         Toast.makeText(getActivity(), result + "items. ", Toast.LENGTH_SHORT);
+	         Toast.makeText(getActivity(), totalSize + "items. ", Toast.LENGTH_SHORT);
+	         view.findViewById(R.id.shopLoadingPanel).setVisibility(View.GONE);
+	         adapter.notifyDataSetChanged();
 	     }
 	 }
 	
