@@ -7,42 +7,181 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
+        <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
 
         <ImageView
-            android:id="@+id/characterImageButton"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:src="@drawable/character" />
+            android:id="@+id/petImageimageView"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/pet"/>
+		<ImageView
+            android:id="@+id/characterImageView"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/character" 
+            android:layout_alignTop="@+id/characterImageView"/>
+    	</RelativeLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:paddingTop="5dp"
-            android:orientation="vertical" >
-            <TextView
-	            android:id="@+id/globalRankingTextView"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:textColor="#5cb85c"
-	            android:text="Global rank" />
+	    <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:paddingTop="15dp"
+	        android:paddingLeft="20dp"
+	        android:orientation="vertical" >
 	
 	        <TextView
-	            android:id="@+id/worldRankingTextView"
+	            android:id="@+id/sellerCharNameTextView"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:textColor="#5cb85c"
-	            android:text="World rank" />
-
-	        <TextView
-	            android:id="@+id/fameRankingTextView"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:textColor="#5cb85c"
-	            android:text="fame rank" />
-
-        </LinearLayout>
-
+	            android:textColor="#f63752"
+	            android:text="Name"
+	            android:textAppearance="?android:attr/textAppearanceMedium" />
+			<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			    android:layout_width="match_parent"
+			    android:layout_height="match_parent"
+			    android:stretchColumns="1">
+			    <TableRow>
+			        <TextView
+			            android:layout_column="0"
+			            android:text="Job:"
+			            android:padding="3dip" />
+			        <TextView
+			            android:id="@+id/sellerJobTextView"
+			            android:layout_width="wrap_content"
+			            android:layout_height="wrap_content"
+			            android:gravity="center_horizontal"
+			            android:text="Xenon" />
+			    </TableRow>
+			    <TableRow>
+			        <TextView
+			            android:layout_column="0"
+			            android:text="World: "
+			            android:padding="3dip" />
+			        <TextView
+			            android:id="@+id/sellerWorldTextView"
+			            android:layout_width="wrap_content"
+			            android:layout_height="wrap_content"
+			            android:gravity="center_horizontal"
+			            android:text="Scania"/>
+			    </TableRow>
+			</TableLayout>
+	    </LinearLayout>
     </LinearLayout>
-	    
 
+    
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:paddingLeft="20dp">
+		<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent"
+		    android:stretchColumns="1,2,3">
+		
+		   <TableRow>
+		        <TextView
+		            android:layout_column="1"
+		            android:text="Level:"
+		            android:padding="3dip" />
+		        <TextView
+		            android:layout_column="2"
+		            android:text="Open..."
+		            android:padding="3dip" />
+
+		    </TableRow>
+		
+		    <TableRow>
+		        <TextView
+		            android:layout_column="1"
+		            android:text="Exp"
+		            android:padding="3dip" />
+		        <TextView
+		            android:layout_column="2"
+		            android:text="Ctrl-S"
+		            android:padding="3dip" />
+		    </TableRow>
+		
+		    <TableRow>
+		        <TextView
+		            android:layout_column="1"
+		            android:text="Exp required:"
+		            android:padding="3dip" />
+		        <TextView
+		            android:layout_column="2"
+		            android:text="Ctrl-S"
+		            android:padding="3dip" />
+		    </TableRow>
+		
+		    <View
+		        android:layout_height="2dip"
+		        android:background="#FF909090" />
+		
+		    <TableRow>
+		        <TextView
+		            android:layout_column="1"
+		            android:text="Overall:"
+		            android:padding="3dip" />
+		        <TextView
+        			android:id="@+id/globalRankingTextView"
+		            android:layout_column="2"
+		            android:text="Ctrl-S"
+		            android:padding="3dip" />
+		        <ImageView
+		            android:text=""
+		            android:padding="3dip" />
+		    </TableRow>
+		
+		    <TableRow>
+		        <TextView		         
+		            android:layout_column="1"
+		            android:text="World:"
+		            android:padding="3dip" />
+		        <TextView
+		            android:id="@+id/worldRankingTextView"
+		            android:layout_column="2"
+		            android:text="Ctrl-S"
+		            android:padding="3dip" />
+		        <ImageView
+		            android:text=""
+		            android:padding="3dip" />
+		    </TableRow>
+		    <TableRow>
+		        <TextView
+		            android:layout_column="1"
+		            android:text="Job:"
+		            android:padding="3dip" />
+		        <TextView
+		            android:id="@+id/jobRankingTextView"
+		            android:layout_column="2"
+		            android:text="Ctrl-S"
+		            android:padding="3dip" />
+		        <ImageView
+		            android:text=""
+		            android:padding="3dip" />
+		    </TableRow>
+		
+		    <View
+		        android:layout_height="2dip"
+		        android:background="#FF909090" />
+		
+		    <TableRow>
+		        <TextView		           
+		            android:layout_column="1"
+		            android:text="Fame:"
+		            android:padding="3dip" />
+		        <TextView
+		            android:id="@+id/fameRankingTextView"
+		            android:layout_column="2"
+		            android:text="Ctrl-S"
+		            android:padding="3dip" />
+		        <ImageView
+		           
+		            android:padding="3dip" />
+		    </TableRow>
+		</TableLayout>
+    </LinearLayout>
+	   
 </LinearLayout>

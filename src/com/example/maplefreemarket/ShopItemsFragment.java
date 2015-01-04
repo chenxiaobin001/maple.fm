@@ -29,6 +29,7 @@ public class ShopItemsFragment extends Fragment{
 	private Fragment rootFragment;
 	private List<Item> items;
 	
+	// setup the fragment view
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saveInstanceState){
 		View view = inflater.inflate(R.layout.shop_info_fragment, container, false);
