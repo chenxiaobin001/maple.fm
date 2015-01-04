@@ -19,7 +19,6 @@ import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.code.freeMarket.R;
@@ -29,7 +28,6 @@ public class ItemDetailDialog extends DialogFragment {
 	String item;
 	String itemID;
 	private MapleFreeMarketApplication myApp;
-	private HomeActivity activity;
 	private ItemMore itemMore;
 	private View view;
 	private TextView itemDetailTextView;
@@ -51,7 +49,6 @@ public class ItemDetailDialog extends DialogFragment {
 	
 	@Override 
     public void onStart() {
-        // TODO Auto-generated method stub
         super.onStart();
         updateItemDetails();
     }
@@ -62,12 +59,10 @@ public class ItemDetailDialog extends DialogFragment {
     	
     	item = getArguments().getString("item");
     	myApp = (MapleFreeMarketApplication) getActivity().getApplication();
-    	activity = (HomeActivity) getActivity();
     	JSONObject jObject = null;
 		try {
 			jObject = new JSONObject(item);
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
@@ -152,14 +147,14 @@ public class ItemDetailDialog extends DialogFragment {
     private Dialog setupDialogView(JSONObject jObject){
     	
     	this.itemID = jObject.optString("U");
-    	String itemName = jObject.optString("O"); 	
-    	final String itemName1 = jObject.optString("O");
+    	String itemTitle = jObject.optString("O"); 	
+    	final String itemName = jObject.optString("O");
     	String desc = jObject.optString("P");
     	String scroll = jObject.optString("i");
     	String seller = "Seller: " + jObject.optString("g");
     	String shop = "Shop: " + jObject.optString("f");
     	if (scroll != ""){
-    		itemName += "(+" + scroll + ")";
+    		itemTitle += "(+" + scroll + ")";
     	}
     	AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -203,12 +198,11 @@ public class ItemDetailDialog extends DialogFragment {
 		});
         builder.setView(view);
         
-        builder.setTitle(itemName).setIcon(myApp.getDrawable())
+        builder.setTitle(itemTitle).setIcon(myApp.getDrawable())
                .setPositiveButton(R.string.item_button_search, new DialogInterface.OnClickListener() {
                    public void onClick(DialogInterface dialog, int id) {
-                	   myApp.getItemAdapter().getFilter().filter(itemName1);  
-                	   EditText searchEditText = (EditText) activity.findViewById(R.id.searchEditText);
-                	   searchEditText.setText(itemName1);
+                	   myApp.getItemAdapter().getFilter().filter(itemName);  
+                	   ((MyDialogFragmentListener) getActivity()).onReturnValue(itemName);
                    }
                })
                .setNegativeButton(R.string.item_button_no, new DialogInterface.OnClickListener() {

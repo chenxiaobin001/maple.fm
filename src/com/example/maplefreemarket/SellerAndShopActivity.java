@@ -19,7 +19,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-public class SellerAndShopActivity extends ActionBarActivity {
+public class SellerAndShopActivity extends ActionBarActivity implements MyDialogFragmentListener{
 
 	private String characterName;
 	private Button backButton;
@@ -111,6 +111,12 @@ public class SellerAndShopActivity extends ActionBarActivity {
 			return title;
 		}
 
+	}
+
+	@Override
+	public void onReturnValue(String foo) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

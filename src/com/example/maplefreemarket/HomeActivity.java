@@ -32,7 +32,7 @@ import android.widget.Toast;
 import com.code.freeMarket.R;
 
 
-public class HomeActivity extends ActionBarActivity {
+public class HomeActivity extends ActionBarActivity implements MyDialogFragmentListener{
 
 	private Spinner spinner;
 	private Button refreshButton;
@@ -280,12 +280,16 @@ public class HomeActivity extends ActionBarActivity {
 
 			@Override
 			public void onNothingSelected(AdapterView<?> arg0) {
-				// TODO Auto-generated method stub
 				
 			}
 			
 		});
 
+	}
+
+	@Override
+	public void onReturnValue(String result) {
+		searchEditText.setText(result);	
 	}
 
 	
