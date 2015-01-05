@@ -3,20 +3,31 @@ package com.example.maplefreemarket;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.code.freeMarket.R;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
+import com.squareup.picasso.Picasso.LoadedFrom;
+
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class HandleSellerAndShopJSON extends AsyncTask<String, Void, String> {
 
 	private Context mContext;
 	private CharacterInfo characterInfo;
-	private TextView view;
+	private View view;
 
 	public HandleSellerAndShopJSON(Context context, View view) {
 		this.mContext = context;
-		this.view = (TextView)view;
+		this.view = view;
 		this.characterInfo = new CharacterInfo();
 	}
 	
@@ -37,10 +48,63 @@ public class HandleSellerAndShopJSON extends AsyncTask<String, Void, String> {
 		JSONObject world = rank.getJSONObject("world"); 
 		characterInfo.ranking.world.setRankDetail(world.optInt("move_rank"), world.optString("move_change"), world.optLong("rank"));
 		JSONObject job = rank.getJSONObject("job"); 
-		characterInfo.ranking.world.setRankDetail(job.optInt("move_rank"), job.optString("move_change"), job.optLong("rank"));
+		characterInfo.ranking.job.setRankDetail(job.optInt("move_rank"), job.optString("move_change"), job.optLong("rank"));
 		JSONObject fame = rank.getJSONObject("fame"); 
 		characterInfo.fameRank = fame.optLong("rank");
 		characterInfo.fame = jObject.optInt("fame");
+	}
+	
+	private void updateTextView(){
+		TextView sellerCharNameTextView = (TextView) view.findViewById(R.id.sellerCharNameTextView);
+		TextView sellerJobTextView = (TextView) view.findViewById(R.id.sellerJobTextView);
+		TextView sellerWorldTextView = (TextView) view.findViewById(R.id.sellerWorldTextView);
+		TextView levelTextView = (TextView) view.findViewById(R.id.levelTextView);
+		TextView EXPTextView = (TextView) view.findViewById(R.id.EXPTextView);
+		TextView EXPRequiredTextView = (TextView) view.findViewById(R.id.EXPRequiredTextView);
+		TextView globalRankingTextView = (TextView) view.findViewById(R.id.globalRankingTextView);
+		TextView worldRankingTextView = (TextView) view.findViewById(R.id.worldRankingTextView);
+		TextView jobRankingTextView = (TextView) view.findViewById(R.id.jobRankingTextView);
+		TextView fameRankingTextView = (TextView) view.findViewById(R.id.fameRankingTextView);
+		TextView fameTextView = (TextView) view.findViewById(R.id.fameTextView);
+		ImageView charImage = (ImageView) view.findViewById(R.id.characterImageView);
+		ImageView petImage = (ImageView) view.findViewById(R.id.petImageimageView);
+		TextView globalRankingMoveTextView = (TextView) view.findViewById(R.id.globalRankingMoveTextView);
+		TextView worldRankingMoveTextView = (TextView) view.findViewById(R.id.worldRankingMoveTextView);
+		TextView jobRankingMoveTextView = (TextView) view.findViewById(R.id.jobRankingMoveTextView);
+		sellerCharNameTextView.setText(characterInfo.name);
+		sellerJobTextView.setText(characterInfo.job);
+		sellerWorldTextView.setText(characterInfo.world);
+		levelTextView.setText(String.valueOf(characterInfo.level));
+		EXPTextView.setText(characterInfo.exp);
+		EXPRequiredTextView.setText(characterInfo.expRequired);
+		globalRankingTextView.setText(characterInfo.getOverallRand());
+		worldRankingTextView.setText(characterInfo.getWorldRand());
+		jobRankingTextView.setText(characterInfo.getJobRand());
+		fameRankingTextView.setText(String.valueOf(characterInfo.fameRank));
+		fameTextView.setText(String.valueOf(characterInfo.fame));
+		globalRankingMoveTextView.setText(getMoveRank(characterInfo.ranking.overall));
+		worldRankingMoveTextView.setText(getMoveRank(characterInfo.ranking.world));
+		jobRankingMoveTextView.setText(getMoveRank(characterInfo.ranking.job));
+		getSellerImage(characterInfo.image.characterImage, charImage);
+		getSellerImage(characterInfo.image.petImage, petImage);
+		
+	}
+	
+	private Spanned getMoveRank(CharacterInfo.RankDetail detail){
+		int move = detail.moveRank;
+		String direction = detail.direction;
+		StringBuilder sb = new StringBuilder();
+		Spanned result = null;
+		if ("up".equals(direction)){
+			String tmp = sb.append("¡ø").append(String.valueOf(move)).toString();
+			tmp = "<font color=#02c200>"+tmp+"</font> ";
+			result = Html.fromHtml(tmp);
+		}else{
+			String tmp = sb.append("¨‹").append(String.valueOf(move)).toString();
+			tmp = "<font color=#fe170b>"+tmp+"</font> ";
+			result = Html.fromHtml(tmp);
+		}
+		return result;
 	}
 	
 	@Override
@@ -59,6 +123,34 @@ public class HandleSellerAndShopJSON extends AsyncTask<String, Void, String> {
 	@Override
 	protected void onPostExecute(String result) {
 		if (result == null)	return;
-
+		updateTextView();
     }
+	private void getSellerImage(String URL, ImageView view){
+		
+		final ImageView mView = view;
+		Picasso.with(mContext).load(URL).into(new Target() {
+
+            @Override
+            public void onPrepareLoad(Drawable arg0) {
+
+
+            }
+
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, LoadedFrom arg1) {
+            	int width = mView.getMeasuredHeight();
+            	int height = (int) (width*1.0/bitmap.getWidth() *bitmap.getHeight());
+            	bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
+            	mView.setImageBitmap(bitmap);
+            }
+
+            @Override
+            public void onBitmapFailed(Drawable arg0) {
+
+
+            }
+
+		
+	    });
+	}
 }

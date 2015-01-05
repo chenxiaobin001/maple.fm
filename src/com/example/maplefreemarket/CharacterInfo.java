@@ -12,6 +12,15 @@ public class CharacterInfo {
 	long fameRank;
 	int fame;
 	
+	public String getOverallRand(){
+		return String.valueOf(ranking.overall.rank);
+	}
+	public String getWorldRand(){
+		return String.valueOf(ranking.world.rank);
+	}
+	public String getJobRand(){
+		return String.valueOf(ranking.job.rank);
+	}
 	class Images{
 		String petImage;
 		String characterImage;
@@ -20,6 +29,11 @@ public class CharacterInfo {
 		RankDetail overall;
 		RankDetail world;
 		RankDetail job;
+		Ranking(){
+			overall = new RankDetail();
+			world = new RankDetail();
+			job = new RankDetail();
+		}
 	}
 	class RankDetail{
 		int moveRank;

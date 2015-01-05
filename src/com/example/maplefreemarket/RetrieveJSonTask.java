@@ -2,6 +2,7 @@ package com.example.maplefreemarket;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -35,6 +36,8 @@ public class RetrieveJSonTask extends AsyncTask<String, Void, String> {
     protected void onPostExecute(String result) {
     //	HandleItemListJSON obj = ((HomeActivity)mContext).getObj();
   	//	obj = new HandleItemListJSON(mContext);
+    	if (result == null)
+    		Toast.makeText(mContext, "Failed to get data, please check your network.",  Toast.LENGTH_SHORT).show(); 
 		parseJSONAsyncTask.execute(result);
     }
     

@@ -11,7 +11,10 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBar.Tab;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,6 +35,7 @@ public class SellerAndShopActivity extends ActionBarActivity implements MyDialog
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
 		setContentView(R.layout.seller_and_shop);
 		Intent myIntent = getIntent(); // gets the previously created intent
 		characterName = myIntent.getStringExtra("charName"); 
@@ -39,7 +43,16 @@ public class SellerAndShopActivity extends ActionBarActivity implements MyDialog
 		fragmentAdapter = new MyAdapter(getSupportFragmentManager(), characterName);
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(fragmentAdapter);
-		
+		mViewPager.setOnPageChangeListener(
+	            new ViewPager.SimpleOnPageChangeListener() {
+	                @Override
+	                public void onPageSelected(int position) {
+	                    // When swiping between pages, select the
+	                    // corresponding tab.
+	                    getActionBar().setSelectedNavigationItem(position);
+	                }
+	            });
+		setupActionBarTab();
 		backButton = (Button) findViewById(R.id.ssBackButton);
 		backButton.setOnClickListener(new OnClickListener() {		
 			@Override
@@ -50,6 +63,34 @@ public class SellerAndShopActivity extends ActionBarActivity implements MyDialog
 	}
 	
 	
+	private void setupActionBarTab(){
+		ActionBar actionBar = getSupportActionBar();
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		// Create a tab listener that is called when the user changes tabs.
+	    ActionBar.TabListener tabListener = new ActionBar.TabListener() {
+
+			@Override
+			public void onTabReselected(Tab arg0, FragmentTransaction arg1) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onTabSelected(Tab tab, FragmentTransaction arg1) {
+				mViewPager.setCurrentItem(tab.getPosition());
+			}
+
+			@Override
+			public void onTabUnselected(Tab arg0, FragmentTransaction arg1) {
+				// TODO Auto-generated method stub
+				
+			}
+	    };
+
+	    // Add 3 tabs, specifying the tab's text and TabListener
+	    actionBar.addTab(actionBar.newTab().setText("Shop").setTabListener(tabListener));
+	    actionBar.addTab(actionBar.newTab().setText("Character").setTabListener(tabListener));
+	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.

@@ -1,7 +1,13 @@
 package com.example.maplefreemarket;
 
 import com.code.freeMarket.R;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
+import com.squareup.picasso.Picasso.LoadedFrom;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -28,27 +35,17 @@ public class SellerInfoFragment extends Fragment{
 		myApp = (MapleFreeMarketApplication) this.getActivity().getApplication();
 		Bundle bundle = getArguments();
 		characterName = bundle.getString("characterName").toLowerCase();
-		LoadShopItems loading = new LoadShopItems();
-		loading.execute("1");
+		getSellerInfo();
 		return view;
 	} 
 	
-	
-	
-	private class LoadShopItems extends AsyncTask<String, Integer, Integer> {
-	     protected Integer doInBackground(String... urls) {
-	         int totalSize = 0;
-	         return totalSize;
-	     }
-
-	     protected void onProgressUpdate(Integer... progress) {
-	         
-	     }
-
-	     protected void onPostExecute(Integer result) {
-	         Toast.makeText(myApp, result + "items. ", Toast.LENGTH_SHORT);
-	     }
-	 }
+	private void getSellerInfo(){
+		AsyncTask<String, Void, String> parseJSON = new HandleSellerAndShopJSON(myApp, view);
+		RetrieveJSonTask task = new RetrieveJSonTask(getActivity(), parseJSON);
+		String url = getActivity().getResources().getString(R.string.api_rankings);
+		url += ("name=" + characterName);
+		task.execute(url);
+	}
 	
 
 }
