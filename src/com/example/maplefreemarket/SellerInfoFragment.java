@@ -27,6 +27,12 @@ public class SellerInfoFragment extends Fragment{
 	private String shopName;
 	private Fragment rootFragment;
 	
+	OnImageLoadedListener mCallback;
+
+    // Container Activity must implement this interface
+    public interface OnImageLoadedListener {
+        public void onImageLoaded(Bitmap bitmap, boolean isSeller);
+    }
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saveInstanceState){
 		View view = inflater.inflate(R.layout.seller_info_fragment, container, false);
@@ -40,7 +46,7 @@ public class SellerInfoFragment extends Fragment{
 	} 
 	
 	private void getSellerInfo(){
-		AsyncTask<String, Void, String> parseJSON = new HandleSellerAndShopJSON(myApp, view);
+		AsyncTask<String, Void, String> parseJSON = new HandleSellerAndShopJSON(getActivity(), view);
 		RetrieveJSonTask task = new RetrieveJSonTask(getActivity(), parseJSON);
 		String url = getActivity().getResources().getString(R.string.api_rankings);
 		url += ("name=" + characterName);

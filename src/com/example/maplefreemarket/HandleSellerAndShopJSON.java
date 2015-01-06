@@ -4,6 +4,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.code.freeMarket.R;
+import com.example.maplefreemarket.SellerInfoFragment.OnImageLoadedListener;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 import com.squareup.picasso.Picasso.LoadedFrom;
@@ -85,8 +86,8 @@ public class HandleSellerAndShopJSON extends AsyncTask<String, Void, String> {
 		globalRankingMoveTextView.setText(getMoveRank(characterInfo.ranking.overall));
 		worldRankingMoveTextView.setText(getMoveRank(characterInfo.ranking.world));
 		jobRankingMoveTextView.setText(getMoveRank(characterInfo.ranking.job));
-		getSellerImage(characterInfo.image.characterImage, charImage);
-		getSellerImage(characterInfo.image.petImage, petImage);
+		getSellerImage(characterInfo.image.characterImage, charImage, true);
+		getSellerImage(characterInfo.image.petImage, petImage, false);
 		
 	}
 	
@@ -125,9 +126,10 @@ public class HandleSellerAndShopJSON extends AsyncTask<String, Void, String> {
 		if (result == null)	return;
 		updateTextView();
     }
-	private void getSellerImage(String URL, ImageView view){
+	private void getSellerImage(String URL, ImageView view, boolean seller){
 		
 		final ImageView mView = view;
+		final boolean isSeller = seller;
 		Picasso.with(mContext).load(URL).into(new Target() {
 
             @Override
@@ -141,7 +143,10 @@ public class HandleSellerAndShopJSON extends AsyncTask<String, Void, String> {
             	int width = mView.getMeasuredHeight();
             	int height = (int) (width*1.0/bitmap.getWidth() *bitmap.getHeight());
             	bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
+            	Bitmap oldBitmap = bitmap;
             	mView.setImageBitmap(bitmap);
+            	OnImageLoadedListener activity = (OnImageLoadedListener)mContext;
+            	activity.onImageLoaded(oldBitmap, isSeller);
             }
 
             @Override

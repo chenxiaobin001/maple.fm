@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.code.freeMarket.R;
+import com.example.maplefreemarket.SellerInfoFragment.OnImageLoadedListener;
 
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,7 +57,6 @@ public class ShopItemsFragment extends Fragment{
 		LoadShopItems loading = new LoadShopItems();
 		loading.execute("1");
 	}
-	
 	
 	private void setListView(){
 		listView = (ListView) view.findViewById(R.id.itemInShopListView);	
@@ -111,5 +113,15 @@ public class ShopItemsFragment extends Fragment{
 	     }
 	 }
 	
+	 public void setSellerImage(Bitmap bitmap){
+		ImageView iv; 
+		while ((iv = (ImageView) view.findViewById(R.id.sellerImageButton)) == null ){
+			;
+		}
+		int width = iv.getMeasuredHeight();
+     	int height = (int) (width*1.0/bitmap.getWidth() *bitmap.getHeight());
+     	bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
+     	iv.setImageBitmap(bitmap);
+	 }
 
 }

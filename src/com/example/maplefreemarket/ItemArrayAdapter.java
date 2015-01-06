@@ -28,6 +28,16 @@ class ItemArrayAdapter extends ArrayAdapter<Item> {
 	  private List<Item> items;
 	  private List<Item> filteredData = null;
 	  private ItemFilter mFilter = new ItemFilter();
+	  private View rowView;
+	  static class ViewHolder {
+	    public TextView itemNameTextView;
+	    public TextView itemPriceTextView;
+	    public TextView channelRoomTextView;
+	    public TextView quantityTextView;
+	    public TextView percentageTextView;
+	    public ImageView imageView;
+	    public View rowView;
+	  }
 
 	  public ItemArrayAdapter(Context context, List<Item> items) {
 	    super(context, R.layout.item_row, items);
@@ -38,6 +48,22 @@ class ItemArrayAdapter extends ArrayAdapter<Item> {
 	  public int getCount() {
 		  if (filteredData == null)	return 0;
 		  return filteredData.size();
+	  }
+	  
+	  public void resetItemsRefresh(List<Item> items){
+		  this.items.clear();
+		  for (Item item : items){
+			  this.items.add(item);
+		  }
+	      ((HomeActivity)context).updateListViewOnScrollListener();
+		  notifyDataSetChanged();
+	  }
+	  
+	  public void addItemsRefresh(List<Item> items){
+		  for (Item item : items){
+			  this.items.add(item);
+		  }
+		  notifyDataSetChanged();
 	  }
 	  
 	  public List<Item> getItems(){
@@ -67,31 +93,40 @@ class ItemArrayAdapter extends ArrayAdapter<Item> {
 		  if (desc){
 			  Collections.reverse(filteredData);
 		  }
-		  notifyDataSetChanged();
 	  }
 	  @Override
 	  public View getView(int position, View convertView, ViewGroup parent) {
-		
+		  
+		  	
+		  	
 			final Item cur = filteredData.get(position);
+			
+		    
+		  //Avoiding layout inflation and object creation
+	  		ViewHolder viewHolder = new ViewHolder();
 		    LayoutInflater inflater = (LayoutInflater) context
 		        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		    View rowView = inflater.inflate(R.layout.item_row, parent, false);
-		    TextView itemNameTextView = (TextView) rowView.findViewById(R.id.itemNameTextView);
-		    TextView itemPriceTextView = (TextView) rowView.findViewById(R.id.itemPriceTextView);
-		    TextView channelRoomTextView = (TextView) rowView.findViewById(R.id.roomTextView);
-		    TextView quantityTextView = (TextView) rowView.findViewById(R.id.quantityTextView);
-		    TextView percentageTextView = (TextView) rowView.findViewById(R.id.percentageTextView);
-		    final ImageView imageView = (ImageView) rowView.findViewById(R.id.icon1);
-		    itemNameTextView.setText(filteredData.get(position).getItemName());
-		    itemPriceTextView.setText(NumberFormat.getNumberInstance(Locale.US).format(filteredData.get(position).getPrice()));
-		    itemPriceTextView.setTextColor(Color.parseColor(getPriceColor(filteredData.get(position).getPrice())));
-		    channelRoomTextView.setText(getRoomChannel(position));
-		    quantityTextView.setText(getBundleQuantity(position));
+		    rowView = inflater.inflate(R.layout.item_row, parent, false);
+		    viewHolder.itemNameTextView = (TextView) rowView.findViewById(R.id.itemNameTextView);
+		    viewHolder.itemPriceTextView = (TextView) rowView.findViewById(R.id.itemPriceTextView);
+		    viewHolder.channelRoomTextView = (TextView) rowView.findViewById(R.id.roomTextView);
+		    viewHolder.quantityTextView = (TextView) rowView.findViewById(R.id.quantityTextView);
+		    viewHolder.percentageTextView = (TextView) rowView.findViewById(R.id.percentageTextView);
+		    viewHolder.imageView = (ImageView) rowView.findViewById(R.id.icon1);
+		    rowView.setTag(viewHolder);
+		  	
+		  	ViewHolder holder = (ViewHolder) rowView.getTag();
+		  	holder.itemNameTextView.setText(filteredData.get(position).getItemName());
+		  	holder.itemPriceTextView.setText(NumberFormat.getNumberInstance(Locale.US).format(filteredData.get(position).getPrice()));
+		  	holder.itemPriceTextView.setTextColor(Color.parseColor(getPriceColor(filteredData.get(position).getPrice())));
+		  	holder.channelRoomTextView.setText(getRoomChannel(position));
+		  	holder.quantityTextView.setText(getBundleQuantity(position));
 		    String tmp = getPercentage(position);
-		    percentageTextView.setText(tmp + "%");
-		    percentageTextView.setTextColor(Color.parseColor(getPercentColor(tmp)));
+		    holder.percentageTextView.setText(tmp + "%");
+		    holder.percentageTextView.setTextColor(Color.parseColor(getPercentColor(tmp)));
 		    String id = filteredData.get(position).getIconID();
 		    String url = context.getResources().getString(R.string.item_icon_url) + id + ".png";
+		    final ImageView tmpImageView = holder.imageView;
 		    Picasso.with(context).load(url).into(new Target() {
 
 	            @Override
@@ -106,7 +141,7 @@ class ItemArrayAdapter extends ArrayAdapter<Item> {
 	            	int width = (int) (bitmap.getWidth()*1.0/bitmap.getHeight()*height);
 	            	bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
 	            	Drawable d = new BitmapDrawable(context.getResources(), bitmap);
-	            	imageView.setImageBitmap(bitmap);
+	            	tmpImageView.setImageBitmap(bitmap);
 	            	cur.setDrawableImage(d);
 	            }
 	
@@ -118,7 +153,6 @@ class ItemArrayAdapter extends ArrayAdapter<Item> {
 
 			
 		    });
-	    
 		    return rowView;
 	  }
 	  

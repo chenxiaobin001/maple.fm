@@ -18,7 +18,7 @@ import android.widget.Toast;
 public class HandleItemListJSON extends AsyncTask<String, Void, String> {
 	private String secondsAgo;
 	private List<Item> items;
-	private Context mContext;
+	private HomeActivity mContext;
 	
 	public String getSecondsAgo() {
 		return secondsAgo;
@@ -33,10 +33,13 @@ public class HandleItemListJSON extends AsyncTask<String, Void, String> {
 		return itemArr;
 	}
 
-	
+	public List<Item> getItems(int size){
+		List<Item> newList = new ArrayList<Item>(items.subList(0, size));
+		return newList;
+	}
 	public HandleItemListJSON(Context context){
 		items = new ArrayList<Item>();
-		this.mContext = context;
+		this.mContext = (HomeActivity) context;
 	}
 	
 	private void handleJson(String[] strs) throws JSONException{
@@ -90,14 +93,17 @@ public class HandleItemListJSON extends AsyncTask<String, Void, String> {
 	
 	@Override
 	protected void onPostExecute(String result) {
+		MapleFreeMarketApplication myApp = (MapleFreeMarketApplication) mContext.getApplication();
 		if (result == null){
 			Toast.makeText(mContext, "Failed to get data.", Toast.LENGTH_SHORT).show();
 			return;
 		}
 		Toast.makeText(((HomeActivity)mContext).getMyApp(), "updated " + getSecondsAgo() + "s ago", Toast.LENGTH_SHORT).show();
 		ItemArrayAdapter adapter = ((HomeActivity)mContext).getAdapter();
+		myApp.getItemAdapter().clear();
+		myApp.getItemAdapter().setItems(items);
 		adapter.clear();
-		adapter.setItems(getItems());
+		adapter.resetItemsRefresh(getItems(Math.min(10, items.size())));
 		adapter.notifyDataSetChanged();
 		((Activity) mContext).findViewById(R.id.loadingPanel).setVisibility(View.GONE);
 		((Activity) mContext).findViewById(R.id.refreshButton).setVisibility(View.VISIBLE);

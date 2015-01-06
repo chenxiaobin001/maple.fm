@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -45,12 +46,18 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 	private HandleItemListJSON obj;
 //	private OkHttpClient client;
 	private ItemArrayAdapter adapter;
+	
 	private EditText searchEditText;
-//	private TableRow tableRow;
+
+	//	private TableRow tableRow;
 	public EditText getSearchEditText() {
 		return searchEditText;
 	}
-
+	
+	public ListView getListView() {
+		return listView;
+	}
+	
 	public ItemArrayAdapter getAdapter() {
 		return adapter;
 	}
@@ -70,7 +77,6 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 	@Override
 	protected void onResume(){
 		super.onResume();
-		myApp.setItemAdapter(adapter);
 //		Toast.makeText(myApp, "jajaja", Toast.LENGTH_SHORT).show();
 //		sortableColumnSetup();
 	}
@@ -85,7 +91,8 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 //		tableRow = (TableRow) findViewById(R.id.sortableColumn);
 		findViewById(R.id.loadingPanel).setVisibility(View.GONE);
 		adapter = new ItemArrayAdapter(HomeActivity.this, new ArrayList<Item>());
-		myApp.setItemAdapter(adapter);
+		ItemArrayAdapter oriAdapter = new ItemArrayAdapter(HomeActivity.this, new ArrayList<Item>());
+		myApp.setItemAdapter(oriAdapter);
 		listView.setAdapter(adapter);
 		refreshButton = (Button) findViewById(R.id.refreshButton);
 	
@@ -137,8 +144,11 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 			}
 		});
 		
+		
+	    
+		listView.setOnScrollListener(newOnScrollListener());
+		
 		listView.setOnItemClickListener(new OnItemClickListener(){
-
 
 			@Override
 			public void onItemClick(AdapterView<?> adapter, View view, int position,
@@ -152,6 +162,24 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 			}
 
 		});
+	}
+	
+	
+	public void updateListViewOnScrollListener(){
+		listView.setOnScrollListener(newOnScrollListener());
+	}
+	
+	public OnScrollListener newOnScrollListener(){
+		OnScrollListener onScrollListener = new InfiniteScrollListener() {
+	        @Override
+	        public void loadMore(int page, int totalItemsCount) {
+	        	List<Item> curDataList = adapter.getItems();
+	        	int size = curDataList.size();
+	        	List<Item> items = myApp.getItemAdapter().getItems();
+	        	adapter.addItemsRefresh(items.subList(size, Math.min(page * 20, items.size())));
+	        }
+	    };
+	    return onScrollListener;
 	}
 
 	@Override
@@ -207,9 +235,6 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 		mmap.put("Ch", new myObj("Channel", 3));
 		mmap.put("Rm", new myObj("Room", 4));
 		mmap.put("%", new myObj("Percent", 5));
-	//	String[] name = new String[]{"Item Name","Quantity","Price", "Channel", "Room", "Percent"};
-	//	tableRow = (TableRow) findViewById(R.id.sortableColumn);
-//		tableRow.setBackgroundColor(Color.parseColor("#ffffff"));
 		for (TextView col : columns) 
         {
 			col.setTextColor(Color.parseColor("#278bd3"));
@@ -222,6 +247,8 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
                 		String colName = ((TextView) arg0).getText().toString();
                 		Toast.makeText(myApp, mmap.get(colName).str, Toast.LENGTH_SHORT).show();
                 		myApp.getItemAdapter().sortByAttribute(mmap.get(colName).idx, descs[mmap.get(colName).idx]);
+                		List<Item> oriList = myApp.getItemAdapter().getItems();
+                		adapter.resetItemsRefresh(oriList.subList(0, Math.min(10, oriList.size())));
                 		descs[mmap.get(colName).idx] = !descs[mmap.get(colName).idx];
                     }
                 });
