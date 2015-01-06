@@ -107,7 +107,7 @@ public class ShopItemsFragment extends Fragment{
 	     protected void onPostExecute(List<Item> result) {
 	    	 if (getActivity() == null)	 return;
 	         int totalSize = result.size();
-	         Toast.makeText(getActivity(), totalSize + "items. ", Toast.LENGTH_SHORT);
+	         Toast.makeText(getActivity(), totalSize + " items. ", Toast.LENGTH_SHORT).show();
 	         view.findViewById(R.id.shopLoadingPanel).setVisibility(View.GONE);
 	         adapter.notifyDataSetChanged();
 	     }

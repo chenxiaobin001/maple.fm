@@ -33,8 +33,11 @@ public class HandleSellerAndShopJSON extends AsyncTask<String, Void, String> {
 	}
 	
 	private void handleJson(String[] strs) throws JSONException{
-		JSONObject jObject = new JSONObject(strs[0]);
-		characterInfo.name = jObject.optString("name");
+		JSONObject jObject = new JSONObject(strs[0]);		//early termination.
+		if (jObject.optString("name") == null){
+			return;
+		}
+		characterInfo.name = jObject.optString("name");		
 		characterInfo.level = jObject.optInt("level");
 		characterInfo.exp = jObject.optString("exp");
 		characterInfo.expRequired = jObject.optString("expRequired");
