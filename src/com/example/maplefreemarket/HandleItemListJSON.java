@@ -1,5 +1,6 @@
 package com.example.maplefreemarket;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +9,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.code.freeMarket.R;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import android.app.Activity;
 import android.content.Context;
@@ -18,6 +25,7 @@ import android.widget.Toast;
 public class HandleItemListJSON extends AsyncTask<String, Void, String> {
 	private String secondsAgo;
 	private List<Item> items;
+	private List<FMItem> fmItems;
 	private HomeActivity mContext;
 	
 	public String getSecondsAgo() {
@@ -41,7 +49,20 @@ public class HandleItemListJSON extends AsyncTask<String, Void, String> {
 		items = new ArrayList<Item>();
 		this.mContext = (HomeActivity) context;
 	}
+
+	private void handleJsonJackson(String[] strs) throws JsonParseException, JsonMappingException, IOException{
+		String result = strs[0];
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);	
+		JsonNode node = mapper.readTree(result);
+		secondsAgo = node.get(1).path("seconds_ago").textValue();
+		TypeReference<List<FMItem>> typeRef = new TypeReference<List<FMItem>>(){};
+		fmItems = mapper.readValue(node.get(0).get("fm_items").traverse(), typeRef);
+		fmItems.size();
+		
+	}
 	
+	//deprecated
 	private void handleJson(String[] strs) throws JSONException{
 		String result = "{\"result\":" + strs[0] + "}";
 		JSONObject jObject = new JSONObject(result);
@@ -81,8 +102,8 @@ public class HandleItemListJSON extends AsyncTask<String, Void, String> {
 	@Override
 	protected String doInBackground(String... JSonString) {
 		try {
-
-			handleJson(JSonString);
+			handleJsonJackson(JSonString);
+	//		handleJson(JSonString);
 			return secondsAgo;
 	        } catch (Exception e) {
 	            e.printStackTrace();
