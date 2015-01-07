@@ -4,10 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.code.freeMarket.R;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -24,7 +20,6 @@ import android.widget.Toast;
 
 public class HandleItemListJSON extends AsyncTask<String, Void, String> {
 	private String secondsAgo;
-	private List<Item> items;
 	private List<FMItem> fmItems;
 	private HomeActivity mContext;
 	
@@ -32,21 +27,16 @@ public class HandleItemListJSON extends AsyncTask<String, Void, String> {
 		return secondsAgo;
 	}
 
-	public List<Item> getItems() {
-		return items;
+	public List<FMItem> getItems() {
+		return fmItems;
 	}
 	
-	public Item[] getItemsArray() {
-		Item[] itemArr = items.toArray(new Item[items.size()]);
-		return itemArr;
-	}
-
-	public List<Item> getItems(int size){
-		List<Item> newList = new ArrayList<Item>(items.subList(0, size));
+	public List<FMItem> getItems(int size){
+		List<FMItem> newList = new ArrayList<FMItem>(fmItems.subList(0, size));
 		return newList;
 	}
 	public HandleItemListJSON(Context context){
-		items = new ArrayList<Item>();
+		fmItems = new ArrayList<FMItem>();
 		this.mContext = (HomeActivity) context;
 	}
 
@@ -63,7 +53,7 @@ public class HandleItemListJSON extends AsyncTask<String, Void, String> {
 	}
 	
 	//deprecated
-	private void handleJson(String[] strs) throws JSONException{
+	/*private void handleJson(String[] strs) throws JSONException{
 		String result = "{\"result\":" + strs[0] + "}";
 		JSONObject jObject = new JSONObject(result);
 		JSONArray resultArray = jObject.getJSONArray("result");
@@ -97,7 +87,7 @@ public class HandleItemListJSON extends AsyncTask<String, Void, String> {
 		        // Oops
 		    }
 		}
-	}
+	}*/
 
 	@Override
 	protected String doInBackground(String... JSonString) {
@@ -122,9 +112,9 @@ public class HandleItemListJSON extends AsyncTask<String, Void, String> {
 		Toast.makeText(((HomeActivity)mContext).getMyApp(), "updated " + getSecondsAgo() + "s ago", Toast.LENGTH_SHORT).show();
 		ItemArrayAdapter adapter = ((HomeActivity)mContext).getAdapter();
 		myApp.getItemAdapter().clear();
-		myApp.getItemAdapter().setItems(items);
+		myApp.getItemAdapter().setItems(fmItems);
 		adapter.clear();
-		adapter.resetItemsRefresh(getItems(Math.min(10, items.size())));
+		adapter.resetItemsRefresh(getItems(Math.min(10, fmItems.size())));
 		adapter.notifyDataSetChanged();
 		((Activity) mContext).findViewById(R.id.loadingPanel).setVisibility(View.GONE);
 		((Activity) mContext).findViewById(R.id.refreshButton).setVisibility(View.VISIBLE);

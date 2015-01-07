@@ -1,5 +1,7 @@
 package com.example.maplefreemarket;
 
+import java.util.Comparator;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -61,7 +63,7 @@ public class FMItem {
 	@JsonProperty("A")
 	private int hammerApplied;		//hammerApplied;
 	@JsonProperty("B")
-	private int battle_mode_att;		//battle_mode_att 
+	private int battleModeAttack;		//battle_mode_att 
 	@JsonProperty("C")
 	private int bossDamage;		//bossDamage;
 	@JsonProperty("D")
@@ -106,6 +108,28 @@ public class FMItem {
 	private int reqLevel;		//reqLevel;
 	private Drawable drawableImage;
 	
+	public ItemMore getItemMore(){
+		ItemMore im = new ItemMore();
+		im.str = str;
+		im.dex = dex;
+		im.intellegence = intellegence;
+		im.luk = luk;
+		im.maxHP = maxHP;
+		im.maxMP = maxMP;
+		im.weaponAttack = weaponAttack;
+		im.magicAttack = magicAttack;
+		im.weaponDefence = weaponDefence;
+		im.magicDefence = magicDefence;
+		im.accuracy = accuracy;
+		im.avoidability = avoidability;
+		im.jump = jump;
+		im.speed = speed;	
+		im.battleModeAttack = battleModeAttack;
+		im.bossDamage = bossDamage;
+		im.igDEF = igDEF;
+		im.crafter = crafter;
+		return im;
+	}
 	
 	public int getId() {
 		return id;
@@ -270,10 +294,10 @@ public class FMItem {
 		this.hammerApplied = hammerApplied;
 	}
 	public int getBattle_mode_att() {
-		return battle_mode_att;
+		return battleModeAttack;
 	}
 	public void setBattle_mode_att(int battle_mode_att) {
-		this.battle_mode_att = battle_mode_att;
+		this.battleModeAttack = battle_mode_att;
 	}
 	public int getBossDamage() {
 		return bossDamage;
@@ -408,5 +432,84 @@ public class FMItem {
 	@JsonIgnore
 	public void setDrawableImage(Drawable drawableImage) {
 		this.drawableImage = drawableImage;
+	}
+	static Comparator<FMItem> getItemNameComparator() {
+        return new Comparator<FMItem>() {
+
+			@Override
+			public int compare(FMItem first, FMItem second) {
+				if (first.getItemName() == null || second.getItemName() ==  null)	return	0;
+				return first.getItemName().compareTo(second.getItemName());
+			}
+
+        };
+    }
+
+	static Comparator<FMItem> getPriceComparator() {
+        return new Comparator<FMItem>() {
+
+			@Override
+			public int compare(FMItem first, FMItem second) {
+				
+				if (first.getPrice() < second.getPrice()){
+					return -1;
+				}else if (first.getPrice() > second.getPrice()){
+					return 1;
+				}else{
+					return 0;
+				}
+			}
+
+        };
+    }
+	static Comparator<FMItem> getChannelComparator() {
+        return new Comparator<FMItem>() {
+
+			@Override
+			public int compare(FMItem first, FMItem second) {
+				return first.getChannel() - second.getChannel();
+			}
+
+        };
+    }
+	static Comparator<FMItem> getRoomComparator() {
+        return new Comparator<FMItem>() {
+
+			@Override
+			public int compare(FMItem first, FMItem second) {		
+				return first.getRoom() - second.getRoom();
+			}
+
+        };
+    }
+	static Comparator<FMItem> getPercentComparator() {
+        return new Comparator<FMItem>() {
+
+			@Override
+			public int compare(FMItem first, FMItem second) {	
+				Double p1 = getPercent(first.getPrice(), first.getAvgPrice());
+				Double p2 = getPercent(second.getPrice(), second.getAvgPrice());
+				return p1.compareTo(p2);
+			}
+
+        };
+    }
+	static Comparator<FMItem> getQtyComparator() {
+        return new Comparator<FMItem>() {
+
+			@Override
+			public int compare(FMItem first, FMItem second) {
+				return first.getQuantity() - second.getQuantity();
+			}
+
+        };
+    }
+	
+	private static double getPercent(long price, long avgPrice){
+		if (avgPrice == 0){
+			  return -1;
+		  }else{
+			  return price*1.0/avgPrice * 100;
+		  }
 	}
 }

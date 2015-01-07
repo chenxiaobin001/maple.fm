@@ -7,8 +7,17 @@ public class MapleFreeMarketApplication extends Application{
 	private int server;
 	private Drawable drawable;
 	private ItemArrayAdapter itemAdapter;
+	private FMItem selectedItem;
 	
-    public ItemArrayAdapter getItemAdapter() {
+    public FMItem getSelectedItem() {
+		return selectedItem;
+	}
+
+	public void setSelectedItem(FMItem selectedItem) {
+		this.selectedItem = selectedItem;
+	}
+
+	public ItemArrayAdapter getItemAdapter() {
 		return itemAdapter;
 	}
 

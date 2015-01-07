@@ -2,11 +2,6 @@ package com.example.maplefreemarket;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -25,10 +20,8 @@ import com.code.freeMarket.R;
 
 public class ItemDetailDialog extends DialogFragment {
 	
-	String item;
-	String itemID;
+	private FMItem selectedItem;
 	private MapleFreeMarketApplication myApp;
-	private ItemMore itemMore;
 	private View view;
 	private TextView itemDetailTextView;
 	private TextView categoryTextView;
@@ -39,7 +32,6 @@ public class ItemDetailDialog extends DialogFragment {
 	
 	static ItemDetailDialog newInstance(String jsonString) {
 		ItemDetailDialog f = new ItemDetailDialog();
-
         // Supply num input as an argument.
         Bundle args = new Bundle();
         args.putString("item", jsonString);
@@ -57,21 +49,14 @@ public class ItemDetailDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
     	
-    	item = getArguments().getString("item");
-    	myApp = (MapleFreeMarketApplication) getActivity().getApplication();
-    	JSONObject jObject = null;
-		try {
-			jObject = new JSONObject(item);
-		} catch (JSONException e) {
-			e.printStackTrace();
-			return null;
-		}
-		itemMore = new ItemMore(jObject);
-		return setupDialogView(jObject);
+       	myApp = (MapleFreeMarketApplication) getActivity().getApplication();
+       	selectedItem = myApp.getSelectedItem();
+		return setupDialogView();
 
     }
     
     private Spanned formatTheString(String original){
+    	if (original == null)	return null;
     	String newStr = original;
     	String regex = "#c[^#]+#";
     	String regex0 = "<.+>";
@@ -113,28 +98,26 @@ public class ItemDetailDialog extends DialogFragment {
     	return Html.fromHtml(newStr);
     }
     
-    private String getCategory(JSONObject jObject){
+    private String getCategory(){
     	
-    	String result = "";
     	final String NOFOUND = "N/A";
-    	if (jObject == null)	return result;
     	StringBuilder sb = new StringBuilder();
     	sb.append("Category: ");
-    	String category = jObject.optString("Q");
+    	String category = selectedItem.getCategory();
     	if (category != null){
     		sb.append(category);
     	}else{
     		sb.append(NOFOUND);
     	}
     	sb.append("/");
-    	String subCategory = jObject.optString("R");
+    	String subCategory = selectedItem.getSubcategory();
     	if (subCategory != null){
     		sb.append(subCategory);
     	}else{
     		sb.append(NOFOUND);
     	}
     	sb.append("/");
-    	String detailCategory = jObject.optString("S");
+    	String detailCategory = selectedItem.getDetailcategory();
     	if (detailCategory != null){
     		sb.append(detailCategory);
     	}else{
@@ -144,15 +127,15 @@ public class ItemDetailDialog extends DialogFragment {
     	return sb.toString();
     }
     
-    private Dialog setupDialogView(JSONObject jObject){
+    private Dialog setupDialogView(){
     	
-    	this.itemID = jObject.optString("U");
-    	String itemTitle = jObject.optString("O"); 	
-    	final String itemName = jObject.optString("O");
-    	String desc = jObject.optString("P");
-    	String scroll = jObject.optString("i");
-    	String seller = "Seller: " + jObject.optString("g");
-    	String shop = "Shop: " + jObject.optString("f");
+    	if (selectedItem == null)	return null;
+    	String itemTitle = selectedItem.getItemName();
+    	final String itemName = selectedItem.getItemName();
+    	String desc = selectedItem.getDescription();
+    	String scroll = String.valueOf(selectedItem.getScrollApplied());
+    	String seller = "Seller: " + selectedItem.getCharacterName();
+    	String shop = "Shop: " + selectedItem.getShopName();
     	if (scroll != ""){
     		itemTitle += "(+" + scroll + ")";
     	}
@@ -160,12 +143,12 @@ public class ItemDetailDialog extends DialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         view = inflater.inflate(R.layout.item_detail, null);
         categoryTextView = (TextView) view.findViewById(R.id.itemCategoryTextView);
-        categoryTextView.setText(getCategory(jObject));
+        categoryTextView.setText(getCategory());
         itemDescTextView = (TextView) view.findViewById(R.id.itemDescTextView);
         itemDescTextView.setText(formatTheString(desc));
         itemDetailTextView = (TextView) view.findViewById(R.id.itemDetailTextView);
         sellerImage = (ImageView) view.findViewById(R.id.sellerImageView);
-        String details = itemMore.toString(itemMore);
+        String details = selectedItem.getItemMore().toString(null);
         if (details == "")	
         	itemDetailTextView.setVisibility(View.INVISIBLE);
         else	
@@ -215,71 +198,20 @@ public class ItemDetailDialog extends DialogFragment {
     }
     private void showCharacterDetail(){
     	Intent myIntent = new Intent(getActivity(), SellerAndShopActivity.class);
-		myIntent.putExtra("charName", itemMore.characterName);
-		myIntent.putExtra("shopName", itemMore.shopName);
+		myIntent.putExtra("charName", selectedItem.getCharacterName());
+		myIntent.putExtra("shopName", selectedItem.getShopName());
 		startActivity(myIntent);	
 		dismiss();
     }
-    
     private void updateItemDetails(){
-    	AsyncTask<String, Void, String> upgradeAsyncTask = new HandleItemUpgradeJSON(getActivity(), itemDetailTextView, itemMore);
+    	AsyncTask<String, Void, String> upgradeAsyncTask = new HandleItemUpgradeJSON(getActivity(), itemDetailTextView, selectedItem.getItemMore());
     	new RetrieveJSonTask(getActivity(), upgradeAsyncTask).execute(getSearchRequestURL());		
     }
     
     private String getSearchRequestURL(){
 		String URL =  getResources().getString(R.string.api_item);
-		URL = URL + "id=" + itemID;
+		URL = URL + "id=" + selectedItem.getId();
 		return URL;
     }
-/*    private String getPropertyValue(JSONObject jObject, String key, String desc){
-    	StringBuilder sb = new StringBuilder();
-    	if (jObject.optString(key) != ""){
-    		sb.append(desc + ": ");
-    		if (key != "h" && key != "A")
-    			sb.append("+");
-    		sb.append(jObject.optString(key));
-    		if (key == "C" || key == "D")
-    			sb.append("%");
-    		sb.append("\n");		
-    	}
-    	return sb.toString();
-    	
-    }*/
-   /* private String getItemDetails(JSONObject jObject){
 
-    	StringBuilder sb = new StringBuilder();
-    	sb.append(getPropertyValue(jObject, "k", "STR"));
-    	sb.append(getPropertyValue(jObject, "j", "DEX"));
-    	sb.append(getPropertyValue(jObject, "l", "INT"));
-    	sb.append(getPropertyValue(jObject, "m", "LUK"));
-    	sb.append(getPropertyValue(jObject, "n", "Max HP"));
-    	sb.append(getPropertyValue(jObject, "o", "Max MP"));
-    	sb.append(getPropertyValue(jObject, "p", "WEAPON ATTACK"));
-    	sb.append(getPropertyValue(jObject, "q", "MAGIC ATTACK"));
-    	sb.append(getPropertyValue(jObject, "r", "WEAPON DEFENSE"));
-    	sb.append(getPropertyValue(jObject, "s", "MAGIC DEFENSE"));
-    	sb.append(getPropertyValue(jObject, "t", "ACCURACY"));
-    	sb.append(getPropertyValue(jObject, "u", "AVOIDABILITY"));
-    	sb.append(getPropertyValue(jObject, "v", "DILIGENCE"));
-    	sb.append(getPropertyValue(jObject, "w", "SPEED"));
-    	sb.append(getPropertyValue(jObject, "x", "JUMP"));
-  //  	sb.append(getPropertyValue(jObject, "y", "STR"));
-    	sb.append(getPropertyValue(jObject, "B", "BATTLE MODE ATTACK"));
-    	sb.append(getPropertyValue(jObject, "C", "When attacking bosses, damage"));
-    	sb.append(getPropertyValue(jObject, "D", "Ignore Monster DEF"));
-    	sb.append(getPropertyValue(jObject, "E", "CRAFTER"));
-   // 	sb.append(getPropertyValue(jObject, "F", "Potential"));
-   // 	sb.append(getPropertyValue(jObject, "G", "Rank"));
-   // 	sb.append(getPropertyValue(jObject, "H", "Enhancements applied"));
-    	sb.append(getPropertyValue(jObject, "I", "1st POTENTIAL"));
-    	sb.append(getPropertyValue(jObject, "J", "2st POTENTIAL"));
-    	sb.append(getPropertyValue(jObject, "K", "3st POTENTIAL"));
-    	sb.append(getPropertyValue(jObject, "L", "1st BONUS POTENTIAL"));
-    	sb.append(getPropertyValue(jObject, "M", "2st BONUS POTENTIAL"));
-    	sb.append(getPropertyValue(jObject, "N", "3st BONUS POTENTIAL"));
-    	sb.append(getPropertyValue(jObject, "h", "NUMBER OF UPGRADES AVAILABLE"));
-    	sb.append(getPropertyValue(jObject, "A", "NUMBER OF HAMMER APPLIED"));
- //   	sb.append(getPropertyValue(jObject, "X", "STR"));	
-    	return sb.toString();
-    }*/
 }

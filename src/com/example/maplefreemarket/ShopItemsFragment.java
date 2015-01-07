@@ -30,7 +30,7 @@ public class ShopItemsFragment extends Fragment{
 	private String shopName;
 	private ItemArrayAdapter adapter;
 	private Fragment rootFragment;
-	private List<Item> items;
+	private List<FMItem> items;
 	
 	// setup the fragment view
 	@Override
@@ -60,7 +60,7 @@ public class ShopItemsFragment extends Fragment{
 	
 	private void setListView(){
 		listView = (ListView) view.findViewById(R.id.itemInShopListView);	
-		items = new ArrayList<Item>();
+		items = new ArrayList<FMItem>();
 		adapter = new ItemArrayAdapter(getActivity(), items);
 		
 		listView.setAdapter(adapter);
@@ -80,9 +80,10 @@ public class ShopItemsFragment extends Fragment{
 		});
 	}
 	
-	private List<Item> getSellerItems(){
-		List<Item> allItems = myApp.getItemAdapter().getItems();
-		List<Item> filteredItems = new ArrayList<Item>();
+	private List<FMItem> getSellerItems(){
+		//TODO
+		List<FMItem> allItems = myApp.getItemAdapter().getItems();
+		List<FMItem> filteredItems = new ArrayList<FMItem>();
 		String filterableString;
 		filterableString = characterName.toLowerCase();
 		for (int i = 0; i < allItems.size(); i++) {		
@@ -93,8 +94,8 @@ public class ShopItemsFragment extends Fragment{
 		return filteredItems;
 	}
 	
-	private class LoadShopItems extends AsyncTask<String, Integer, List<Item>> {
-	     protected List<Item> doInBackground(String... urls) {
+	private class LoadShopItems extends AsyncTask<String, Integer, List<FMItem>> {
+	     protected List<FMItem> doInBackground(String... urls) {
 	         items = getSellerItems();
 	         adapter.setItems(items);
 	 		 return items;
@@ -104,7 +105,7 @@ public class ShopItemsFragment extends Fragment{
 	         
 	     }
 
-	     protected void onPostExecute(List<Item> result) {
+	     protected void onPostExecute(List<FMItem> result) {
 	    	 if (getActivity() == null)	 return;
 	         int totalSize = result.size();
 	         Toast.makeText(getActivity(), totalSize + " items. ", Toast.LENGTH_SHORT).show();

@@ -90,8 +90,8 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 		listView = (ListView) findViewById(R.id.itemListView);
 //		tableRow = (TableRow) findViewById(R.id.sortableColumn);
 		findViewById(R.id.loadingPanel).setVisibility(View.GONE);
-		adapter = new ItemArrayAdapter(HomeActivity.this, new ArrayList<Item>());
-		ItemArrayAdapter oriAdapter = new ItemArrayAdapter(HomeActivity.this, new ArrayList<Item>());
+		adapter = new ItemArrayAdapter(HomeActivity.this, new ArrayList<FMItem>());
+		ItemArrayAdapter oriAdapter = new ItemArrayAdapter(HomeActivity.this, new ArrayList<FMItem>());
 		myApp.setItemAdapter(oriAdapter);
 		listView.setAdapter(adapter);
 		refreshButton = (Button) findViewById(R.id.refreshButton);
@@ -153,9 +153,10 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 			@Override
 			public void onItemClick(AdapterView<?> adapter, View view, int position,
 					long id) {
-				Item item = (Item) adapter.getAdapter().getItem(position);
+				FMItem item = (FMItem) adapter.getAdapter().getItem(position);
+				myApp.setSelectedItem(item);
 				myApp.setDrawable(item.getDrawableImage());
-				ItemDetailDialog dialog = ItemDetailDialog.newInstance(item.getJSONString());
+				ItemDetailDialog dialog = ItemDetailDialog.newInstance("");
 				if (dialog == null)	return;
 				FragmentManager fm = getSupportFragmentManager();
 				dialog.show(fm, "language");
@@ -173,9 +174,9 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 		OnScrollListener onScrollListener = new InfiniteScrollListener() {
 	        @Override
 	        public void loadMore(int page, int totalItemsCount) {
-	        	List<Item> curDataList = adapter.getItems();
+	        	List<FMItem> curDataList = adapter.getItems();
 	        	int size = curDataList.size();
-	        	List<Item> items = myApp.getItemAdapter().getItems();
+	        	List<FMItem> items = myApp.getItemAdapter().getItems();
 	        	adapter.addItemsRefresh(items.subList(size, Math.min(page * 20, items.size())));
 	        }
 	    };
@@ -247,7 +248,7 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
                 		String colName = ((TextView) arg0).getText().toString();
                 		Toast.makeText(myApp, mmap.get(colName).str, Toast.LENGTH_SHORT).show();
                 		myApp.getItemAdapter().sortByAttribute(mmap.get(colName).idx, descs[mmap.get(colName).idx]);
-                		List<Item> oriList = myApp.getItemAdapter().getItems();
+                		List<FMItem> oriList = myApp.getItemAdapter().getItems();
                 		adapter.resetItemsRefresh(oriList.subList(0, Math.min(10, oriList.size())));
                 		descs[mmap.get(colName).idx] = !descs[mmap.get(colName).idx];
                     }

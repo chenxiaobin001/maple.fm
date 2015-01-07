@@ -125,17 +125,8 @@ public class ItemMore {
     	sb.append(getPropertyValue(battleModeAttack, upgrade.battleModeAttack, "BATTLE MODE ATTACK"));
     	sb.append(getPropertyValue(bossDamage, upgrade.bossDamage,"When attacking bosses, damage"));
     	sb.append(getPropertyValue(igDEF, upgrade.igDEF, "Ignore Monster DEF"));
-    	if (crafter != "")	sb.append("CRAFTER: " + crafter);
-   // 	
-   // 	sb.append(getPropertyValue("F", "Potential"));
-   // 	sb.append(getPropertyValue("G", "Rank"));
-   // 	sb.append(getPropertyValue("H", "Enhancements applied"));
-   /* 	sb.append("1st POTENTIAL");
-    	sb.append("2st POTENTIAL");
-    	sb.append("3st POTENTIAL");
-    	sb.append("1st BONUS POTENTIAL");
-    	sb.append("2st BONUS POTENTIAL");
-    	sb.append("3st BONUS POTENTIAL");*/
+    	if (crafter != null)	sb.append("CRAFTER: " + crafter);
+
     	sb.append(getPropertyValue(upgradeAvailable, 0, "NUMBER OF UPGRADES AVAILABLE"));
     	sb.append(getPropertyValue(hammerApplied, 0, "NUMBER OF HAMMER APPLIED"));
 		return sb.toString();
@@ -151,7 +142,7 @@ public class ItemMore {
 			if (!("NUMBER OF UPGRADES AVAILABLE".equals(desc) || "NUMBER OF HAMMER APPLIED".equals(desc) || 
 					"When attacking bosses, damage".equals(desc) || "Ignore Monster DEF".equals(desc))){
 				int inc = val1 - val2;
-				if (inc > 0){
+				if (inc > 0 && val2 > 0){
 					String str = " (" + val2 + " + " + inc + ")";
 					sb.append(str);
 				}

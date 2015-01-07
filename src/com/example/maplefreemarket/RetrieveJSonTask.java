@@ -38,7 +38,8 @@ public class RetrieveJSonTask extends AsyncTask<String, Void, String> {
   	//	obj = new HandleItemListJSON(mContext);
     	if (result == null)
     		Toast.makeText(mContext, "Failed to get data, please check your network.",  Toast.LENGTH_SHORT).show(); 
-		parseJSONAsyncTask.execute(result);
+//		Toast.makeText(mContext, "processing", Toast.LENGTH_SHORT).show();
+    	parseJSONAsyncTask.execute(result);
     }
     
 

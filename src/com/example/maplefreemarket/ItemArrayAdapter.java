@@ -23,10 +23,10 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 import com.squareup.picasso.Picasso.LoadedFrom;
 import android.widget.Filter;
-class ItemArrayAdapter extends ArrayAdapter<Item> {
+class ItemArrayAdapter extends ArrayAdapter<FMItem> {
 	  private final Context context;
-	  private List<Item> items;
-	  private List<Item> filteredData = null;
+	  private List<FMItem> items;
+	  private List<FMItem> filteredData = null;
 	  private ItemFilter mFilter = new ItemFilter();
 	  private View rowView;
 	  static class ViewHolder {
@@ -39,7 +39,7 @@ class ItemArrayAdapter extends ArrayAdapter<Item> {
 	    public View rowView;
 	  }
 
-	  public ItemArrayAdapter(Context context, List<Item> items) {
+	  public ItemArrayAdapter(Context context, List<FMItem> items) {
 	    super(context, R.layout.item_row, items);
 	    this.context = context;
 	    this.items = items;
@@ -50,30 +50,30 @@ class ItemArrayAdapter extends ArrayAdapter<Item> {
 		  return filteredData.size();
 	  }
 	  
-	  public void resetItemsRefresh(List<Item> items){
+	  public void resetItemsRefresh(List<FMItem> items){
 		  this.items.clear();
-		  for (Item item : items){
+		  for (FMItem item : items){
 			  this.items.add(item);
 		  }
 	      ((HomeActivity)context).updateListViewOnScrollListener();
 		  notifyDataSetChanged();
 	  }
 	  
-	  public void addItemsRefresh(List<Item> items){
-		  for (Item item : items){
+	  public void addItemsRefresh(List<FMItem> items){
+		  for (FMItem item : items){
 			  this.items.add(item);
 		  }
 		  notifyDataSetChanged();
 	  }
 	  
-	  public List<Item> getItems(){
+	  public List<FMItem> getItems(){
 		  return this.items;
 	  }
-	  public void setItems(List<Item> items){
+	  public void setItems(List<FMItem> items){
 		  this.items = items;
 		  this.filteredData = items;
 	  }
-	  public Item getItem(int position) {
+	  public FMItem getItem(int position) {
 		  return filteredData.get(position);
 	  }
 	 
@@ -83,12 +83,12 @@ class ItemArrayAdapter extends ArrayAdapter<Item> {
 	  
 	  public void sortByAttribute(int idx, boolean desc){
 		  switch (idx){
-		  case 0:	Collections.sort(filteredData, Item.getItemNameComparator()); break;
-		  case 1:	Collections.sort(filteredData, Item.getQtyComparator()); break;
-		  case 2:	Collections.sort(filteredData, Item.getPriceComparator()); break;
-		  case 3:	Collections.sort(filteredData, Item.getChannelComparator()); break;
-		  case 4: 	Collections.sort(filteredData, Item.getRoomComparator()); break;
-		  case 5:	Collections.sort(filteredData, Item.getPercentComparator()); break;
+		  case 0:	Collections.sort(filteredData, FMItem.getItemNameComparator()); break;
+		  case 1:	Collections.sort(filteredData, FMItem.getQtyComparator()); break;
+		  case 2:	Collections.sort(filteredData, FMItem.getPriceComparator()); break;
+		  case 3:	Collections.sort(filteredData, FMItem.getChannelComparator()); break;
+		  case 4: 	Collections.sort(filteredData, FMItem.getRoomComparator()); break;
+		  case 5:	Collections.sort(filteredData, FMItem.getPercentComparator()); break;
 		  }
 		  if (desc){
 			  Collections.reverse(filteredData);
@@ -99,7 +99,7 @@ class ItemArrayAdapter extends ArrayAdapter<Item> {
 		  
 		  	
 		  	
-			final Item cur = filteredData.get(position);
+			final FMItem cur = filteredData.get(position);
 			
 		    
 		  //Avoiding layout inflation and object creation
@@ -235,10 +235,10 @@ class ItemArrayAdapter extends ArrayAdapter<Item> {
 			  String tag = str.substring(str.length() - 1, str.length());
 			  FilterResults results = new FilterResults();
 				
-			  final List<Item> list = items;
+			  final List<FMItem> list = items;
 	 
 			  int count = list.size();
-			  final List<Item> nlist = new ArrayList<Item>(count);
+			  final List<FMItem> nlist = new ArrayList<FMItem>(count);
  
 			  String filterableString, filterableString1;
 			  
@@ -269,7 +269,7 @@ class ItemArrayAdapter extends ArrayAdapter<Item> {
 		  @SuppressWarnings("unchecked")
 		  @Override
 		  protected void publishResults(CharSequence constraint, FilterResults results) {
-			  filteredData = (ArrayList<Item>) results.values;
+			  filteredData = (ArrayList<FMItem>) results.values;
 			  notifyDataSetChanged();
 		  }
  
