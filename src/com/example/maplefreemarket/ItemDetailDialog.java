@@ -184,7 +184,7 @@ public class ItemDetailDialog extends DialogFragment {
         builder.setTitle(itemTitle).setIcon(myApp.getDrawable())
                .setPositiveButton(R.string.item_button_search, new DialogInterface.OnClickListener() {
                    public void onClick(DialogInterface dialog, int id) {
-                	   myApp.getItemAdapter().getFilter().filter(itemName);  
+               // 	   myApp.getItemAdapter().getFilter().filter(itemName + "2");  
                 	   ((MyDialogFragmentListener) getActivity()).onReturnValue(itemName);
                    }
                })

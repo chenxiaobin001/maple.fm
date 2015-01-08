@@ -23,7 +23,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.ImageView;
 
 public class SellerAndShopActivity extends ActionBarActivity implements MyDialogFragmentListener, OnImageLoadedListener{
 

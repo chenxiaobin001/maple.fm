@@ -5,11 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.code.freeMarket.R;
+import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import android.app.Activity;
@@ -39,8 +41,33 @@ public class HandleItemListJSON extends AsyncTask<String, Void, String> {
 		fmItems = new ArrayList<FMItem>();
 		this.mContext = (HomeActivity) context;
 	}
+	
+	private void handleJsonJacksonStreaming(String[] strs) throws JsonParseException, JsonMappingException, IOException{
+		String result = strs[0];
+		ObjectMapper mapper = new ObjectMapper();
+		JsonFactory factory = mapper.getFactory();
+		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);	
+        JsonParser parser = factory.createParser(result);
+        while (!parser.isClosed()) {
+        	JsonToken token = parser.nextToken();
+        	// if its the last token then we are done
+            if (token == null)
+                break;
+            if (JsonToken.FIELD_NAME.equals(token) && "fm_items".equals(parser.getCurrentName())){
+            	token = parser.nextToken();
+            	TypeReference<List<FMItem>> typeRef = new TypeReference<List<FMItem>>(){};
+            	fmItems = parser.readValueAs(typeRef);
+            }
+            if (JsonToken.FIELD_NAME.equals(token) && "seconds_ago".equals(parser.getCurrentName())){
+            	token = parser.nextToken();
+            	secondsAgo = parser.getText();
+            }
+        }
+		fmItems.size();
+		
+	}
 
-	private void handleJsonJackson(String[] strs) throws JsonParseException, JsonMappingException, IOException{
+/*	private void handleJsonJackson(String[] strs) throws JsonParseException, JsonMappingException, IOException{
 		String result = strs[0];
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);	
@@ -51,7 +78,7 @@ public class HandleItemListJSON extends AsyncTask<String, Void, String> {
 		fmItems.size();
 		
 	}
-	
+	*/
 	//deprecated
 	/*private void handleJson(String[] strs) throws JSONException{
 		String result = "{\"result\":" + strs[0] + "}";
@@ -92,7 +119,8 @@ public class HandleItemListJSON extends AsyncTask<String, Void, String> {
 	@Override
 	protected String doInBackground(String... JSonString) {
 		try {
-			handleJsonJackson(JSonString);
+			handleJsonJacksonStreaming(JSonString);
+	//		handleJsonJackson(JSonString);
 	//		handleJson(JSonString);
 			return secondsAgo;
 	        } catch (Exception e) {
@@ -109,13 +137,13 @@ public class HandleItemListJSON extends AsyncTask<String, Void, String> {
 			Toast.makeText(mContext, "Failed to get data.", Toast.LENGTH_SHORT).show();
 			return;
 		}
-		Toast.makeText(((HomeActivity)mContext).getMyApp(), "updated " + getSecondsAgo() + "s ago", Toast.LENGTH_SHORT).show();
+		Toast.makeText(((HomeActivity)mContext).getMyApp(), fmItems.size() + " items, " + "updated " + getSecondsAgo() + "s ago", Toast.LENGTH_SHORT).show();
 		ItemArrayAdapter adapter = ((HomeActivity)mContext).getAdapter();
-		myApp.getItemAdapter().clear();
-		myApp.getItemAdapter().setItems(fmItems);
 		adapter.clear();
+		adapter.setItems(fmItems);
+		myApp.setItemAdapter(adapter);
 		adapter.resetItemsRefresh(getItems(Math.min(10, fmItems.size())));
-		adapter.notifyDataSetChanged();
+//		adapter.notifyDataSetChanged();
 		((Activity) mContext).findViewById(R.id.loadingPanel).setVisibility(View.GONE);
 		((Activity) mContext).findViewById(R.id.refreshButton).setVisibility(View.VISIBLE);
     }

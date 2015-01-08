@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.code.freeMarket.R;
-import com.example.maplefreemarket.SellerInfoFragment.OnImageLoadedListener;
-
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -19,8 +17,8 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
 
 public class ShopItemsFragment extends Fragment{
 	private View view;
@@ -30,7 +28,6 @@ public class ShopItemsFragment extends Fragment{
 	private String shopName;
 	private ItemArrayAdapter adapter;
 	private Fragment rootFragment;
-	private List<FMItem> items;
 	
 	// setup the fragment view
 	@Override
@@ -40,6 +37,8 @@ public class ShopItemsFragment extends Fragment{
 		this.rootFragment = this;
 		myApp = (MapleFreeMarketApplication) this.getActivity().getApplication();
 		Bundle bundle = getArguments();
+		adapter = new ItemArrayAdapter(getActivity(), new ArrayList<FMItem>());//do not share adapter with HomeActivity, sync problem!
+//		adapter = myApp.getItemAdapter();		
 		characterName = bundle.getString("characterName");
 		shopName = bundle.getString("shopName");
 		TextView sellerTextView = (TextView) view.findViewById(R.id.sellerAndShopTitleTextView);
@@ -53,25 +52,23 @@ public class ShopItemsFragment extends Fragment{
 	@Override
 	public void onStart (){
 		super.onStart();
-		view.findViewById(R.id.shopLoadingPanel).setVisibility(View.VISIBLE);
 		LoadShopItems loading = new LoadShopItems();
+		view.findViewById(R.id.shopLoadingPanel).setVisibility(View.VISIBLE);
 		loading.execute("1");
 	}
 	
 	private void setListView(){
 		listView = (ListView) view.findViewById(R.id.itemInShopListView);	
-		items = new ArrayList<FMItem>();
-		adapter = new ItemArrayAdapter(getActivity(), items);
-		
 		listView.setAdapter(adapter);
 		listView.setOnItemClickListener(new OnItemClickListener(){
 
 			@Override
 			public void onItemClick(AdapterView<?> adapter, View view, int position,
 					long id) {
-				Item item = (Item) adapter.getAdapter().getItem(position);
+				FMItem item = (FMItem) adapter.getAdapter().getItem(position);
+				myApp.setSelectedItem(item);
 				myApp.setDrawable(item.getDrawableImage());
-				ItemDetailDialog dialog = ItemDetailDialog.newInstance(item.getJSONString());
+				ItemDetailDialog dialog = ItemDetailDialog.newInstance("");
 				if (dialog == null)	return;
 				FragmentManager fm = rootFragment.getFragmentManager();
 				dialog.show(fm, "language");
@@ -81,13 +78,13 @@ public class ShopItemsFragment extends Fragment{
 	}
 	
 	private List<FMItem> getSellerItems(){
-		//TODO
+
 		List<FMItem> allItems = myApp.getItemAdapter().getItems();
 		List<FMItem> filteredItems = new ArrayList<FMItem>();
 		String filterableString;
 		filterableString = characterName.toLowerCase();
 		for (int i = 0; i < allItems.size(); i++) {		
-			if (allItems.get(i).getCharacterName().toLowerCase().contains(filterableString) ) {
+			if (allItems.get(i).getCharacterName().toLowerCase().equals(filterableString) ) {
 				filteredItems.add(allItems.get(i));
 			}
 		}
@@ -96,9 +93,9 @@ public class ShopItemsFragment extends Fragment{
 	
 	private class LoadShopItems extends AsyncTask<String, Integer, List<FMItem>> {
 	     protected List<FMItem> doInBackground(String... urls) {
-	         items = getSellerItems();
-	         adapter.setItems(items);
-	 		 return items;
+	    	 //keep complaince with adapter filter operation
+	    	 //should not change listView content in a background thread
+	    	 return getSellerItems();
 	     }
 
 	     protected void onProgressUpdate(Integer... progress) {
@@ -108,9 +105,10 @@ public class ShopItemsFragment extends Fragment{
 	     protected void onPostExecute(List<FMItem> result) {
 	    	 if (getActivity() == null)	 return;
 	         int totalSize = result.size();
+	         adapter.setItems(result);
 	         Toast.makeText(getActivity(), totalSize + " items. ", Toast.LENGTH_SHORT).show();
 	         view.findViewById(R.id.shopLoadingPanel).setVisibility(View.GONE);
-	         adapter.notifyDataSetChanged();
+	         adapter.resetItemsRefresh(result);
 	     }
 	 }
 	

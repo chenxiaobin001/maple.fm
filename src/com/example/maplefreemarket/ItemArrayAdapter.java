@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.code.freeMarket.R;
 import com.squareup.picasso.Picasso;
@@ -25,10 +26,13 @@ import com.squareup.picasso.Picasso.LoadedFrom;
 import android.widget.Filter;
 class ItemArrayAdapter extends ArrayAdapter<FMItem> {
 	  private final Context context;
-	  private List<FMItem> items;
-	  private List<FMItem> filteredData = null;
+	  private List<FMItem> items;				//original data
+	  private List<FMItem> filteredData;		//filtered data
+	  private List<FMItem> filteredDataDisplay;	//displayed data
+	  private int preResetSize = -1;					//avoid infinite scroll out of function
 	  private ItemFilter mFilter = new ItemFilter();
 	  private View rowView;
+	  public InfiniteScrollListener.SetLoading setLoading = new InfiniteScrollListener.SetLoading();
 	  static class ViewHolder {
 	    public TextView itemNameTextView;
 	    public TextView itemPriceTextView;
@@ -44,39 +48,66 @@ class ItemArrayAdapter extends ArrayAdapter<FMItem> {
 	    this.context = context;
 	    this.items = items;
 	    this.filteredData = items;
+	    this.filteredDataDisplay = new ArrayList<FMItem>();
 	  }
+	  
+	  @Override
 	  public int getCount() {
-		  if (filteredData == null)	return 0;
-		  return filteredData.size();
+		  if (filteredDataDisplay == null)	return 0;
+		  return filteredDataDisplay.size();
 	  }
 	  
 	  public void resetItemsRefresh(List<FMItem> items){
-		  this.items.clear();
-		  for (FMItem item : items){
-			  this.items.add(item);
+		  if (items == null)	return;
+		  int curResetSize = items.size();
+		  if (curResetSize == preResetSize){
+			  setLoading.loading = false;
 		  }
-	      ((HomeActivity)context).updateListViewOnScrollListener();
+		  preResetSize = curResetSize;
+		  List<FMItem> newList = new ArrayList<FMItem>();
+		  for (int i = 0; i < curResetSize; i++){
+			  newList.add(items.get(i));
+		  }
+		  if (this.filteredDataDisplay != null)
+			  this.filteredDataDisplay.clear();
+		  this.filteredDataDisplay = newList;
 		  notifyDataSetChanged();
 	  }
 	  
 	  public void addItemsRefresh(List<FMItem> items){
+		  List<FMItem> newList = new ArrayList<FMItem>();
 		  for (FMItem item : items){
-			  this.items.add(item);
+			  newList.add(item);
 		  }
+		  this.filteredDataDisplay.addAll(newList);
 		  notifyDataSetChanged();
 	  }
 	  
 	  public List<FMItem> getItems(){
 		  return this.items;
 	  }
+	  
+	  public List<FMItem> getFilteredItems(){
+		  return this.filteredData;
+	  }
+	  
+	  public List<FMItem> getFilteredDisplayItems(){
+		  return this.filteredDataDisplay;
+	  }
 	  public void setItems(List<FMItem> items){
 		  this.items = items;
 		  this.filteredData = items;
+		  if (filteredData != null)
+			  resetItemsRefresh(filteredData.subList(0, Math.min(10, filteredData.size())));
+//		  this.filteredDataDisplay = items;
 	  }
+	  
+	  @Override
 	  public FMItem getItem(int position) {
-		  return filteredData.get(position);
+		  return filteredDataDisplay.get(position);
 	  }
 	 
+	  @Override
 	  public long getItemId(int position) {
 		  return position;
 	  }
@@ -93,13 +124,17 @@ class ItemArrayAdapter extends ArrayAdapter<FMItem> {
 		  if (desc){
 			  Collections.reverse(filteredData);
 		  }
+		  resetItemsRefresh(filteredData.subList(0, Math.min(10, filteredData.size())));
 	  }
 	  @Override
 	  public View getView(int position, View convertView, ViewGroup parent) {
 		  
 		  	
-		  	
-			final FMItem cur = filteredData.get(position);
+		  	if (filteredDataDisplay == null || filteredDataDisplay.size() == 0 || filteredDataDisplay.size() <= position){
+		  		//early terminaion
+		  		return null;
+		  	}
+			final FMItem cur = filteredDataDisplay.get(position);
 			
 		    
 		  //Avoiding layout inflation and object creation
@@ -116,15 +151,15 @@ class ItemArrayAdapter extends ArrayAdapter<FMItem> {
 		    rowView.setTag(viewHolder);
 		  	
 		  	ViewHolder holder = (ViewHolder) rowView.getTag();
-		  	holder.itemNameTextView.setText(filteredData.get(position).getItemName());
-		  	holder.itemPriceTextView.setText(NumberFormat.getNumberInstance(Locale.US).format(filteredData.get(position).getPrice()));
-		  	holder.itemPriceTextView.setTextColor(Color.parseColor(getPriceColor(filteredData.get(position).getPrice())));
+		  	holder.itemNameTextView.setText(filteredDataDisplay.get(position).getItemName());
+		  	holder.itemPriceTextView.setText(NumberFormat.getNumberInstance(Locale.US).format(filteredDataDisplay.get(position).getPrice()));
+		  	holder.itemPriceTextView.setTextColor(Color.parseColor(getPriceColor(filteredDataDisplay.get(position).getPrice())));
 		  	holder.channelRoomTextView.setText(getRoomChannel(position));
 		  	holder.quantityTextView.setText(getBundleQuantity(position));
 		    String tmp = getPercentage(position);
 		    holder.percentageTextView.setText(tmp + "%");
 		    holder.percentageTextView.setTextColor(Color.parseColor(getPercentColor(tmp)));
-		    String id = filteredData.get(position).getIconID();
+		    String id = filteredDataDisplay.get(position).getIconID();
 		    String url = context.getResources().getString(R.string.item_icon_url) + id + ".png";
 		    final ImageView tmpImageView = holder.imageView;
 		    Picasso.with(context).load(url).into(new Target() {
@@ -178,8 +213,8 @@ class ItemArrayAdapter extends ArrayAdapter<FMItem> {
 	  
 	  
 	  private String getPercentage(int position){
-		  long avg = filteredData.get(position).getAvgPrice();
-		  long price = filteredData.get(position).getPrice();
+		  long avg = filteredDataDisplay.get(position).getAvgPrice();
+		  long price = filteredDataDisplay.get(position).getPrice();
 		  if (avg == 0){
 			  return "N/A";
 		  }else{
@@ -192,7 +227,7 @@ class ItemArrayAdapter extends ArrayAdapter<FMItem> {
 	  private String getBundleQuantity(int position){
 		  StringBuilder sb = new StringBuilder();
 		  sb.append("Qty:");
-		  sb.append(filteredData.get(position).getQuantity());
+		  sb.append(filteredDataDisplay.get(position).getQuantity());
 /*		  sb.append("(");
 		  sb.append(items.get(position).getBundle());
 		  sb.append(")");*/
@@ -201,12 +236,13 @@ class ItemArrayAdapter extends ArrayAdapter<FMItem> {
 	  private String getRoomChannel(int position){
 		  StringBuilder sb = new StringBuilder();
 		  sb.append("Ch:");
-		  sb.append(filteredData.get(position).getChannel());
+		  sb.append(filteredDataDisplay.get(position).getChannel());
 		  sb.append(" Rm:");
-		  sb.append(filteredData.get(position).getRoom());
+		  sb.append(filteredDataDisplay.get(position).getRoom());
 		  return sb.toString();
 		  
 	  }
+	  
 	  private String getPriceColor(long price){
 		  String result = "#000000";
 		  if (price < 1e6){
@@ -228,49 +264,73 @@ class ItemArrayAdapter extends ArrayAdapter<FMItem> {
 	  }
 	  
 	  private class ItemFilter extends Filter {
+		  private String touch = "1";
 		  @Override
 		  protected FilterResults performFiltering(CharSequence constraint) {
+	//		  filteredDataDisplay.clear();		//clear display data, make sure filteredDataDisplay is empty???
 			  String str = constraint.toString().toLowerCase();
 			  String filterString = str.substring(0, str.length() - 1);
 			  String tag = str.substring(str.length() - 1, str.length());
 			  FilterResults results = new FilterResults();
-				
+			  if (touch.equals(filterString)){		//prevent same filter that may affect infiniteScroll
+				  results.count = 0;
+				  results.values = null;
+				  return results;
+			  }
+			  System.out.println("touch[" + touch + "]");
+			  touch = filterString;
+	//		  Toast.makeText(context, filterString, Toast.LENGTH_SHORT).show();
+			  filteredData = new ArrayList<FMItem>(1);
 			  final List<FMItem> list = items;
-	 
-			  int count = list.size();
-			  final List<FMItem> nlist = new ArrayList<FMItem>(count);
- 
-			  String filterableString, filterableString1;
 			  
-			  if ("1".equals(tag)){
-				  for (int i = 0; i < count; i++) {
-						filterableString = list.get(i).getItemName();
-						filterableString1 = list.get(i).getCharacterName();
-						if (filterableString.toLowerCase().contains(filterString) ||
-								filterableString1.toLowerCase().contains(filterString) ) {
-							nlist.add(list.get(i));
-						}
+			  int count = list.size();
+			  List<FMItem> nlist;
+			 
+			  String filterableString, filterableString1;
+			  if ("".equals(filterString)){		//early termination, save time and memory
+				  nlist = items;
+			  }else{
+				  nlist = new ArrayList<FMItem>(20);
+				  if ("1".equals(tag)){
+					  for (int i = 0; i < count; i++) {
+							filterableString = list.get(i).getItemName();
+							filterableString1 = list.get(i).getCharacterName();
+							if (filterableString.toLowerCase().contains(filterString) ||
+									filterableString1.toLowerCase().contains(filterString) ) {
+								nlist.add(list.get(i));
+							}
+					  }
+				  }else if ("2".equals(tag)){
+					  for (int i = 0; i < count; i++) {
+							filterableString = list.get(i).getItemName();
+							if (filterableString.toLowerCase().contains(filterString) ) {
+								nlist.add(list.get(i));
+							}
+					  }
 				  }
-			  }else if ("2".equals(tag)){
-				  for (int i = 0; i < count; i++) {
-						filterableString = list.get(i).getCharacterName();
-						if (filterableString.toLowerCase().contains(filterString) ) {
-							nlist.add(list.get(i));
-						}
+				  else if ("3".equals(tag)){
+					  for (int i = 0; i < count; i++) {
+							filterableString = list.get(i).getCharacterName();
+							if (filterableString.toLowerCase().equals(filterString) ) {
+								nlist.add(list.get(i));
+							}
+					  }
 				  }
 			  }
-				
 			  results.values = nlist;
-			  results.count = nlist.size();
- 
+			  results.count = 1;
 			  return results;
 		  }
  
 		  @SuppressWarnings("unchecked")
 		  @Override
 		  protected void publishResults(CharSequence constraint, FilterResults results) {
-			  filteredData = (ArrayList<FMItem>) results.values;
-			  notifyDataSetChanged();
+			  if (results.count == 0)	return;		//same filter, do nothing.
+			  filteredData = (ArrayList<FMItem>) results.values;	  
+			  int totalSize = filteredData.size();
+		      Toast.makeText(context, totalSize + " items. ", Toast.LENGTH_SHORT).show();
+		      //do the filter , but not do UI display ???
+		      resetItemsRefresh(filteredData.subList(0, Math.min(10, filteredData.size())));
 		  }
  
 	  }

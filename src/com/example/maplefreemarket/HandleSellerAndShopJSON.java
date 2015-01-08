@@ -11,7 +11,6 @@ import com.squareup.picasso.Picasso.LoadedFrom;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.text.Html;
@@ -19,6 +18,7 @@ import android.text.Spanned;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class HandleSellerAndShopJSON extends AsyncTask<String, Void, String> {
 
@@ -126,7 +126,10 @@ public class HandleSellerAndShopJSON extends AsyncTask<String, Void, String> {
 	
 	@Override
 	protected void onPostExecute(String result) {
-		if (result == null)	return;
+		if (result == null){
+            Toast.makeText(mContext, "Failed to get character's info", Toast.LENGTH_SHORT).show();
+            return;
+		}
 		updateTextView();
     }
 	private void getSellerImage(String URL, ImageView view, boolean seller){

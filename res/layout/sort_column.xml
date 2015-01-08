@@ -12,6 +12,13 @@
         android:layout_above="@+id/itemListView" >
 
         <TextView
+            android:id="@+id/sortByTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#e56193"
+            android:text="Sort by->" />
+
+        <TextView
             android:id="@+id/itemColTextView"
             android:clickable="true"
             android:layout_width="wrap_content"

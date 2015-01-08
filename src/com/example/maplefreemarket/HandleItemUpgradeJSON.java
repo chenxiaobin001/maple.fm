@@ -10,14 +10,14 @@ import android.view.View;
 import android.widget.TextView;
 
 public class HandleItemUpgradeJSON extends AsyncTask<String, Void, String> {
-	private Context mContext;
+//	private Context mContext;
 	private ItemMore itemMore;
 	private ItemMore itemMoreUpgrade;
 	private TextView view;
 
 	public HandleItemUpgradeJSON(Context context, View view, ItemMore itemMore) {
 		this.itemMore = itemMore;
-		this.mContext = context;
+//		this.mContext = context;
 		this.view = (TextView)view;
 		this.itemMoreUpgrade = new ItemMore();
 	}
