@@ -24,6 +24,7 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -49,6 +50,8 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 //	private OkHttpClient client;
 	private ItemArrayAdapter adapter;
 	private EditText searchEditText;
+	private CheckBox cashItemCheckBox;
+	private CheckBox soldItemCheckBox;
 
 	//	private TableRow tableRow;
 	public EditText getSearchEditText() {
@@ -94,6 +97,8 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 //		ItemArrayAdapter oriAdapter = new ItemArrayAdapter(HomeActivity.this, new ArrayList<FMItem>());
 		myApp.setItemAdapter(adapter);
 		listView.setAdapter(adapter);
+		cashItemCheckBox = (CheckBox) findViewById(R.id.cashItemCheckBox);
+		soldItemCheckBox = (CheckBox) findViewById(R.id.soldItemCheckBox);
 		refreshButton = (Button) findViewById(R.id.refreshButton);
 	
 		setSpinnerContent();
@@ -111,6 +116,31 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 		        return false;
 			}
 		});
+		
+		cashItemCheckBox.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View view) {
+				CheckBox checkBox = (CheckBox)view;
+//				checkBox.setChecked(!checkBox.isChecked());
+				String str = searchEditText.getText().toString();
+				adapter.setFilterCashItem(checkBox.isChecked());
+				adapter.getFilter().filter(str + "1");
+			}
+		});
+		
+		soldItemCheckBox.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View view) {
+				CheckBox checkBox = (CheckBox)view;
+//				checkBox.setChecked(!checkBox.isChecked());
+				String str = searchEditText.getText().toString();
+				adapter.setFilterSoldItem(checkBox.isChecked());
+				adapter.getFilter().filter(str + "1");
+			}
+		});
+		
 		searchEditText.addTextChangedListener(new TextWatcher() {
 
 		    @Override

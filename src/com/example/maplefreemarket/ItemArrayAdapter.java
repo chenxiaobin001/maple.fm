@@ -31,6 +31,8 @@ class ItemArrayAdapter extends ArrayAdapter<FMItem> {
 	  private int preResetSize = -1;					//avoid infinite scroll out of function
 	  private ItemFilter mFilter = new ItemFilter();
 	  private View rowView;
+	  private boolean filterCashItem;
+	  private boolean filterSoldItem;
 	  public InfiniteScrollListener.SetLoading setLoading = new InfiniteScrollListener.SetLoading();
 	  static class ViewHolder {
 	    public TextView itemNameTextView;
@@ -42,12 +44,30 @@ class ItemArrayAdapter extends ArrayAdapter<FMItem> {
 	    public View rowView;
 	  }
 
-	  public ItemArrayAdapter(Context context, List<FMItem> items) {
+	public boolean isFilterCashItem() {
+		return filterCashItem;
+	}
+
+	public void setFilterCashItem(boolean filterCashItem) {
+		this.filterCashItem = filterCashItem;
+	}
+
+	public boolean isFilterSoldItem() {
+		return filterSoldItem;
+	}
+
+	public void setFilterSoldItem(boolean filterSoldItem) {
+		this.filterSoldItem = filterSoldItem;
+	}
+
+	public ItemArrayAdapter(Context context, List<FMItem> items) {
 	    super(context, R.layout.item_row, items);
 	    this.context = context;
 	    this.items = items;
 	    this.filteredData = items;
 	    this.filteredDataDisplay = new ArrayList<FMItem>();
+	    this.filterCashItem = false;
+	    this.filterSoldItem = false;
 	  }
 	  
 	  @Override
@@ -198,6 +218,31 @@ class ItemArrayAdapter extends ArrayAdapter<FMItem> {
 		    return rowView;
 	  }
 	  
+	  private List<FMItem> filterNonCashItems(List<FMItem> oldList){
+		  if (oldList == null || !filterCashItem)	return oldList;
+		  List<FMItem> newList = new ArrayList<FMItem>();
+		  for (int i = 0; i < oldList.size(); i++){
+			  if (oldList.get(i).getReqLevel() == 0 && "Equip".equals(oldList.get(i).getCategory())){
+				  if (oldList.get(i).getItemName().contains("Absolute") || oldList.get(i).getItemName().contains("2013 Evolving Ring")){
+					  continue;
+				  }else{
+					  newList.add(oldList.get(i));
+				  }
+			  }
+		  }
+		  return newList;
+	  }
+	  private List<FMItem> filterSoldItems(List<FMItem> oldList){
+		  if (oldList == null || !filterSoldItem)	return oldList;
+		  List<FMItem> newList = new ArrayList<FMItem>();
+		  for (int i = 0; i < oldList.size(); i++){
+			  if (oldList.get(i).getQuantity() > 0){
+				  newList.add(oldList.get(i));
+			  }
+		  }
+		  return newList;
+	  }
+	  
 	  private String getPercentColor(String percent){
 		  String result = "#000000";
 		  int percentage = 0;
@@ -271,7 +316,7 @@ class ItemArrayAdapter extends ArrayAdapter<FMItem> {
 	  }
 	  
 	  private class ItemFilter extends Filter {
-		  private String touch = "1";
+	//	  private String touch = "1";
 		  @Override
 		  protected FilterResults performFiltering(CharSequence constraint) {
 	//		  filteredDataDisplay.clear();		//clear display data, make sure filteredDataDisplay is empty???
@@ -279,13 +324,13 @@ class ItemArrayAdapter extends ArrayAdapter<FMItem> {
 			  String filterString = str.substring(0, str.length() - 1);
 			  String tag = str.substring(str.length() - 1, str.length());
 			  FilterResults results = new FilterResults();
-			  if (touch.equals(filterString)){		//prevent same filter that may affect infiniteScroll
+/*			  if (touch.equals(filterString)){		//prevent same filter that may affect infiniteScroll
 				  results.count = 0;
 				  results.values = null;
 				  return results;
 			  }
 			  System.out.println("touch[" + touch + "]");
-			  touch = filterString;
+			  touch = filterString;*/
 	//		  Toast.makeText(context, filterString, Toast.LENGTH_SHORT).show();
 			  filteredData = new ArrayList<FMItem>(1);
 			  final List<FMItem> list = items;
@@ -324,6 +369,8 @@ class ItemArrayAdapter extends ArrayAdapter<FMItem> {
 					  }
 				  }
 			  }
+			  nlist = filterNonCashItems(nlist);
+			  nlist = filterSoldItems(nlist);
 			  results.values = nlist;
 			  results.count = 1;
 			  return results;

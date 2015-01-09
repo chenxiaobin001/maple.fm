@@ -33,13 +33,13 @@
                 android:orientation="vertical" >
 
                 <CheckBox
-                    android:id="@+id/checkBox1"
+                    android:id="@+id/cashItemCheckBox"
                     android:layout_width="match_parent"
                     android:layout_height="25dp"
                     android:text="Only cash items" />
 
                 <CheckBox
-                    android:id="@+id/checkBox2"
+                    android:id="@+id/soldItemCheckBox"
                     android:layout_width="match_parent"
                     android:layout_height="25dp"
                     android:text="Hide sold items" />
