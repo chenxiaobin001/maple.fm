@@ -150,11 +150,20 @@ class ItemArrayAdapter extends ArrayAdapter<FMItem> {
 		    rowView.setTag(viewHolder);
 		  	
 		  	ViewHolder holder = (ViewHolder) rowView.getTag();
-		  	holder.itemNameTextView.setText(filteredDataDisplay.get(position).getItemName());
+		  	String itemName = filteredDataDisplay.get(position).getItemName();
+		  	String scroll = String.valueOf(filteredDataDisplay.get(position).getScrollApplied());
+		  	if (!("0".equals(scroll))){
+		  		itemName += "(+" + scroll + ")";
+	    	}
+		  	holder.itemNameTextView.setText(itemName);
 		  	holder.itemPriceTextView.setText(NumberFormat.getNumberInstance(Locale.US).format(filteredDataDisplay.get(position).getPrice()));
 		  	holder.itemPriceTextView.setTextColor(Color.parseColor(getPriceColor(filteredDataDisplay.get(position).getPrice())));
 		  	holder.channelRoomTextView.setText(getRoomChannel(position));
 		  	holder.quantityTextView.setText(getBundleQuantity(position));
+		  	if (filteredDataDisplay.get(position).getQuantity() == 0){
+	//	  		holder.quantityTextView.setTextColor(Color.parseColor("#fe170b"));
+		  		rowView.setBackgroundColor(Color.parseColor("#fee1f4"));
+		  	}
 		    String tmp = getPercentage(position);
 		    holder.percentageTextView.setText(tmp + "%");
 		    holder.percentageTextView.setTextColor(Color.parseColor(getPercentColor(tmp)));

@@ -136,7 +136,7 @@ public class ItemDetailDialog extends DialogFragment {
     	String scroll = String.valueOf(selectedItem.getScrollApplied());
     	String seller = "Seller: " + selectedItem.getCharacterName();
     	String shop = "Shop: " + selectedItem.getShopName();
-    	if (scroll != ""){
+    	if (!("0".equals(scroll))){
     		itemTitle += "(+" + scroll + ")";
     	}
     	AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
