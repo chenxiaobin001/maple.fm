@@ -8,10 +8,15 @@
 # Java class files
 *.class
 
+# Libraries
+libs/
+
 # generated files
 bin/
 gen/
 
+
 # Local configuration file (sdk path, etc)
 local.properties
+
 
