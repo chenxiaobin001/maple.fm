@@ -2,10 +2,8 @@ package com.example.maplefreemarket;
 
 import java.util.Comparator;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import android.graphics.drawable.Drawable;
 
 public class FMItem {
 	@JsonProperty("U")
@@ -106,7 +104,7 @@ public class FMItem {
 	private String iconID;	//iconID;
 	@JsonProperty("W")
 	private int reqLevel;		//reqLevel;
-	private Drawable drawableImage;
+//	private Drawable drawableImage;
 	
 	public ItemMore getItemMore(){
 		ItemMore im = new ItemMore();
@@ -425,14 +423,14 @@ public class FMItem {
 	public void setReqLevel(int reqLevel) {
 		this.reqLevel = reqLevel;
 	}
-	@JsonIgnore
+/*	@JsonIgnore
 	public Drawable getDrawableImage() {
 		return drawableImage;
 	}
 	@JsonIgnore
 	public void setDrawableImage(Drawable drawableImage) {
 		this.drawableImage = drawableImage;
-	}
+	}*/
 	static Comparator<FMItem> getItemNameComparator() {
         return new Comparator<FMItem>() {
 

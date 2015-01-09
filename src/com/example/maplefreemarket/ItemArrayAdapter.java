@@ -9,7 +9,6 @@ import java.util.Locale;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -134,7 +133,7 @@ class ItemArrayAdapter extends ArrayAdapter<FMItem> {
 		  		//early terminaion
 		  		return null;
 		  	}
-			final FMItem cur = filteredDataDisplay.get(position);
+		//	final FMItem cur = filteredDataDisplay.get(position);
 			
 		    
 		  //Avoiding layout inflation and object creation
@@ -175,9 +174,8 @@ class ItemArrayAdapter extends ArrayAdapter<FMItem> {
 	            	int height = 130;
 	            	int width = (int) (bitmap.getWidth()*1.0/bitmap.getHeight()*height);
 	            	bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
-	            	Drawable d = new BitmapDrawable(context.getResources(), bitmap);
+//	            	Drawable d = new BitmapDrawable(context.getResources(), bitmap);
 	            	tmpImageView.setImageBitmap(bitmap);
-	            	cur.setDrawableImage(d);
 	            }
 	
 	            @Override

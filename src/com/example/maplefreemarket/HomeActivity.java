@@ -12,6 +12,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -24,6 +25,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -150,9 +152,11 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 			@Override
 			public void onItemClick(AdapterView<?> adapter, View view, int position,
 					long id) {
+				final ImageView imageView = (ImageView) view.findViewById(R.id.icon1);
+				final BitmapDrawable bitmapDrawable = (BitmapDrawable) imageView.getDrawable();
 				FMItem item = (FMItem) adapter.getAdapter().getItem(position);
 				myApp.setSelectedItem(item);
-				myApp.setDrawable(item.getDrawableImage());
+				myApp.setDrawable(bitmapDrawable);
 				ItemDetailDialog dialog = ItemDetailDialog.newInstance("");
 				if (dialog == null)	return;
 				FragmentManager fm = getSupportFragmentManager();

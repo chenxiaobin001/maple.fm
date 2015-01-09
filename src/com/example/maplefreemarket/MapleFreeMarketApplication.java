@@ -1,11 +1,12 @@
 package com.example.maplefreemarket;
 
 import android.app.Application;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
 public class MapleFreeMarketApplication extends Application{
 	private int server;
-	private Drawable drawable;
+	private BitmapDrawable drawable;
 	private ItemArrayAdapter itemAdapter;
 	private FMItem selectedItem;
 	
@@ -29,7 +30,7 @@ public class MapleFreeMarketApplication extends Application{
 		return drawable;
 	}
 
-	public void setDrawable(Drawable drawable) {
+	public void setDrawable(BitmapDrawable drawable) {
 		this.drawable = drawable;
 	}
 

@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.code.freeMarket.R;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -66,8 +67,10 @@ public class ShopItemsFragment extends Fragment{
 			public void onItemClick(AdapterView<?> adapter, View view, int position,
 					long id) {
 				FMItem item = (FMItem) adapter.getAdapter().getItem(position);
+				final ImageView imageView = (ImageView) view.findViewById(R.id.icon1);
+				final BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
 				myApp.setSelectedItem(item);
-				myApp.setDrawable(item.getDrawableImage());
+				myApp.setDrawable(drawable);
 				ItemDetailDialog dialog = ItemDetailDialog.newInstance("");
 				if (dialog == null)	return;
 				FragmentManager fm = rootFragment.getFragmentManager();
