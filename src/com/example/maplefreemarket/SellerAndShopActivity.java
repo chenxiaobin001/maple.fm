@@ -47,7 +47,8 @@ public class SellerAndShopActivity extends ActionBarActivity implements MyDialog
 		mViewPager.setAdapter(fragmentAdapter);
 		mViewPager.setOnPageChangeListener(
 	            new ViewPager.SimpleOnPageChangeListener() {
-	                @Override
+	                @SuppressWarnings("deprecation")
+					@Override
 	                public void onPageSelected(int position) {
 	                    // When swiping between pages, select the
 	                    // corresponding tab.

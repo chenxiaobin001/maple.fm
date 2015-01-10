@@ -148,7 +148,7 @@ public class ItemDetailDialog extends DialogFragment {
         itemDescTextView.setText(formatTheString(desc));
         itemDetailTextView = (TextView) view.findViewById(R.id.itemDetailTextView);
         sellerImage = (ImageView) view.findViewById(R.id.sellerImageView);
-        String details = selectedItem.getItemMore().toString(null);
+        String details = selectedItem.getItemMore().toString(selectedItem.getItemMore());
         if (details == "")	
         	itemDetailTextView.setVisibility(View.INVISIBLE);
         else	

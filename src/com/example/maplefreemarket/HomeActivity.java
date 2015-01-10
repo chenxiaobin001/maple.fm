@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
+
+
+
 
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
@@ -34,9 +38,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.code.freeMarket.R;
+import com.purplebrain.adbuddiz.sdk.AdBuddiz;
 
 
 public class HomeActivity extends ActionBarActivity implements MyDialogFragmentListener{
+///	private InterstitialAd interstitial;
 
 	private Spinner spinner;
 	private Button refreshButton;
@@ -79,11 +85,35 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 	}
 	
 	@Override
+	public void onBackPressed() {
+		Random random = new Random();
+		int n = random.nextInt(10);
+		if (n < 5){			
+		    if (AdBuddiz.isReadyToShowAd(this)) { // this = current Activity
+		    	AdBuddiz.showAd(this);
+		    }
+		    System.out.println("adbuddiz");
+		}else if (n < 6){
+			System.out.println("admob");
+	//		displayInterstitial();
+		}
+	    finish();
+	    return;
+	}   
+	
+	@Override
 	protected void onResume(){
 		super.onResume();
 //		Toast.makeText(myApp, "jajaja", Toast.LENGTH_SHORT).show();
 //		sortableColumnSetup();
 	}
+	
+/*	public void displayInterstitial() {
+	    if (interstitial.isLoaded()) {
+	      interstitial.show();
+	    }
+	  }*/
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -107,6 +137,20 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 		obj = new HandleItemListJSON(HomeActivity.this);
 		obj.execute(result);
 		
+		//AD
+		AdBuddiz.setPublisherKey(getResources().getString(R.string.adBuddizPublishKey));
+	    AdBuddiz.cacheAds(this); // this = current Activity
+		// Create the interstitial.
+/*		interstitial = new InterstitialAd(this);
+	    interstitial.setAdUnitId(getString(R.string.admob_fullscreen));
+	    // Create ad request.
+	    AdRequest adRequest = new AdRequest.Builder().build();
+	    // Begin loading your interstitial.
+	    interstitial.loadAd(adRequest);*/
+	    // Invoke displayInterstitial() when you are ready to display an interstitial.
+	    
+
+
 		searchEditText = (EditText) findViewById(R.id.searchEditText);
 //		searchEditText.setSelectAllOnFocus(true);
 		searchEditText.setOnTouchListener(new View.OnTouchListener(){
