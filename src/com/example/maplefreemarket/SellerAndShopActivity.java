@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.code.freeMarket.R;
 import com.example.maplefreemarket.SellerInfoFragment.OnImageLoadedListener;
+import com.example.maplefreemarket.ShopItemsFragment.OnItemsLoadedListener;
 
 
 import android.content.Intent;
@@ -24,7 +25,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-public class SellerAndShopActivity extends ActionBarActivity implements MyDialogFragmentListener, OnImageLoadedListener{
+public class SellerAndShopActivity extends ActionBarActivity implements MyDialogFragmentListener, OnImageLoadedListener, OnItemsLoadedListener{
 
 	private String characterName;
 	private String shopName;
@@ -175,6 +176,15 @@ public class SellerAndShopActivity extends ActionBarActivity implements MyDialog
 		ShopItemsFragment fragment = (ShopItemsFragment)
 				fragmentAdapter.getItem(0);
 		fragment.setSellerImage(bitmap);
+	}
+
+
+	@Override
+	public void onItemsLoaded() {
+		
+		SellerInfoFragment fragment = (SellerInfoFragment)
+				fragmentAdapter.getItem(1);
+		fragment.getSellerInfo();
 	}
 	
 }

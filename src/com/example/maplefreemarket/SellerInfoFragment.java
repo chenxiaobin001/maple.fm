@@ -31,11 +31,11 @@ public class SellerInfoFragment extends Fragment{
 //		myApp = (MapleFreeMarketApplication) this.getActivity().getApplication();
 		Bundle bundle = getArguments();
 		characterName = bundle.getString("characterName").toLowerCase();
-		getSellerInfo();
+//		getSellerInfo();
 		return view;
 	} 
 	
-	private void getSellerInfo(){
+	public void getSellerInfo(){
 		AsyncTask<String, Void, String> parseJSON = new HandleSellerAndShopJSON(getActivity(), view);
 		RetrieveJSonTask task = new RetrieveJSonTask(getActivity(), parseJSON);
 		String url = getActivity().getResources().getString(R.string.api_rankings);

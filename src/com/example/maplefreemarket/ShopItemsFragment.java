@@ -94,6 +94,10 @@ public class ShopItemsFragment extends Fragment{
 		return filteredItems;
 	}
 	
+	public interface OnItemsLoadedListener {
+		public void onItemsLoaded();
+	};
+	
 	private class LoadShopItems extends AsyncTask<String, Integer, List<FMItem>> {
 	     protected List<FMItem> doInBackground(String... urls) {
 	    	 //keep complaince with adapter filter operation
@@ -112,6 +116,8 @@ public class ShopItemsFragment extends Fragment{
 	         Toast.makeText(getActivity(), totalSize + " items. ", Toast.LENGTH_SHORT).show();
 	         view.findViewById(R.id.shopLoadingPanel).setVisibility(View.GONE);
 	         adapter.resetItemsRefresh(result);
+	         OnItemsLoadedListener onItemsLoadedListener = (OnItemsLoadedListener) getActivity();
+	         onItemsLoadedListener.onItemsLoaded();
 	     }
 	 }
 	
