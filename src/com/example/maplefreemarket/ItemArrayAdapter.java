@@ -155,41 +155,47 @@ class ItemArrayAdapter extends ArrayAdapter<FMItem> {
 		  	}
 		//	final FMItem cur = filteredDataDisplay.get(position);
 			
-		    
+		  	View rowView = convertView;
+		  	ViewHolder viewHolder = new ViewHolder();
 		  //Avoiding layout inflation and object creation
-	  		ViewHolder viewHolder = new ViewHolder();
-		    LayoutInflater inflater = (LayoutInflater) context
-		        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		    rowView = inflater.inflate(R.layout.item_row, parent, false);
-		    viewHolder.itemNameTextView = (TextView) rowView.findViewById(R.id.itemNameTextView);
-		    viewHolder.itemPriceTextView = (TextView) rowView.findViewById(R.id.itemPriceTextView);
-		    viewHolder.channelRoomTextView = (TextView) rowView.findViewById(R.id.roomTextView);
-		    viewHolder.quantityTextView = (TextView) rowView.findViewById(R.id.quantityTextView);
-		    viewHolder.percentageTextView = (TextView) rowView.findViewById(R.id.percentageTextView);
-		    viewHolder.imageView = (ImageView) rowView.findViewById(R.id.icon1);
-		    rowView.setTag(viewHolder);
-		  	
-		  	ViewHolder holder = (ViewHolder) rowView.getTag();
+		  	if (rowView == null){
+	  		
+			    LayoutInflater inflater = (LayoutInflater) context
+			        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			    rowView = inflater.inflate(R.layout.item_row, parent, false);
+			    viewHolder.itemNameTextView = (TextView) rowView.findViewById(R.id.itemNameTextView);
+			    viewHolder.itemPriceTextView = (TextView) rowView.findViewById(R.id.itemPriceTextView);
+			    viewHolder.channelRoomTextView = (TextView) rowView.findViewById(R.id.roomTextView);
+			    viewHolder.quantityTextView = (TextView) rowView.findViewById(R.id.quantityTextView);
+			    viewHolder.percentageTextView = (TextView) rowView.findViewById(R.id.percentageTextView);
+			    viewHolder.imageView = (ImageView) rowView.findViewById(R.id.icon1);
+			    rowView.setTag(viewHolder);
+		  	}else{
+		  		viewHolder = (ViewHolder) rowView.getTag();
+		  	}
+	  		
 		  	String itemName = filteredDataDisplay.get(position).getItemName();
 		  	String scroll = String.valueOf(filteredDataDisplay.get(position).getScrollApplied());
 		  	if (!("0".equals(scroll))){
 		  		itemName += "(+" + scroll + ")";
 	    	}
-		  	holder.itemNameTextView.setText(itemName);
-		  	holder.itemPriceTextView.setText(NumberFormat.getNumberInstance(Locale.US).format(filteredDataDisplay.get(position).getPrice()));
-		  	holder.itemPriceTextView.setTextColor(Color.parseColor(getPriceColor(filteredDataDisplay.get(position).getPrice())));
-		  	holder.channelRoomTextView.setText(getRoomChannel(position));
-		  	holder.quantityTextView.setText(getBundleQuantity(position));
+		  	viewHolder.itemNameTextView.setText(itemName);
+		  	viewHolder.itemPriceTextView.setText(NumberFormat.getNumberInstance(Locale.US).format(filteredDataDisplay.get(position).getPrice()));
+		  	viewHolder.itemPriceTextView.setTextColor(Color.parseColor(getPriceColor(filteredDataDisplay.get(position).getPrice())));
+		  	viewHolder.channelRoomTextView.setText(getRoomChannel(position));
+		  	viewHolder.quantityTextView.setText(getBundleQuantity(position));
 		  	if (filteredDataDisplay.get(position).getQuantity() == 0){
 	//	  		holder.quantityTextView.setTextColor(Color.parseColor("#fe170b"));
 		  		rowView.setBackgroundColor(Color.parseColor("#fee1f4"));
+		  	}else{
+		  		rowView.setBackgroundColor(Color.parseColor("#00000000"));
 		  	}
 		    String tmp = getPercentage(position);
-		    holder.percentageTextView.setText(tmp + "%");
-		    holder.percentageTextView.setTextColor(Color.parseColor(getPercentColor(tmp)));
+		    viewHolder.percentageTextView.setText(tmp + "%");
+		    viewHolder.percentageTextView.setTextColor(Color.parseColor(getPercentColor(tmp)));
 		    String id = filteredDataDisplay.get(position).getIconID();
 		    String url = context.getResources().getString(R.string.item_icon_url) + id + ".png";
-		    final ImageView tmpImageView = holder.imageView;
+		    final ImageView tmpImageView = viewHolder.imageView;
 		    Picasso.with(context).load(url).into(new Target() {
 
 	            @Override
