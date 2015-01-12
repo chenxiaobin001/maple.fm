@@ -51,8 +51,8 @@ public class ShopItemsFragment extends Fragment{
 	} 
 	
 	@Override
-	public void onStart (){
-		super.onStart();
+	public void onResume(){
+		super.onResume();
 		LoadShopItems loading = new LoadShopItems();
 		view.findViewById(R.id.shopLoadingPanel).setVisibility(View.VISIBLE);
 		loading.execute("1");
@@ -85,9 +85,9 @@ public class ShopItemsFragment extends Fragment{
 		List<FMItem> allItems = myApp.getItemAdapter().getItems();
 		List<FMItem> filteredItems = new ArrayList<FMItem>();
 		String filterableString;
-		filterableString = characterName.toLowerCase();
+		filterableString = characterName;
 		for (int i = 0; i < allItems.size(); i++) {		
-			if (allItems.get(i).getCharacterName().toLowerCase().equals(filterableString) ) {
+			if (allItems.get(i).getCharacterName().equals(filterableString) ) {
 				filteredItems.add(allItems.get(i));
 			}
 		}
