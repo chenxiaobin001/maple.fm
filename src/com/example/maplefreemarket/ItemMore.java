@@ -142,7 +142,7 @@ public class ItemMore {
 			if (!("NUMBER OF UPGRADES AVAILABLE".equals(desc) || "NUMBER OF HAMMER APPLIED".equals(desc) || 
 					"When attacking bosses, damage".equals(desc) || "Ignore Monster DEF".equals(desc))){
 				int inc = val1 - val2;
-				if (inc > 0 && val2 > 0){
+				if (inc > 0){
 					String str = " (" + val2 + " + " + inc + ")";
 					sb.append(str);
 				}
