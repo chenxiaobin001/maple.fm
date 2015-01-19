@@ -135,6 +135,8 @@ public class HandleItemListJSON extends AsyncTask<String, Void, String> {
 		MapleFreeMarketApplication myApp = (MapleFreeMarketApplication) mContext.getApplication();
 		if (result == null){
 			Toast.makeText(mContext, "Failed to get data.", Toast.LENGTH_SHORT).show();
+			((Activity) mContext).findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+			((Activity) mContext).findViewById(R.id.refreshButton).setVisibility(View.VISIBLE);
 			return;
 		}
 		Toast.makeText(((HomeActivity)mContext).getMyApp(), fmItems.size() + " items, " + "updated " + getSecondsAgo() + "s ago", Toast.LENGTH_SHORT).show();

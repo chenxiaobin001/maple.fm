@@ -9,7 +9,6 @@ import java.util.Locale;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +19,8 @@ import android.widget.Toast;
 
 import com.code.freeMarket.R;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
-import com.squareup.picasso.Picasso.LoadedFrom;
+import com.squareup.picasso.Transformation;
+
 import android.widget.Filter;
 class ItemArrayAdapter extends ArrayAdapter<FMItem> {
 	  private final Context context;
@@ -30,7 +29,6 @@ class ItemArrayAdapter extends ArrayAdapter<FMItem> {
 	  private List<FMItem> filteredDataDisplay;	//displayed data
 	  private int preResetSize = -1;					//avoid infinite scroll out of function
 	  private ItemFilter mFilter = new ItemFilter();
-	  private View rowView;
 	  private boolean filterCashItem;
 	  private boolean filterSoldItem;
 	  public InfiniteScrollListener.SetLoading setLoading = new InfiniteScrollListener.SetLoading();
@@ -44,6 +42,22 @@ class ItemArrayAdapter extends ArrayAdapter<FMItem> {
 	    public View rowView;
 	  }
 
+	  public class CropSquareTransformation implements Transformation {
+		  @Override 
+		  public Bitmap transform(Bitmap bitmap) {
+			  int height = 130;
+			  int width = (int) (bitmap.getWidth()*1.0/bitmap.getHeight()*height);
+			  Bitmap result = Bitmap.createScaledBitmap(bitmap, width, height, false);
+		    
+			  if (result != bitmap) {
+				  bitmap.recycle();
+			  }
+			  return result;
+		  }
+
+		  @Override public String key() { return "square()"; }
+	  }
+	  
 	public boolean isFilterCashItem() {
 		return filterCashItem;
 	}
@@ -172,6 +186,7 @@ class ItemArrayAdapter extends ArrayAdapter<FMItem> {
 			    rowView.setTag(viewHolder);
 		  	}else{
 		  		viewHolder = (ViewHolder) rowView.getTag();
+		//  		Picasso.with(this.context).cancelRequest(viewHolder.imageView);
 		  	}
 	  		
 		  	String itemName = filteredDataDisplay.get(position).getItemName();
@@ -195,7 +210,8 @@ class ItemArrayAdapter extends ArrayAdapter<FMItem> {
 		    viewHolder.percentageTextView.setTextColor(Color.parseColor(getPercentColor(tmp)));
 		    String id = filteredDataDisplay.get(position).getIconID();
 		    String url = context.getResources().getString(R.string.item_icon_url) + id + ".png";
-		    final ImageView tmpImageView = viewHolder.imageView;
+		    Picasso.with(context).load(url).placeholder(R.drawable.mesos).transform(new CropSquareTransformation()).into(viewHolder.imageView); 
+		    /*		    final ImageView tmpImageView = viewHolder.imageView;
 		    Picasso.with(context).load(url).into(new Target() {
 
 	            @Override
@@ -220,7 +236,7 @@ class ItemArrayAdapter extends ArrayAdapter<FMItem> {
 	            }
 
 			
-		    });
+		    });*/
 		    return rowView;
 	  }
 	  

@@ -94,7 +94,7 @@ public class ItemDetailDialog extends DialogFragment {
     		sb.append(newStr.substring(end, newStr.length()));
     		newStr = sb.toString();
         }
-    	newStr = newStr.replace("\\n", "<br />").replace("\\r", "    ");
+    	newStr = newStr.replace("\n", "<br />").replace("\r", "    ");
     	return Html.fromHtml(newStr);
     }
     
