@@ -126,6 +126,8 @@ public class FMItem {
 		im.bossDamage = bossDamage;
 		im.igDEF = igDEF;
 		im.crafter = crafter;
+		im.hammerApplied = hammerApplied;
+		im.upgradeAvailable = upgradeAvailable;
 		return im;
 	}
 	

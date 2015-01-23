@@ -145,6 +145,9 @@ public class ItemMore {
 				if (inc > 0){
 					String str = " (" + val2 + " + " + inc + ")";
 					sb.append(str);
+				}else if (inc < 0){
+					String str = " (" + val2 + " - " + (-inc) + ")";
+					sb.append(str);
 				}
 			}
 			if ("When attacking bosses, damage".equals(desc) || "Ignore Monster DEF".equals(desc))
