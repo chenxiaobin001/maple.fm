@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
-
 
 
 
@@ -38,7 +36,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.code.freeMarket.R;
-import com.purplebrain.adbuddiz.sdk.AdBuddiz;
+
 
 
 public class HomeActivity extends ActionBarActivity implements MyDialogFragmentListener{
@@ -86,14 +84,14 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 	
 	@Override
 	public void onBackPressed() {
-		Random random = new Random();
+/*		Random random = new Random();
 		int n = random.nextInt(10);
 		if (n < 5){			
 		    if (AdBuddiz.isReadyToShowAd(this)) { // this = current Activity
 		    	AdBuddiz.showAd(this);
 		    }
 		    System.out.println("adbuddiz");
-		}
+		}*/
 	    finish();
 	    return;
 	}   
@@ -135,9 +133,9 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 		obj.execute(result);
 		
 		//AD
-		AdBuddiz.setPublisherKey(getResources().getString(R.string.adBuddizPublishKey));
+/*		AdBuddiz.setPublisherKey(getResources().getString(R.string.adBuddizPublishKey));
 	    AdBuddiz.cacheAds(this); // this = current Activity
-		// Create the interstitial.
+*/		// Create the interstitial.
 /*		interstitial = new InterstitialAd(this);
 	    interstitial.setAdUnitId(getString(R.string.admob_fullscreen));
 	    // Create ad request.
