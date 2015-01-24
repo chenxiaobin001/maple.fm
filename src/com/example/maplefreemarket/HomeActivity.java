@@ -19,7 +19,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AbsListView.OnScrollListener;
@@ -147,15 +146,15 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 
 
 		searchEditText = (EditText) findViewById(R.id.searchEditText);
-//		searchEditText.setSelectAllOnFocus(true);
-		searchEditText.setOnTouchListener(new View.OnTouchListener(){
+		searchEditText.setSelectAllOnFocus(true);
+/*		searchEditText.setOnTouchListener(new View.OnTouchListener(){
 			@Override
 			public boolean onTouch(View arg0, MotionEvent arg1) {
 				searchEditText.setText("");
 		        return false;
 			}
 		});
-		
+		*/
 		cashItemCheckBox.setOnClickListener(new OnClickListener() {
 			
 			@Override

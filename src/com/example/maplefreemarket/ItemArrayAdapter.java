@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.code.freeMarket.R;
 import com.squareup.picasso.Picasso;
@@ -403,8 +402,8 @@ class ItemArrayAdapter extends ArrayAdapter<FMItem> {
 		  protected void publishResults(CharSequence constraint, FilterResults results) {
 			  if (results.count == 0)	return;		//same filter, do nothing.
 			  filteredData = (ArrayList<FMItem>) results.values;	  
-			  int totalSize = filteredData.size();
-		      Toast.makeText(context, totalSize + " items. ", Toast.LENGTH_SHORT).show();
+/*			  int totalSize = filteredData.size();
+		      Toast.makeText(context, totalSize + " items. ", Toast.LENGTH_SHORT).show();*/
 		      //do the filter , but not do UI display ???
 		      resetItemsRefresh(filteredData.subList(0, Math.min(10, filteredData.size())));
 		  }
