@@ -129,6 +129,8 @@ public class ItemMore {
 
     	sb.append(getPropertyValue(upgradeAvailable, 0, "NUMBER OF UPGRADES AVAILABLE"));
     	sb.append(getPropertyValue(hammerApplied, 0, "NUMBER OF HAMMER APPLIED"));
+    	if (sb.length() > 0)
+    		sb.deleteCharAt(sb.length() - 1);
 		return sb.toString();
 	}
 	

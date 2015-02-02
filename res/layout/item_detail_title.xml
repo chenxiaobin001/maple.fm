@@ -14,7 +14,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_weight="1.06"
-            android:text="★" />
+            android:text="☆" />
     </LinearLayout>
 
     <LinearLayout

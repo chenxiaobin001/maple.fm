@@ -127,6 +127,99 @@ public class ItemDetailDialog extends DialogFragment {
     	}
     	sb.append("\n");
     	return sb.toString();
+    } 
+    
+    
+    private void setPotentialView(View potentialView){
+    	String p1 = selectedItem.getPotential1();
+    	String p2 = selectedItem.getPotential2(); 
+    	String p3 = selectedItem.getPotential3(); 
+    	String bp1 = selectedItem.getBonusPotential1(); 
+    	String bp2 = selectedItem.getBonusPotential2(); 
+    	String bp3 = selectedItem.getBonusPotential3(); 
+    	View separator1 = potentialView.findViewById(R.id.potentialSeparator);
+    	View separator2 = potentialView.findViewById(R.id.bonusPotentialSeparator);
+    	TextView potentialTextView1 = (TextView) potentialView.findViewById(R.id.potentialTextView1);
+    	TextView potentialTextView2 = (TextView) potentialView.findViewById(R.id.potentialTextView2);
+    	TextView potentialTextView3 = (TextView) potentialView.findViewById(R.id.potentialTextView3);
+    	TextView bonusPotentialTextView1 = (TextView) potentialView.findViewById(R.id.bonusPotentialTextView1);
+    	TextView bonusPotentialTextView2 = (TextView) potentialView.findViewById(R.id.bonusPotentialTextView2);
+    	TextView bonusPotentialTextView3 = (TextView) potentialView.findViewById(R.id.bonusPotentialTextView3);
+    	boolean hasPotential = false;
+    	boolean hasBonusPotential = false;
+    	if (p1 != null){
+    		potentialTextView1.setText(p1);
+    		hasPotential = true;
+    	}else{
+    		potentialTextView1.setVisibility(View.GONE);
+    	}
+    	if (p2 != null){
+    		potentialTextView2.setText(p2);
+    		hasPotential = true;
+    	}else{
+    		potentialTextView2.setVisibility(View.GONE);
+    	}
+    	if (p3 != null){
+    		potentialTextView3.setText(p3);
+    		hasPotential = true;
+    	}else{
+    		potentialTextView3.setVisibility(View.GONE);
+    	}
+    	if (!hasPotential){
+    		separator1.setVisibility(View.GONE);
+    	}
+    	if (bp1 != null){
+    		bonusPotentialTextView1.setText(bp1);
+    		hasBonusPotential = true;
+    	}else{
+    		bonusPotentialTextView1.setVisibility(View.GONE);
+    	}
+    	if (bp2 != null){
+    		bonusPotentialTextView2.setText(bp2);
+    		hasBonusPotential = true;
+    	}else{
+    		bonusPotentialTextView2.setVisibility(View.GONE);
+    	}
+    	if (bp3 != null){
+    		bonusPotentialTextView3.setText(bp3);
+    		hasBonusPotential = true;
+    	}else{
+    		bonusPotentialTextView3.setVisibility(View.GONE);
+    	}
+    	if (!hasBonusPotential){
+    		separator2.setVisibility(View.GONE);
+    	}
+    }
+    
+    private void setNebuliteView(View view){
+    	String nebulite = selectedItem.getNebuliteId();
+    	View sepatator = view.findViewById(R.id.nebuliteSeparator);
+    	TextView nebuliteTextView = (TextView) view.findViewById(R.id.nebuliteTextView);
+    	if (nebulite == null){
+    		sepatator.setVisibility(View.GONE);
+    		nebuliteTextView.setVisibility(View.GONE);
+    	}else{
+    	/*	String regex = "\\[(A|B|C|D|S)\\]";
+        	Pattern p0 = Pattern.compile(regex);
+        	Matcher m0 = p0.matcher(nebulite);
+        	if(m0.find()) {
+        		String tmp = m0.group().substring(1, m0.group().length() - 1);
+        		if ("A".equals(tmp)){
+        			nebuliteTextView.setTextColor(Color.parseColor("#1575f4"));
+        		}else if ("B".equals(tmp)){
+        			nebuliteTextView.setTextColor(Color.parseColor("#1575f4"));
+        		}else if ("C".equals(tmp)){
+        			nebuliteTextView.setTextColor(Color.parseColor("#1575f4"));
+        		}else if ("D".equals(tmp)){
+        			nebuliteTextView.setTextColor(Color.parseColor("#1575f4"));
+        		}else if ("S".equals(tmp)){
+        			nebuliteTextView.setTextColor(Color.parseColor("#1575f4"));
+        		}
+        		nebuliteTextView.setText(tmp);
+            }*/
+    		nebuliteTextView.setTextColor(Color.parseColor("#0eb800"));
+    		nebuliteTextView.setText(nebulite);
+    	}
     }
     
     private void setTitleView(View titleView){
@@ -144,12 +237,13 @@ public class ItemDetailDialog extends DialogFragment {
     	if (selectedItem.getEnhancements() > 0){
     		StringBuilder sb = new StringBuilder();
     		for (int i = 1; i <= selectedItem.getEnhancements(); i++){
-    			sb.append("¡ï");
+    			sb.append("âœ°");
     			if (i % 5 == 0){
     				sb.append(" ");
     			}
     		}
-    		starTextView.setText(sb.toString());
+    		String tmp = "<font color=#ffa21f>"+sb.toString()+"</font> ";
+    		starTextView.setText(Html.fromHtml(tmp));
     	//	starTextView.setTextColor(Color.parseColor("#FFD700"));
     	}else{
     		starTextView.setText(" ");
@@ -163,7 +257,7 @@ public class ItemDetailDialog extends DialogFragment {
     		case 1:	rank = "(Rare item)"; rankTextView.setTextColor(Color.parseColor("#1575f4")); break;
     		case 2: rank = "(Epic item)"; rankTextView.setTextColor(Color.parseColor("#9124ff")); break;
     		case 3: rank = "(Unique item)"; rankTextView.setTextColor(Color.parseColor("#f5b00a")); break;
-    		case 4: rank = "(Legendary item)"; rankTextView.setTextColor(Color.parseColor("#65ff1a")); break;
+    		case 4: rank = "(Legendary item)"; rankTextView.setTextColor(Color.parseColor("#0eb800")); break;
     		case 5: rank = "(Hidden Potential)"; rankTextView.setTextColor(Color.parseColor("#4378ad")); break;
     		}
     		rankTextView.setText(rank);
@@ -185,16 +279,20 @@ public class ItemDetailDialog extends DialogFragment {
     	AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         view = inflater.inflate(R.layout.item_detail, null);
-        titleView=inflater.inflate(R.layout.item_detail_title, null);
+        titleView = inflater.inflate(R.layout.item_detail_title, null);
         categoryTextView = (TextView) view.findViewById(R.id.itemCategoryTextView);
         categoryTextView.setText(getCategory());
         itemDescTextView = (TextView) view.findViewById(R.id.itemDescTextView);
-        itemDescTextView.setText(formatTheString(desc));
+        if ("".equals(desc) || desc == null){
+        	itemDescTextView.setVisibility(View.GONE);
+        }else{
+        	itemDescTextView.setText(formatTheString(desc));
+        }
         itemDetailTextView = (TextView) view.findViewById(R.id.itemDetailTextView);
         sellerImage = (ImageView) view.findViewById(R.id.sellerImageView);
         String details = selectedItem.getItemMore().toString(selectedItem.getItemMore());
-        if (details == "")	
-        	itemDetailTextView.setVisibility(View.INVISIBLE);
+        if ("".equals(details) || details == null)	
+        	itemDetailTextView.setVisibility(View.GONE);
         else	
         	itemDetailTextView.setText(details);
         sellerTextView = (TextView) view.findViewById(R.id.sellerTextView);
@@ -224,7 +322,9 @@ public class ItemDetailDialog extends DialogFragment {
 			}
 		});
         builder.setView(view);
-        setTitleView(titleView);
+        setPotentialView(view);      
+        setTitleView(titleView); 
+        setNebuliteView(view);
         builder.setCustomTitle(titleView);
         builder.setPositiveButton(R.string.item_button_search, new DialogInterface.OnClickListener() {
                    public void onClick(DialogInterface dialog, int id) {
@@ -257,5 +357,7 @@ public class ItemDetailDialog extends DialogFragment {
 		URL = URL + "id=" + selectedItem.getId();
 		return URL;
     }
+
+    
 
 }
