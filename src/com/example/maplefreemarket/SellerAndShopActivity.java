@@ -180,7 +180,7 @@ public class SellerAndShopActivity extends ActionBarActivity implements MyDialog
 
 
 	@Override
-	public void onItemsLoaded() {
+	public void onItemsLoaded() {		//specify the order, get items first, then get seller info
 		
 		SellerInfoFragment fragment = (SellerInfoFragment)
 				fragmentAdapter.getItem(1);

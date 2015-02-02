@@ -151,7 +151,7 @@ public class HandleItemListJSON extends AsyncTask<String, Void, String> {
 			((Activity) mContext).findViewById(R.id.refreshButton).setVisibility(View.VISIBLE);
 			return;
 		}
-		Toast.makeText(((HomeActivity)mContext).getMyApp(), fmItems.size() + " items, " + "updated " + getMinutesAgo() + "minutes ago", Toast.LENGTH_SHORT).show();
+		Toast.makeText(((HomeActivity)mContext).getMyApp(), fmItems.size() + " items, " + "updated " + getMinutesAgo() + " minutes ago", Toast.LENGTH_SHORT).show();
 		ItemArrayAdapter adapter = ((HomeActivity)mContext).getAdapter();
 		adapter.clear();
 		adapter.setItems(fmItems);

@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
@@ -48,14 +49,37 @@ public class ShopItemsFragment extends Fragment{
 		shopTextView.setText(shopName);
 		setListView();	
 		return view;
-	} 
+	}
 	
+	@Override
+	public void onActivityCreated (Bundle savedInstanceState){
+		super.onActivityCreated(savedInstanceState);
+		getSellItems();
+	}
+	
+/*	
 	@Override
 	public void onResume(){
 		super.onResume();
+
+	}
+	*/
+	public void getSellItems(){
+/*		
 		LoadShopItems loading = new LoadShopItems();
 		view.findViewById(R.id.shopLoadingPanel).setVisibility(View.VISIBLE);
 		loading.execute("1");
+		*/
+		final Handler handler = new Handler();
+		handler.postDelayed(new Runnable() {
+		  @Override
+		  public void run() {
+			  LoadShopItems loading = new LoadShopItems();
+			  view.findViewById(R.id.shopLoadingPanel).setVisibility(View.VISIBLE);
+			  loading.execute("1");
+		  }
+		}, 100);
+	
 	}
 	
 	private void setListView(){
@@ -115,17 +139,17 @@ public class ShopItemsFragment extends Fragment{
 	         adapter.setItems(result);
 	         Toast.makeText(getActivity(), totalSize + " items. ", Toast.LENGTH_SHORT).show();
 	         view.findViewById(R.id.shopLoadingPanel).setVisibility(View.GONE);
-	         adapter.resetItemsRefresh(result);
-	         OnItemsLoadedListener onItemsLoadedListener = (OnItemsLoadedListener) getActivity();
-	         onItemsLoadedListener.onItemsLoaded();
+	//         adapter.resetItemsRefresh(result);
+	         // after delete onImageLoaded, on loading lag problem fixed...
 	     }
 	 }
 	
 	 public void setSellerImage(Bitmap bitmap){
 		ImageView iv; 
-		while ((iv = (ImageView) view.findViewById(R.id.sellerImageButton)) == null ){
+		if ((iv = (ImageView) view.findViewById(R.id.sellerImageButton)) == null ) return;
+/*		while ((iv = (ImageView) view.findViewById(R.id.sellerImageButton)) == null ){
 			;
-		}
+		}*/
 		int width = iv.getMeasuredHeight();
      	int height = (int) (width*1.0/bitmap.getWidth() *bitmap.getHeight());
      	bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);

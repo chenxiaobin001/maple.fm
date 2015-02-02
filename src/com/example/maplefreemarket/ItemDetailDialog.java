@@ -233,7 +233,7 @@ public class ItemDetailDialog extends DialogFragment {
     	if (!("0".equals(scroll))){
     		itemTitle += "(+" + scroll + ")";
     	}
-    	if (itemTitle.length() <= 20){
+    	if (itemTitle.length() < 20){
     		itemNameTextView.setTextAppearance(getActivity(), android.R.style.TextAppearance_Large);
     	}
     	itemNameTextView.setTextColor(Color.parseColor("#33b5e5"));
@@ -256,13 +256,15 @@ public class ItemDetailDialog extends DialogFragment {
     	if (Integer.parseInt(selectedItem.getPotentialRank()) > 0){
     		int i = Integer.parseInt(selectedItem.getPotentialRank());
     		String rank = "";
+    		String color  = "#33b5e5";
     		switch (i){
-    		case 1:	rank = "(Rare item)"; rankTextView.setTextColor(Color.parseColor("#1575f4")); break;
-    		case 2: rank = "(Epic item)"; rankTextView.setTextColor(Color.parseColor("#9124ff")); break;
-    		case 3: rank = "(Unique item)"; rankTextView.setTextColor(Color.parseColor("#f5b00a")); break;
-    		case 4: rank = "(Legendary item)"; rankTextView.setTextColor(Color.parseColor("#0eb800")); break;
-    		case 5: rank = "(Hidden Potential)"; rankTextView.setTextColor(Color.parseColor("#4378ad")); break;
+    		case 1:	rank = "(Rare item)"; color  = "#1575f4"; break;
+    		case 2: rank = "(Epic item)"; color  = "#9124ff"; break;
+    		case 3: rank = "(Unique item)"; color  = "#f5b00a"; break;
+    		case 4: rank = "(Legendary item)"; color  = "#0eb800"; break;
+    		case 5: rank = "(Hidden Potential)"; color  = "#4378ad"; break;
     		}
+    		rankTextView.setTextColor(Color.parseColor(color));
     		rankTextView.setText(rank);
     	}else{
     		rankTextView.setText(" ");
@@ -324,6 +326,7 @@ public class ItemDetailDialog extends DialogFragment {
 				showCharacterDetail();
 			}
 		});
+        
         builder.setView(view);
         setPotentialView(view);      
         setTitleView(titleView); 
