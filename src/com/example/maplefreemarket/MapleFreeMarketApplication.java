@@ -3,12 +3,14 @@ package com.example.maplefreemarket;
 import android.app.Application;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 
 public class MapleFreeMarketApplication extends Application{
 	private int server;
 	private BitmapDrawable drawable;
 	private ItemArrayAdapter itemAdapter;
 	private FMItem selectedItem;
+	private AsyncTask<String, Void, String> preTask;
 	
     public FMItem getSelectedItem() {
 		return selectedItem;
@@ -16,6 +18,14 @@ public class MapleFreeMarketApplication extends Application{
 
 	public void setSelectedItem(FMItem selectedItem) {
 		this.selectedItem = selectedItem;
+	}
+	
+	public AsyncTask<String, Void, String> getPreTask() {
+		return preTask;
+	}
+
+	public void setPreTask(AsyncTask<String, Void, String> preTask) {
+		this.preTask = preTask;
 	}
 
 	public ItemArrayAdapter getItemAdapter() {

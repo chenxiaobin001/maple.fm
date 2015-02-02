@@ -24,6 +24,8 @@ public class HandleItemListJSON extends AsyncTask<String, Void, String> {
 	private String secondsAgo;
 	private List<FMItem> fmItems;
 	private HomeActivity mContext;
+	private MapleFreeMarketApplication myApp;
+	private int mode;
 	
 	public String getSecondsAgo() {
 		return secondsAgo;
@@ -41,13 +43,16 @@ public class HandleItemListJSON extends AsyncTask<String, Void, String> {
 		List<FMItem> newList = new ArrayList<FMItem>(fmItems.subList(0, size));
 		return newList;
 	}
-	public HandleItemListJSON(Context context){
+	public HandleItemListJSON(Context context, int mode){
 		fmItems = new ArrayList<FMItem>();
 		this.mContext = (HomeActivity) context;
+		this.mode = mode;
+		this.myApp = (MapleFreeMarketApplication) mContext.getApplication();
 	}
 	
 	private void handleJsonJacksonStreaming(String[] strs) throws JsonParseException, JsonMappingException, IOException{
 		String result = strs[0];
+		if (result == null) return;
 		ObjectMapper mapper = new ObjectMapper();
 		JsonFactory factory = mapper.getFactory();
 		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);	
@@ -123,6 +128,9 @@ public class HandleItemListJSON extends AsyncTask<String, Void, String> {
 	@Override
 	protected String doInBackground(String... JSonString) {
 		try {
+			if(isCancelled()){
+                return null;
+            }
 			handleJsonJacksonStreaming(JSonString);
 	//		handleJsonJackson(JSonString);
 	//		handleJson(JSonString);
@@ -150,7 +158,10 @@ public class HandleItemListJSON extends AsyncTask<String, Void, String> {
 		myApp.setItemAdapter(adapter);
 		adapter.resetItemsRefresh(getItems(Math.min(10, fmItems.size())));
 //		adapter.notifyDataSetChanged();
-		((Activity) mContext).findViewById(R.id.loadingPanel).setVisibility(View.GONE);
-		((Activity) mContext).findViewById(R.id.refreshButton).setVisibility(View.VISIBLE);
+		this.myApp.setPreTask(null);
+		if (mode == 1){	//network
+			((Activity) mContext).findViewById(R.id.refreshButton).setVisibility(View.VISIBLE);
+			((Activity) mContext).findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+		}
     }
 }

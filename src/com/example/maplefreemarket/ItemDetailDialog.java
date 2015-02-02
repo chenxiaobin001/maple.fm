@@ -233,6 +233,9 @@ public class ItemDetailDialog extends DialogFragment {
     	if (!("0".equals(scroll))){
     		itemTitle += "(+" + scroll + ")";
     	}
+    	if (itemTitle.length() <= 20){
+    		itemNameTextView.setTextAppearance(getActivity(), android.R.style.TextAppearance_Large);
+    	}
     	itemNameTextView.setTextColor(Color.parseColor("#33b5e5"));
     	if (selectedItem.getEnhancements() > 0){
     		StringBuilder sb = new StringBuilder();
@@ -247,7 +250,7 @@ public class ItemDetailDialog extends DialogFragment {
     	//	starTextView.setTextColor(Color.parseColor("#FFD700"));
     	}else{
     		starTextView.setText(" ");
-    		starTextView.setHeight(15);
+    		starTextView.setHeight(20);
         	//	starTextView.setVisibility(View.GONE);
     	}
     	if (Integer.parseInt(selectedItem.getPotentialRank()) > 0){

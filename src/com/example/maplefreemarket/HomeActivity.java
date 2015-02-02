@@ -55,6 +55,7 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 	private EditText searchEditText;
 	private CheckBox cashItemCheckBox;
 	private CheckBox soldItemCheckBox;
+	
 
 	//	private TableRow tableRow;
 	public EditText getSearchEditText() {
@@ -81,23 +82,11 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 		this.obj = obj;
 	}
 	
-	@Override
-	public void onBackPressed() {
-/*		Random random = new Random();
-		int n = random.nextInt(10);
-		if (n < 5){			
-		    if (AdBuddiz.isReadyToShowAd(this)) { // this = current Activity
-		    	AdBuddiz.showAd(this);
-		    }
-		    System.out.println("adbuddiz");
-		}*/
-	    finish();
-	    return;
-	}   
 	
 	@Override
 	protected void onResume(){
 		super.onResume();
+//		retriveServerData();
 //		Toast.makeText(myApp, "jajaja", Toast.LENGTH_SHORT).show();
 //		sortableColumnSetup();
 	}
@@ -116,7 +105,7 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 		setContentView(R.layout.activity_main);
 		spinner = (Spinner) findViewById(R.id.serverSpinner);
 		listView = (ListView) findViewById(R.id.itemListView);
-		findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+//		findViewById(R.id.loadingPanel).setVisibility(View.GONE);
 		adapter = new ItemArrayAdapter(HomeActivity.this, new ArrayList<FMItem>());
 //		ItemArrayAdapter oriAdapter = new ItemArrayAdapter(HomeActivity.this, new ArrayList<FMItem>());
 		myApp.setItemAdapter(adapter);
@@ -125,10 +114,11 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 		soldItemCheckBox = (CheckBox) findViewById(R.id.soldItemCheckBox);
 		refreshButton = (Button) findViewById(R.id.refreshButton);
 	
+		
 		setSpinnerContent();
 		sortableColumnSetup();
 		String result = "[{\"fm_items\":[{\"U\":\"1102484\",\"a\":\"1\",\"b\":\"1\",\"c\":\"3750000000\",\"d\":\"5\",\"e\":\"5\",\"f\":\"Click Me!\",\"g\":\"eurekaG1\",\"O\":\"Tyrant Lycaon Cloak\",\"T\":\"1102481\",\"X\":3471928570,\"Q\":\"Equip\",\"R\":\"Armor\",\"S\":\"Cape\",\"Y\":\"0\",\"h\":\"2\",\"j\":\"999\",\"k\":\"999\",\"l\":\"999\",\"m\":\"999\",\"p\":\"999\",\"q\":\"999\",\"r\":\"999\",\"s\":\"999\",\"F\":\"0\",\"G\":\"4\",\"H\":\"15\",\"W\":\"999\"},{\"U\":\"2049300\",\"a\":\"11\",\"b\":\"1\",\"c\":\"84999999\",\"d\":\"1\",\"e\":\"11\",\"f\":\"Click me!\",\"g\":\"Example\",\"O\":\"Advanced Equip Enhancement Scroll\",\"T\":\"5530246\",\"X\":38872403,\"P\":\"Enhances #cupgraded equipment#.\\nMore successes increase the chance of a good enhancement.\\nThe item is destroyed upon failure. Cannot be used on 15-star+ items.\\n\\n#c[Enhancement Success Rate]#\\n1 success: 100%\\n2 successes: 90%\\n3 successes: 80%\\n4 successes: 70%\\n5 successes: 60%\\n6 successes: 50%\\n7 successes: 40%\\n8 successes: 30%\\n9 successes: 20%\\n10 successes: 10%\\n11+ successes: 5% or lower\",\"Q\":\"Use\",\"R\":\"Armor Scroll\",\"S\":\"Accessory\",\"F\":\"0\",\"G\":\"0\",\"H\":\"0\"},{\"U\":\"1012306\",\"a\":\"1\",\"b\":\"1\",\"c\":\"700000000\",\"d\":\"3\",\"e\":\"3\",\"f\":\"Click Me!\",\"g\":\"Example\",\"O\":\"Lucky Tree Branch Nose\",\"T\":\"1012058\",\"X\":136666666,\"Q\":\"Equip\",\"R\":\"Accessory\",\"S\":\"Face Accessory\",\"i\":\"10\",\"j\":\"10\",\"k\":\"10\",\"l\":\"10\",\"m\":\"14\",\"p\":\"10\",\"r\":\"6\",\"s\":\"6\",\"t\":\"3\",\"u\":\"3\",\"F\":\"0\",\"G\":\"3\",\"H\":\"6\",\"W\":\"10\"},{\"U\":\"1432187\",\"a\":\"1\",\"b\":\"1\",\"c\":\"1500000000\",\"d\":\"3\",\"e\":\"2\",\"f\":\"Click Me!\",\"g\":\"Example\",\"O\":\"Sweetwater Spear\",\"T\":\"1432187\",\"X\":91365064,\"Q\":\"Equip\",\"R\":\"Two-Handed Weapon\",\"S\":\"Spear\",\"Y\":\"0\",\"i\":\"6\",\"j\":\"97\",\"k\":\"85\",\"n\":\"255\",\"o\":\"255\",\"p\":\"294\",\"t\":\"173\",\"C\":\"30\",\"D\":\"10\",\"F\":\"0\",\"G\":\"2\",\"H\":\"0\",\"W\":\"160\"},{\"U\":\"1122057\",\"a\":\"1\",\"b\":\"1\",\"c\":\"5000000000\",\"d\":\"1\",\"e\":\"2\",\"f\":\"Click Me!\",\"g\":\"Example\",\"O\":\"Awakening Mind of Maple Necklace\",\"T\":\"1122052\",\"P\":\"A Mind of Maple Necklace that is beginning to be restored. One more gem, and its mystical powers will be amplified and awakened into a power on another level.\",\"Q\":\"Equip\",\"R\":\"Accessory\",\"S\":\"Pendant\",\"Y\":\"0\",\"p\":\"15\",\"q\":\"15\",\"r\":\"5\",\"F\":\"0\",\"G\":\"1\",\"H\":\"0\",\"W\":\"70\"}]},{\"seconds_ago\":\"999999\"}]";
-		obj = new HandleItemListJSON(HomeActivity.this);
+		obj = new HandleItemListJSON(HomeActivity.this, 0);
 		obj.execute(result);
 		
 		//AD
@@ -205,13 +195,11 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 			public void onClick(View v) {
 
 	//			String result = "{\"result\":[{\"fm_items\":[{\"U\":\"1102484\",\"a\":\"1\",\"b\":\"1\",\"c\":\"3750000000\",\"d\":\"4\",\"e\":\"4\",\"f\":\"NUT SHOPz\",\"g\":\"DotaMagina\",\"O\":\"Tyrant Lycaon Cloak\",\"T\":\"1102481\",\"X\":3471928570,\"Q\":\"Equip\",\"R\":\"Armor\",\"S\":\"Cape\",\"Y\":\"0\",\"h\":\"2\",\"j\":\"50\",\"k\":\"50\",\"l\":\"50\",\"m\":\"50\",\"p\":\"30\",\"q\":\"30\",\"r\":\"150\",\"s\":\"150\",\"F\":\"0\",\"G\":\"0\",\"H\":\"0\",\"W\":\"150\"},{\"U\":\"1012306\",\"a\":\"1\",\"b\":\"1\",\"c\":\"700000000\",\"d\":\"4\",\"e\":\"4\",\"f\":\"NUT SHOPz\",\"g\":\"DotaMagina\",\"O\":\"Lucky Tree Branch Nose\",\"T\":\"2870295\",\"X\":136666666,\"Q\":\"Equip\",\"R\":\"Accessory\",\"S\":\"Face Accessory\",\"i\":\"10\",\"j\":\"10\",\"k\":\"10\",\"l\":\"10\",\"m\":\"14\",\"p\":\"10\",\"r\":\"6\",\"s\":\"6\",\"t\":\"3\",\"u\":\"3\",\"F\":\"0\",\"G\":\"0\",\"H\":\"0\",\"W\":\"10\"},{\"U\":\"1432187\",\"a\":\"1\",\"b\":\"1\",\"c\":\"1500000000\",\"d\":\"4\",\"e\":\"4\",\"f\":\"NUT SHOPz\",\"g\":\"DotaMagina\",\"O\":\"Sweetwater Spear\",\"T\":\"1432187\",\"X\":91365064,\"Q\":\"Equip\",\"R\":\"Two-Handed Weapon\",\"S\":\"Spear\",\"Y\":\"0\",\"i\":\"6\",\"j\":\"97\",\"k\":\"85\",\"n\":\"255\",\"o\":\"255\",\"p\":\"294\",\"t\":\"173\",\"C\":\"30\",\"D\":\"10\",\"F\":\"0\",\"G\":\"0\",\"H\":\"0\",\"W\":\"160\"},{\"U\":\"1122057\",\"a\":\"1\",\"b\":\"1\",\"c\":\"5000000000\",\"d\":\"4\",\"e\":\"4\",\"f\":\"NUT SHOPz\",\"g\":\"DotaMagina\",\"O\":\"Awakening Mind of Maple Necklace\",\"T\":\"1122052\",\"P\":\"A Mind of Maple Necklace that is beginning to be restored. One more gem, and its mystical powers will be amplified and awakened into a power on another level.\",\"Q\":\"Equip\",\"R\":\"Accessory\",\"S\":\"Pendant\",\"Y\":\"0\",\"p\":\"15\",\"q\":\"15\",\"r\":\"5\",\"F\":\"0\",\"G\":\"0\",\"H\":\"0\",\"W\":\"70\"}]},{\"seconds_ago\":\"797\"}]}";
-				findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
-				refreshButton.setVisibility(View.GONE);
-				AsyncTask<String, Void, String> asyncTask;
-				asyncTask = new HandleItemListJSON(HomeActivity.this);
-				new RetrieveJSonTask(HomeActivity.this, asyncTask).execute(getSearchRequestURL());		
+				retriveServerData();	
 			}
 		});
+		
+		refreshButton.setVisibility(View.GONE);
 		
 		listView.setOnScrollListener(newOnScrollListener());
 	
@@ -232,6 +220,22 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 			}
 
 		});
+	}
+	
+	private void retriveServerData() {
+		
+		AsyncTask<String, Void, String> preTask = myApp.getPreTask();
+		if (preTask != null){
+			preTask.cancel(true);
+			Toast.makeText(myApp, "Previous task canceled.", Toast.LENGTH_SHORT).show();
+		}
+		findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
+		refreshButton.setVisibility(View.GONE);
+		AsyncTask<String, Void, String> asyncTask;
+		asyncTask = new HandleItemListJSON(HomeActivity.this, 1);
+		myApp.setPreTask(asyncTask);
+		new RetrieveJSonTask(HomeActivity.this, asyncTask).execute(getSearchRequestURL());	
+		
 	}
 	
 	public OnScrollListener newOnScrollListener(){
@@ -367,7 +371,7 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 		
 				}
 				Toast.makeText(myApp, selection +" is selected", Toast.LENGTH_SHORT).show();
-				
+				retriveServerData();
 			}
 
 			@Override
