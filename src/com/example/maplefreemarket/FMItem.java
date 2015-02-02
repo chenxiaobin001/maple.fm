@@ -69,25 +69,25 @@ public class FMItem {
 	@JsonProperty("E")
 	private String crafter;	//The name of the character that crafted the item
 	@JsonProperty("F")
-	private String potentialIdtf;	//
+	private String potentialIdtf;	//0-no 1 - yes
 	@JsonProperty("G")
-	private String potentialRank;	//The potential's current rank 
+	private String potentialRank;	//The potential's current rank 0-4; 5-unidentified
 	@JsonProperty("H")
 	private int enhancements;		//The number of enhancements applied to the item
 	@JsonProperty("I")
-	private int potential1;		//first line of potential
+	private String potential1;		//first line of potential
 	@JsonProperty("J")
-	private int potential2;		//second line of potential 
+	private String potential2;		//second line of potential 
 	@JsonProperty("K")
-	private int	potential3;		//third line of potential
+	private String	potential3;		//third line of potential
 	@JsonProperty("L")
-	private int bonusPotential1;		//bonusPotential1;
+	private String bonusPotential1;		//bonusPotential1;
 	@JsonProperty("M")
-	private int bonusPotential2;		//bonusPotential2
+	private String bonusPotential2;		//bonusPotential2
 	@JsonProperty("N")
-	private int bonusPotential3;		//bonusPotential3
+	private String bonusPotential3;		//bonusPotential3
 	@JsonProperty("V")
-	private int nebuliteId;		//nebulite_id 
+	private String nebuliteId;		//nebulite_id 
 	@JsonProperty("X")
 	private long avgPrice;		//The mean price for this item as a percent	
 	@JsonProperty("O")
@@ -335,46 +335,46 @@ public class FMItem {
 	public void setEnhancements(int enhancements) {
 		this.enhancements = enhancements;
 	}
-	public int getPotential1() {
+	public String getPotential1() {
 		return potential1;
 	}
-	public void setPotential1(int potential1) {
+	public void setPotential1(String potential1) {
 		this.potential1 = potential1;
 	}
-	public int getPotential2() {
+	public String getPotential2() {
 		return potential2;
 	}
-	public void setPotential2(int potential2) {
+	public void setPotential2(String potential2) {
 		this.potential2 = potential2;
 	}
-	public int getPotential3() {
+	public String getPotential3() {
 		return potential3;
 	}
-	public void setPotential3(int potential3) {
+	public void setPotential3(String potential3) {
 		this.potential3 = potential3;
 	}
-	public int getBonusPotential1() {
+	public String getBonusPotential1() {
 		return bonusPotential1;
 	}
-	public void setBonusPotential1(int bonusPotential1) {
+	public void setBonusPotential1(String bonusPotential1) {
 		this.bonusPotential1 = bonusPotential1;
 	}
-	public int getBonusPotential2() {
+	public String getBonusPotential2() {
 		return bonusPotential2;
 	}
-	public void setBonusPotential2(int bonusPotential2) {
+	public void setBonusPotential2(String bonusPotential2) {
 		this.bonusPotential2 = bonusPotential2;
 	}
-	public int getBonusPotential3() {
+	public String getBonusPotential3() {
 		return bonusPotential3;
 	}
-	public void setBonusPotential3(int bonusPotential3) {
+	public void setBonusPotential3(String bonusPotential3) {
 		this.bonusPotential3 = bonusPotential3;
 	}
-	public int getNebuliteId() {
+	public String getNebuliteId() {
 		return nebuliteId;
 	}
-	public void setNebuliteId(int nebuliteId) {
+	public void setNebuliteId(String nebuliteId) {
 		this.nebuliteId = nebuliteId;
 	}
 	public long getAvgPrice() {

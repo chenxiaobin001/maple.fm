@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -23,6 +24,7 @@ public class ItemDetailDialog extends DialogFragment {
 	private FMItem selectedItem;
 	private MapleFreeMarketApplication myApp;
 	private View view;
+	private View titleView;
 	private TextView itemDetailTextView;
 	private TextView categoryTextView;
 	private TextView itemDescTextView;
@@ -127,21 +129,63 @@ public class ItemDetailDialog extends DialogFragment {
     	return sb.toString();
     }
     
-    private Dialog setupDialogView(){
-    	
-    	if (selectedItem == null)	return null;
+    private void setTitleView(View titleView){
+    	TextView itemNameTextView = (TextView) titleView.findViewById(R.id.itemNameTextView);
+    	TextView starTextView = (TextView) titleView.findViewById(R.id.starTextView);
+    	TextView rankTextView = (TextView) titleView.findViewById(R.id.rankTextView);
+    	ImageView itemDialogIcon = (ImageView) titleView.findViewById(R.id.itemDialogIcon);
+    	itemDialogIcon.setImageDrawable(myApp.getDrawable());
     	String itemTitle = selectedItem.getItemName();
-    	final String itemName = selectedItem.getItemName();
-    	String desc = selectedItem.getDescription();
     	String scroll = String.valueOf(selectedItem.getScrollApplied());
-    	String seller = "Seller: " + selectedItem.getCharacterName();
-    	String shop = "Shop: " + selectedItem.getShopName();
     	if (!("0".equals(scroll))){
     		itemTitle += "(+" + scroll + ")";
     	}
+    	itemNameTextView.setTextColor(Color.parseColor("#33b5e5"));
+    	if (selectedItem.getEnhancements() > 0){
+    		StringBuilder sb = new StringBuilder();
+    		for (int i = 1; i <= selectedItem.getEnhancements(); i++){
+    			sb.append("бя");
+    			if (i % 5 == 0){
+    				sb.append(" ");
+    			}
+    		}
+    		starTextView.setText(sb.toString());
+    	//	starTextView.setTextColor(Color.parseColor("#FFD700"));
+    	}else{
+    		starTextView.setText(" ");
+    		starTextView.setHeight(15);
+        	//	starTextView.setVisibility(View.GONE);
+    	}
+    	if (Integer.parseInt(selectedItem.getPotentialRank()) > 0){
+    		int i = Integer.parseInt(selectedItem.getPotentialRank());
+    		String rank = "";
+    		switch (i){
+    		case 1:	rank = "(Rare item)"; rankTextView.setTextColor(Color.parseColor("#1575f4")); break;
+    		case 2: rank = "(Epic item)"; rankTextView.setTextColor(Color.parseColor("#9124ff")); break;
+    		case 3: rank = "(Unique item)"; rankTextView.setTextColor(Color.parseColor("#f5b00a")); break;
+    		case 4: rank = "(Legendary item)"; rankTextView.setTextColor(Color.parseColor("#65ff1a")); break;
+    		case 5: rank = "(Hidden Potential)"; rankTextView.setTextColor(Color.parseColor("#4378ad")); break;
+    		}
+    		rankTextView.setText(rank);
+    	}else{
+    		rankTextView.setText(" ");
+    		rankTextView.setHeight(15);
+    	//	rankTextView.setVisibility(View.GONE);
+    	}
+    	itemNameTextView.setText(itemTitle);
+    }
+    
+    private Dialog setupDialogView(){
+    	
+    	if (selectedItem == null)	return null;   	
+    	final String itemName = selectedItem.getItemName();
+    	String desc = selectedItem.getDescription(); 	
+    	String seller = "Seller: " + selectedItem.getCharacterName();
+    	String shop = "Shop: " + selectedItem.getShopName();    	
     	AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         view = inflater.inflate(R.layout.item_detail, null);
+        titleView=inflater.inflate(R.layout.item_detail_title, null);
         categoryTextView = (TextView) view.findViewById(R.id.itemCategoryTextView);
         categoryTextView.setText(getCategory());
         itemDescTextView = (TextView) view.findViewById(R.id.itemDescTextView);
@@ -180,9 +224,9 @@ public class ItemDetailDialog extends DialogFragment {
 			}
 		});
         builder.setView(view);
-        
-        builder.setTitle(itemTitle).setIcon(myApp.getDrawable())
-               .setPositiveButton(R.string.item_button_search, new DialogInterface.OnClickListener() {
+        setTitleView(titleView);
+        builder.setCustomTitle(titleView);
+        builder.setPositiveButton(R.string.item_button_search, new DialogInterface.OnClickListener() {
                    public void onClick(DialogInterface dialog, int id) {
                // 	   myApp.getItemAdapter().getFilter().filter(itemName + "2");  
                 	   ((MyDialogFragmentListener) getActivity()).onReturnValue(itemName);
