@@ -154,9 +154,9 @@ public class HandleItemListJSON extends AsyncTask<String, Void, String> {
 		Toast.makeText(((HomeActivity)mContext).getMyApp(), fmItems.size() + " items, " + "updated " + getMinutesAgo() + " minutes ago", Toast.LENGTH_SHORT).show();
 		ItemArrayAdapter adapter = ((HomeActivity)mContext).getAdapter();
 		adapter.clear();
-		adapter.setItems(fmItems);
+		adapter.setItems(fmItems, 10);
 		myApp.setItemAdapter(adapter);
-		adapter.resetItemsRefresh(getItems(Math.min(10, fmItems.size())));
+//		adapter.resetItemsRefresh(getItems(Math.min(10, fmItems.size())));
 //		adapter.notifyDataSetChanged();
 		this.myApp.setPreTask(null);
 		if (mode == 1){	//network

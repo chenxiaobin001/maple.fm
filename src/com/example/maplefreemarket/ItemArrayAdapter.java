@@ -129,13 +129,13 @@ class ItemArrayAdapter extends ArrayAdapter<FMItem> {
 	  public List<FMItem> getFilteredDisplayItems(){
 		  return this.filteredDataDisplay;
 	  }
-	  public void setItems(List<FMItem> items){
+	  public void setItems(List<FMItem> items, int size){
 		  if (this.items != null)	this.items.clear();
 		  if (this.filteredData != null)	this.filteredData.clear();
 		  this.items = items;	  
 		  this.filteredData = items;
 		  if (filteredData != null)
-			  resetItemsRefresh(filteredData.subList(0, Math.min(10, filteredData.size())));
+			  resetItemsRefresh(filteredData.subList(0, Math.min(size, filteredData.size())));
 //		  this.filteredDataDisplay = items;
 	  }
 	  
