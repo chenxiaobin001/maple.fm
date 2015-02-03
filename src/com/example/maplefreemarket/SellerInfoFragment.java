@@ -37,7 +37,7 @@ public class SellerInfoFragment extends Fragment{
 	
 	public void getSellerInfo(){
 		AsyncTask<String, Void, String> parseJSON = new HandleSellerAndShopJSON(getActivity(), view);
-		RetrieveJSonTask task = new RetrieveJSonTask(getActivity(), parseJSON);
+		RetrieveJSonTask task = new RetrieveJSonTask(getActivity().getApplicationContext(), parseJSON);
 		String url = getActivity().getResources().getString(R.string.api_rankings);
 		url += ("name=" + characterName);
 		task.execute(url);

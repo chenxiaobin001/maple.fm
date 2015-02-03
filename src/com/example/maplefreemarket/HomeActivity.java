@@ -86,16 +86,8 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 	@Override
 	protected void onResume(){
 		super.onResume();
-//		retriveServerData();
-//		Toast.makeText(myApp, "jajaja", Toast.LENGTH_SHORT).show();
-//		sortableColumnSetup();
 	}
 	
-/*	public void displayInterstitial() {
-	    if (interstitial.isLoaded()) {
-	      interstitial.show();
-	    }
-	  }*/
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -120,19 +112,6 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 		String result = "[{\"fm_items\":[{\"U\":\"1102484\",\"a\":\"1\",\"b\":\"1\",\"c\":\"3750000000\",\"d\":\"5\",\"e\":\"5\",\"f\":\"Click Me!\",\"g\":\"eurekaG1\",\"O\":\"Tyrant Lycaon Cloak\",\"T\":\"1102481\",\"X\":3471928570,\"Q\":\"Equip\",\"R\":\"Armor\",\"S\":\"Cape\",\"Y\":\"0\",\"h\":\"2\",\"j\":\"999\",\"k\":\"999\",\"l\":\"999\",\"m\":\"999\",\"p\":\"999\",\"q\":\"999\",\"r\":\"999\",\"s\":\"999\",\"F\":\"0\",\"G\":\"4\",\"H\":\"15\",\"W\":\"999\"},{\"U\":\"2049300\",\"a\":\"11\",\"b\":\"1\",\"c\":\"84999999\",\"d\":\"1\",\"e\":\"11\",\"f\":\"Click me!\",\"g\":\"Example\",\"O\":\"Advanced Equip Enhancement Scroll\",\"T\":\"5530246\",\"X\":38872403,\"P\":\"Enhances #cupgraded equipment#.\\nMore successes increase the chance of a good enhancement.\\nThe item is destroyed upon failure. Cannot be used on 15-star+ items.\\n\\n#c[Enhancement Success Rate]#\\n1 success: 100%\\n2 successes: 90%\\n3 successes: 80%\\n4 successes: 70%\\n5 successes: 60%\\n6 successes: 50%\\n7 successes: 40%\\n8 successes: 30%\\n9 successes: 20%\\n10 successes: 10%\\n11+ successes: 5% or lower\",\"Q\":\"Use\",\"R\":\"Armor Scroll\",\"S\":\"Accessory\",\"F\":\"0\",\"G\":\"0\",\"H\":\"0\"},{\"U\":\"1012306\",\"a\":\"1\",\"b\":\"1\",\"c\":\"700000000\",\"d\":\"3\",\"e\":\"3\",\"f\":\"Click Me!\",\"g\":\"Example\",\"O\":\"Lucky Tree Branch Nose\",\"T\":\"1012058\",\"X\":136666666,\"Q\":\"Equip\",\"R\":\"Accessory\",\"S\":\"Face Accessory\",\"i\":\"10\",\"j\":\"10\",\"k\":\"10\",\"l\":\"10\",\"m\":\"14\",\"p\":\"10\",\"r\":\"6\",\"s\":\"6\",\"t\":\"3\",\"u\":\"3\",\"F\":\"0\",\"G\":\"3\",\"H\":\"6\",\"W\":\"10\"},{\"U\":\"1432187\",\"a\":\"1\",\"b\":\"1\",\"c\":\"1500000000\",\"d\":\"3\",\"e\":\"2\",\"f\":\"Click Me!\",\"g\":\"Example\",\"O\":\"Sweetwater Spear\",\"T\":\"1432187\",\"X\":91365064,\"Q\":\"Equip\",\"R\":\"Two-Handed Weapon\",\"S\":\"Spear\",\"Y\":\"0\",\"i\":\"6\",\"j\":\"97\",\"k\":\"85\",\"n\":\"255\",\"o\":\"255\",\"p\":\"294\",\"t\":\"173\",\"C\":\"30\",\"D\":\"10\",\"F\":\"0\",\"G\":\"2\",\"H\":\"0\",\"W\":\"160\"},{\"U\":\"1122057\",\"a\":\"1\",\"b\":\"1\",\"c\":\"5000000000\",\"d\":\"1\",\"e\":\"2\",\"f\":\"Click Me!\",\"g\":\"Example\",\"O\":\"Awakening Mind of Maple Necklace\",\"T\":\"1122052\",\"P\":\"A Mind of Maple Necklace that is beginning to be restored. One more gem, and its mystical powers will be amplified and awakened into a power on another level.\",\"Q\":\"Equip\",\"R\":\"Accessory\",\"S\":\"Pendant\",\"Y\":\"0\",\"p\":\"15\",\"q\":\"15\",\"r\":\"5\",\"F\":\"0\",\"G\":\"1\",\"H\":\"0\",\"W\":\"70\"}]},{\"seconds_ago\":\"999999\"}]";
 		obj = new HandleItemListJSON(HomeActivity.this, 0);
 		obj.execute(result);
-		
-		//AD
-/*		AdBuddiz.setPublisherKey(getResources().getString(R.string.adBuddizPublishKey));
-	    AdBuddiz.cacheAds(this); // this = current Activity
-*/		// Create the interstitial.
-/*		interstitial = new InterstitialAd(this);
-	    interstitial.setAdUnitId(getString(R.string.admob_fullscreen));
-	    // Create ad request.
-	    AdRequest adRequest = new AdRequest.Builder().build();
-	    // Begin loading your interstitial.
-	    interstitial.loadAd(adRequest);*/
-	    // Invoke displayInterstitial() when you are ready to display an interstitial.
-	    
 
 
 		searchEditText = (EditText) findViewById(R.id.searchEditText);
@@ -224,6 +203,7 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 	
 	private void retriveServerData() {
 		
+//		PicassoTools.clearCache(Picasso.with(getApplicationContext()));
 		AsyncTask<String, Void, String> preTask = myApp.getPreTask();
 		if (preTask != null){
 			preTask.cancel(true);
@@ -303,8 +283,10 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 		mmap.put("Item", new myObj("Item Name", 0));
 		mmap.put("Qty", new myObj("Quantity", 1));
 		mmap.put("Price", new myObj("Price", 2));
-		mmap.put("Ch", new myObj("Channel", 3));
-		mmap.put("Rm", new myObj("Room", 4));
+/*		mmap.put("Ch", new myObj("Channel", 3));
+		mmap.put("Rm", new myObj("Room", 4));*/
+		mmap.put("Pot", new myObj("Potential", 3));
+		mmap.put("¡î", new myObj("Enhancement", 4));
 		mmap.put("%", new myObj("Percent", 5));
 		for (TextView col : columns) 
         {

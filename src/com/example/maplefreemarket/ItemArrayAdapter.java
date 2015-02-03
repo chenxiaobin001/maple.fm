@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.locks.ReentrantLock;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -30,6 +31,8 @@ class ItemArrayAdapter extends ArrayAdapter<FMItem> {
 	  private ItemFilter mFilter = new ItemFilter();
 	  private boolean filterCashItem;
 	  private boolean filterSoldItem;
+	  private final ReentrantLock lock = new ReentrantLock();
+	  private boolean DEBUG = false;
 	  public InfiniteScrollListener.SetLoading setLoading = new InfiniteScrollListener.SetLoading();
 	  static class ViewHolder {
 	    public TextView itemNameTextView;
@@ -127,7 +130,9 @@ class ItemArrayAdapter extends ArrayAdapter<FMItem> {
 		  return this.filteredDataDisplay;
 	  }
 	  public void setItems(List<FMItem> items){
-		  this.items = items;
+		  if (this.items != null)	this.items.clear();
+		  if (this.filteredData != null)	this.filteredData.clear();
+		  this.items = items;	  
 		  this.filteredData = items;
 		  if (filteredData != null)
 			  resetItemsRefresh(filteredData.subList(0, Math.min(10, filteredData.size())));
@@ -149,8 +154,8 @@ class ItemArrayAdapter extends ArrayAdapter<FMItem> {
 		  case 0:	Collections.sort(filteredData, FMItem.getItemNameComparator()); break;
 		  case 1:	Collections.sort(filteredData, FMItem.getQtyComparator()); break;
 		  case 2:	Collections.sort(filteredData, FMItem.getPriceComparator()); break;
-		  case 3:	Collections.sort(filteredData, FMItem.getChannelComparator()); break;
-		  case 4: 	Collections.sort(filteredData, FMItem.getRoomComparator()); break;
+		  case 3:	Collections.sort(filteredData, FMItem.getRankComparator()); break;
+		  case 4: 	Collections.sort(filteredData, FMItem.getEnhancementComparator()); break;
 		  case 5:	Collections.sort(filteredData, FMItem.getPercentComparator()); break;
 		  }
 		  if (desc){
@@ -209,33 +214,12 @@ class ItemArrayAdapter extends ArrayAdapter<FMItem> {
 		    viewHolder.percentageTextView.setTextColor(Color.parseColor(getPercentColor(tmp)));
 		    String id = filteredDataDisplay.get(position).getIconID();
 		    String url = context.getResources().getString(R.string.item_icon_url) + id + ".png";
-		    Picasso.with(context).load(url).placeholder(R.drawable.mesos).transform(new CropSquareTransformation()).into(viewHolder.imageView); 
-		    /*		    final ImageView tmpImageView = viewHolder.imageView;
-		    Picasso.with(context).load(url).into(new Target() {
+		    if (DEBUG == true){
+		    	Picasso.with(context.getApplicationContext()).setIndicatorsEnabled(true);
+		        Picasso.with(context.getApplicationContext()).setLoggingEnabled(true);
+		    }
+		    Picasso.with(context.getApplicationContext()).load(url).placeholder(R.drawable.mesos).transform(new CropSquareTransformation()).into(viewHolder.imageView); 
 
-	            @Override
-	            public void onPrepareLoad(Drawable arg0) {
-	
-	
-	            }
-	
-	            @Override
-	            public void onBitmapLoaded(Bitmap bitmap, LoadedFrom arg1) {
-	            	int height = 130;
-	            	int width = (int) (bitmap.getWidth()*1.0/bitmap.getHeight()*height);
-	            	bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
-//	            	Drawable d = new BitmapDrawable(context.getResources(), bitmap);
-	            	tmpImageView.setImageBitmap(bitmap);
-	            }
-	
-	            @Override
-	            public void onBitmapFailed(Drawable arg0) {
-	
-	
-	            }
-
-			
-		    });*/
 		    return rowView;
 	  }
 	  
@@ -353,7 +337,14 @@ class ItemArrayAdapter extends ArrayAdapter<FMItem> {
 			  System.out.println("touch[" + touch + "]");
 			  touch = filterString;*/
 	//		  Toast.makeText(context, filterString, Toast.LENGTH_SHORT).show();
-			  filteredData = new ArrayList<FMItem>(1);
+			  if (filteredData != null && filteredData != items){
+				  lock.lock();
+				  try{				  
+					  filteredData.clear();
+				  }finally {
+					  lock.unlock();
+			      }		  
+			  }
 			  final List<FMItem> list = items;
 			  
 			  int count = list.size();
@@ -405,7 +396,21 @@ class ItemArrayAdapter extends ArrayAdapter<FMItem> {
 /*			  int totalSize = filteredData.size();
 		      Toast.makeText(context, totalSize + " items. ", Toast.LENGTH_SHORT).show();*/
 		      //do the filter , but not do UI display ???
-		      resetItemsRefresh(filteredData.subList(0, Math.min(10, filteredData.size())));
+			  List<FMItem> tmp = new ArrayList<FMItem>(); 
+			  int sz = filteredData.size();
+			  for (int i = 0; i < Math.min(10, sz); i++){
+				  if (filteredData == null )	return;			//early termination
+				  lock.lock();
+				  try{
+					  if (filteredData.size() == 0)				//avoid race condition
+						  tmp.clear();
+					  else
+						  tmp.add(filteredData.get(i));
+				  }finally {
+					  lock.unlock();
+			      }		  
+			  }
+		      resetItemsRefresh(tmp);
 		  }
  
 	  }

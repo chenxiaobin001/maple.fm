@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#e56193"
-            android:text="Sort by->" />
+            android:text="  Sort by" />
 
         <TextView
             android:id="@+id/itemColTextView"
@@ -59,7 +59,7 @@
             android:layout_weight="1"
             android:gravity="right"
             android:paddingRight="5dp"
-            android:text="Ch"
+            android:text="Pot"
             android:textStyle="bold" />
 
         <TextView
@@ -70,7 +70,7 @@
             android:layout_weight="1"
             android:gravity="right"
             android:paddingRight="5dp"
-            android:text="Rm"
+            android:text="☆"
             android:textStyle="bold" />
 
         <TextView

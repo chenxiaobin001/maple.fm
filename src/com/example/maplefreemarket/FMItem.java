@@ -505,6 +505,36 @@ public class FMItem {
         };
     }
 	
+	static Comparator<FMItem> getEnhancementComparator() {
+        return new Comparator<FMItem>() {
+
+			@Override
+			public int compare(FMItem first, FMItem second) {
+				return first.getEnhancements() - second.getEnhancements();
+			}
+
+        };
+    }
+	
+	static Comparator<FMItem> getRankComparator() {
+        return new Comparator<FMItem>() {
+        	
+        	private int[] mapping = new int[]{0, 2, 3, 4, 5, 1};
+			@Override
+			public int compare(FMItem first, FMItem second) {
+				String r1 = first.getPotentialRank();
+				String r2 = second.getPotentialRank();
+				if (r1 == null && r2 == null)	return 0;
+				else if (r1 == null)	return -1;
+				else if (r2 == null)	return 1;
+				else{
+					return mapping[r1.charAt(0) - '0'] - mapping[r2.charAt(0) - '0'];
+				}
+			}
+
+        };
+    }
+	
 	private static double getPercent(long price, long avgPrice){
 		if (avgPrice == 0){
 			  return -1;
@@ -512,4 +542,7 @@ public class FMItem {
 			  return price*1.0/avgPrice * 100;
 		  }
 	}
+	
+	
+	
 }

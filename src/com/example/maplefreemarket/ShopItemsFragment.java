@@ -139,6 +139,8 @@ public class ShopItemsFragment extends Fragment{
 	         adapter.setItems(result);
 	         Toast.makeText(getActivity(), totalSize + " items. ", Toast.LENGTH_SHORT).show();
 	         view.findViewById(R.id.shopLoadingPanel).setVisibility(View.GONE);
+             OnItemsLoadedListener onItemsLoadedListener = (OnItemsLoadedListener) getActivity();
+             onItemsLoadedListener.onItemsLoaded();
 	//         adapter.resetItemsRefresh(result);
 	         // after delete onImageLoaded, on loading lag problem fixed...
 	     }
