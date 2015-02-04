@@ -163,5 +163,9 @@ public class HandleItemListJSON extends AsyncTask<String, Void, String> {
 			((Activity) mContext).findViewById(R.id.refreshButton).setVisibility(View.VISIBLE);
 			((Activity) mContext).findViewById(R.id.loadingPanel).setVisibility(View.GONE);
 		}
+		
+		AsyncTask<String, Void, String> computeShopsTask = new ComputeShopItem();
+		computeShopsTask.execute("");
+		
     }
 }

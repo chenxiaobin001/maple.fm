@@ -25,19 +25,15 @@ import android.widget.Toast;
 public class ShopItemsFragment extends Fragment{
 	private View view;
 	private ListView listView;
-	private MapleFreeMarketApplication myApp;
 	private String characterName;
 	private String shopName;
 	private ItemArrayAdapter adapter;
-	private Fragment rootFragment;
 	
 	// setup the fragment view
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saveInstanceState){
 		View view = inflater.inflate(R.layout.shop_info_fragment, container, false);
 		this.view = view;
-		this.rootFragment = this;
-		myApp = (MapleFreeMarketApplication) this.getActivity().getApplication();
 		Bundle bundle = getArguments();
 		adapter = new ItemArrayAdapter(getActivity(), new ArrayList<FMItem>());//do not share adapter with HomeActivity, sync problem!
 //		adapter = myApp.getItemAdapter();		
@@ -47,42 +43,43 @@ public class ShopItemsFragment extends Fragment{
 		sellerTextView.setText(characterName + "'s shop");
 		TextView shopTextView = (TextView) view.findViewById(R.id.ShopDescTitleTextView);
 		shopTextView.setText(shopName);
-		setListView();	
+		
+/*		
+		List<FMItem> result = getSellerItems();
+		int totalSize = result.size();
+		adapter.setItems(result, totalSize);
+		setListView();*/
+		
 		return view;
 	}
 	
-	@Override
-	public void onActivityCreated (Bundle savedInstanceState){
-		super.onActivityCreated(savedInstanceState);
-		getSellItems();
-	}
+
 	
-/*	
 	@Override
 	public void onResume(){
 		super.onResume();
+		getSellItems();
 
 	}
-	*/
+	
 	public void getSellItems(){
-/*		
-		LoadShopItems loading = new LoadShopItems();
-		view.findViewById(R.id.shopLoadingPanel).setVisibility(View.VISIBLE);
-		loading.execute("1");
-		*/
+		
+/*		LoadShopItems loading = new LoadShopItems();
+		loading.execute("1");*/
+
 		final Handler handler = new Handler();
 		handler.postDelayed(new Runnable() {
 		  @Override
 		  public void run() {
 			  LoadShopItems loading = new LoadShopItems();
-			  view.findViewById(R.id.shopLoadingPanel).setVisibility(View.VISIBLE);
 			  loading.execute("1");
 		  }
-		}, 100);
+		}, 500);
 	
 	}
 	
 	private void setListView(){
+		final MapleFreeMarketApplication myApp = (MapleFreeMarketApplication) MapleFreeMarketApplication.getContext();
 		listView = (ListView) view.findViewById(R.id.itemInShopListView);	
 		listView.setAdapter(adapter);
 		listView.setOnItemClickListener(new OnItemClickListener(){
@@ -97,7 +94,7 @@ public class ShopItemsFragment extends Fragment{
 				myApp.setDrawable(drawable);
 				ItemDetailDialog dialog = ItemDetailDialog.newInstance("");
 				if (dialog == null)	return;
-				FragmentManager fm = rootFragment.getFragmentManager();
+				FragmentManager fm = getFragmentManager();
 				dialog.show(fm, "language");
 			}
 
@@ -105,6 +102,19 @@ public class ShopItemsFragment extends Fragment{
 	}
 	
 	private List<FMItem> getSellerItems(){
+
+		final MapleFreeMarketApplication myApp = (MapleFreeMarketApplication) MapleFreeMarketApplication.getContext();
+		List<FMItem> filteredItems = new ArrayList<FMItem>();
+		String filterableString = characterName;
+		List<FMItem> shopItems = myApp.getShops().get(filterableString);
+		for (int i = 0; i < shopItems.size(); i++) {		
+				filteredItems.add(shopItems.get(i));
+		}
+		return filteredItems;
+	}
+	
+	
+	/*private List<FMItem> getSellerItems(){
 
 		List<FMItem> allItems = myApp.getItemAdapter().getItems();
 		List<FMItem> filteredItems = new ArrayList<FMItem>();
@@ -116,7 +126,7 @@ public class ShopItemsFragment extends Fragment{
 			}
 		}
 		return filteredItems;
-	}
+	}*/
 	
 	public interface OnItemsLoadedListener {
 		public void onItemsLoaded();
@@ -139,6 +149,7 @@ public class ShopItemsFragment extends Fragment{
 	         adapter.setItems(result, totalSize);
 	         Toast.makeText(getActivity(), totalSize + " items. ", Toast.LENGTH_SHORT).show();
 	         view.findViewById(R.id.shopLoadingPanel).setVisibility(View.GONE);
+	         setListView();	
              OnItemsLoadedListener onItemsLoadedListener = (OnItemsLoadedListener) getActivity();
              onItemsLoadedListener.onItemsLoaded();
 //	         adapter.resetItemsRefresh(result);
@@ -154,8 +165,7 @@ public class ShopItemsFragment extends Fragment{
 		}*/
 		int width = iv.getMeasuredHeight();
      	int height = (int) (width*1.0/bitmap.getWidth() *bitmap.getHeight());
-     	bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
-     	iv.setImageBitmap(bitmap);
+     	iv.setImageBitmap(Bitmap.createScaledBitmap(bitmap, width, height, false));
 	 }
 
 }

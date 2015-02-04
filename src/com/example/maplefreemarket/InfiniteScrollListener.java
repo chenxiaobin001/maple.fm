@@ -55,14 +55,14 @@ public abstract class InfiniteScrollListener implements OnScrollListener{
     {
     	if (setLoading.loading == false){			//reset listener from outer.
     		setLoading.loading = true;
-    		System.out.println("same");
+ //   		System.out.println("same");
     		loading = false;
     	}
         if (totalItemCount < previousTotalItemCount) {    
         	loading = false;
         	this.previousTotalItemCount = totalItemCount;
-        	System.out.println("firstVisibleItem" + firstVisibleItem + " visibleItemCount" + visibleItemCount + " totalItemCount" + totalItemCount + " jajaja");
-        	System.out.println("loading" + loading);
+ //       	System.out.println("firstVisibleItem" + firstVisibleItem + " visibleItemCount" + visibleItemCount + " totalItemCount" + totalItemCount + " jajaja");
+ //       	System.out.println("loading" + loading);
         	this.currentPage = startingPageIndex;
             if (totalItemCount == 0) {
                 this.loading = true; 

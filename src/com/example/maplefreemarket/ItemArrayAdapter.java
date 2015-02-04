@@ -81,7 +81,7 @@ class ItemArrayAdapter extends ArrayAdapter<FMItem> {
 	    this.context = context;
 	    this.items = items;
 	    this.filteredData = items;
-	    this.filteredDataDisplay = new ArrayList<FMItem>();
+	    this.filteredDataDisplay = items;
 	    this.filterCashItem = false;
 	    this.filterSoldItem = false;
 	  }

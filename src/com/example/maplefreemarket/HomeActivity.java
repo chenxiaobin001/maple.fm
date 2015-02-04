@@ -223,7 +223,7 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 	        @Override
 	        public void loadMore(int page, int totalItemsCount) {
 	        	List<FMItem> curDataList = adapter.getFilteredDisplayItems();
-	        	System.out.print(totalItemsCount + "load more");
+	//        	System.out.print(totalItemsCount + "load more");
 	        	int size = curDataList.size();
 	        	List<FMItem> items = adapter.getFilteredItems();
 	        	if (size >= items.size())	return;
@@ -316,6 +316,7 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 		spinner = (Spinner) findViewById(R.id.serverSpinner);
 		spinner.setAdapter(new MyAdapter(HomeActivity.this, R.layout.row,
 				serverNames, serverImages));
+		spinner.setSelection(myApp.getServerConfiguration());
 		spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			@Override
@@ -352,6 +353,7 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 					selection = "Renegades";
 		
 				}
+				myApp.saveServerConfiguration(position);
 				Toast.makeText(myApp, selection +" is selected", Toast.LENGTH_SHORT).show();
 				retriveServerData();
 			}
