@@ -86,6 +86,19 @@ public class MapleFreeMarketApplication extends Application{
     	return settings.getInt("Server", 0);
     }
     
+    public void saveSortConfiguration(int sort){
+    	
+    	SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+    	SharedPreferences.Editor editor = settings.edit();
+    	editor.putInt("Sort", sort);
+    	editor.commit();
+    }
+    
+    public int getSortConfiguration(){
+    	SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+    	return settings.getInt("Sort", 0);
+    }
+    
     @Override
     public void onCreate() {
         super.onCreate();

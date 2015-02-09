@@ -433,6 +433,18 @@ public class FMItem {
 	public void setDrawableImage(Drawable drawableImage) {
 		this.drawableImage = drawableImage;
 	}*/
+	static Comparator<FMItem> getComparator(int idx) {
+		switch (idx){
+		case 0:	return getItemNameComparator();
+		case 1:	return getQtyComparator();
+		case 2:	return getPriceComparator();
+		case 3:	return getRankComparator();
+		case 4:	return getEnhancementComparator();
+		case 5:	return getPercentComparator();
+		}
+		return getItemNameComparator();
+	}
+	
 	static Comparator<FMItem> getItemNameComparator() {
         return new Comparator<FMItem>() {
 

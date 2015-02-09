@@ -2,6 +2,7 @@ package com.example.maplefreemarket;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.code.freeMarket.R;
@@ -151,15 +152,19 @@ public class HandleItemListJSON extends AsyncTask<String, Void, String> {
 			((Activity) mContext).findViewById(R.id.refreshButton).setVisibility(View.VISIBLE);
 			return;
 		}
-		Toast.makeText(((HomeActivity)mContext).getMyApp(), fmItems.size() + " items, " + "updated " + getMinutesAgo() + " minutes ago", Toast.LENGTH_SHORT).show();
 		ItemArrayAdapter adapter = ((HomeActivity)mContext).getAdapter();
 		adapter.clear();
+		/*************** sort ************/
+		Collections.sort(fmItems, FMItem.getComparator(myApp.getSortConfiguration()));
+		Collections.reverse(fmItems);
 		adapter.setItems(fmItems, 10);
 		myApp.setItemAdapter(adapter);
+		
 //		adapter.resetItemsRefresh(getItems(Math.min(10, fmItems.size())));
 //		adapter.notifyDataSetChanged();
 		this.myApp.setPreTask(null);
-		if (mode == 1){	//network
+		if (mode == 1){	//network mode
+			Toast.makeText(((HomeActivity)mContext).getMyApp(), fmItems.size() + " items, " + "updated " + getMinutesAgo() + " minutes ago", Toast.LENGTH_SHORT).show();
 			((Activity) mContext).findViewById(R.id.refreshButton).setVisibility(View.VISIBLE);
 			((Activity) mContext).findViewById(R.id.loadingPanel).setVisibility(View.GONE);
 		}

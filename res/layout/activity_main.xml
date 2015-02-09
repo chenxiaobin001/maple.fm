@@ -77,7 +77,6 @@
             android:id="@+id/searchEditText"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:selectAllOnFocus="true"
             android:layout_weight="0.44"
             android:hint="Keyword" />
 		<RelativeLayout
@@ -97,6 +96,14 @@
             android:layout_height="50dp"
             android:text="@string/refresh_button"
             android:textColor="#ffffff" />
+
+        <Button
+            android:id="@+id/finishButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Finish"
+            android:textColor="#ffffff"  />
+
     </LinearLayout>
 
 

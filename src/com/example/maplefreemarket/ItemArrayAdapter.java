@@ -150,14 +150,7 @@ class ItemArrayAdapter extends ArrayAdapter<FMItem> {
 	  }
 	  
 	  public void sortByAttribute(int idx, boolean desc){
-		  switch (idx){
-		  case 0:	Collections.sort(filteredData, FMItem.getItemNameComparator()); break;
-		  case 1:	Collections.sort(filteredData, FMItem.getQtyComparator()); break;
-		  case 2:	Collections.sort(filteredData, FMItem.getPriceComparator()); break;
-		  case 3:	Collections.sort(filteredData, FMItem.getRankComparator()); break;
-		  case 4: 	Collections.sort(filteredData, FMItem.getEnhancementComparator()); break;
-		  case 5:	Collections.sort(filteredData, FMItem.getPercentComparator()); break;
-		  }
+		  Collections.sort(filteredData, FMItem.getComparator(idx));
 		  if (desc){
 			  Collections.reverse(filteredData);
 		  }
