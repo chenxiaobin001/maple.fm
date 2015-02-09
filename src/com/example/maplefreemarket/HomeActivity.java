@@ -12,12 +12,15 @@ import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -294,8 +297,9 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
+		MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.actionbar_menu, menu);
+	    return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
@@ -303,11 +307,37 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
+		switch (item.getItemId()) {
+        case R.id.action_about:
+        	AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+        	builder.setTitle("About");
+        	builder.setMessage(getWhatIsNew());
+        	builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+
+               }
+           });
+        	builder.show();;
+            return true;
+        case R.id.action_profile:
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
 		}
-		return super.onOptionsItemSelected(item);
+	}
+	
+	
+	private String getWhatIsNew() {
+		StringBuilder sb = new StringBuilder();
+    	sb.append("V 1.954\n\n");
+    	sb.append("-Optimize UI\n");
+    	sb.append("-Highlight sort choice\n");
+    	sb.append("-Record last sort choice\n\n");
+    	sb.append("-If you find any bugs or have any suggestions, please feel free to contact me.\n");
+    	sb.append("-If you like this app, please give it a rating :)\n");
+    	sb.append("\n");
+    	sb.append("Happy Mapling!");
+    	return sb.toString();
 	}
 	
 	private String getSearchRequestURL(){
