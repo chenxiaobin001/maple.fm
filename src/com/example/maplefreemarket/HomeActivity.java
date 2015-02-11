@@ -66,6 +66,7 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 	private ActivitySwipeDetector swipe;
 
 	class SortAttrViewHolder {
+		int size = 6;
 		int selected;
 		public List<TextView> attrs;
 		public boolean[] descs;
@@ -97,7 +98,17 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 			mmap.put("¡î", new myObj("Enhancement", 4));
 			mmap.put("%", new myObj("Percent", 5));
 		}
-		
+		public void performSort(int idx) {
+			sortAttrViewHolder.attrs.get(sortAttrViewHolder.selected).setTextColor(Color.parseColor("#278bd3"));
+			TextView newAttr = attrs.get(idx);
+			newAttr.setTextColor(Color.parseColor("#e56193"));
+    		String colName = newAttr.getText().toString();
+    		sortAttrViewHolder.selected = idx;
+    		Toast.makeText(myApp, sortAttrViewHolder.mmap.get(colName).str, Toast.LENGTH_SHORT).show();
+    		adapter.sortByAttribute(idx, sortAttrViewHolder.descs[idx]);
+    		sortAttrViewHolder.descs[idx] = !sortAttrViewHolder.descs[idx];
+    		myApp.saveSortConfiguration(idx);
+		}
 		//itemTextView;
 		//quantityTextView;
 		//priceTextView;
@@ -252,7 +263,7 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 			public void onItemClick(AdapterView<?> adapter, View view, int position,
 					long id) {
 				if(swipe.action != 0) {
-
+					
 		        } else {
 		        	final ImageView imageView = (ImageView) view.findViewById(R.id.icon1);
 					final BitmapDrawable bitmapDrawable = (BitmapDrawable) imageView.getDrawable();
@@ -462,13 +473,20 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 	}
 
 	@Override
-	public void left2right(View v) {
-		Toast.makeText(myApp, "swipe to right", Toast.LENGTH_SHORT).show();
+	public void right2left(View v) {
+		int currentIdx = sortAttrViewHolder.selected;
+		int nextIdx = (currentIdx + 1) % sortAttrViewHolder.size;
+		sortAttrViewHolder.performSort(nextIdx);
+	//	Toast.makeText(myApp, "swipe to right", Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
-	public void right2left(View v) {
-		Toast.makeText(myApp, "swipe to left", Toast.LENGTH_SHORT).show();
+	public void left2right(View v) {
+	//	Toast.makeText(myApp, "swipe to left", Toast.LENGTH_SHORT).show();
+		int currentIdx = sortAttrViewHolder.selected;
+		int nextIdx = (currentIdx - 1);
+		if (nextIdx < 0)	nextIdx = sortAttrViewHolder.size - 1;
+		sortAttrViewHolder.performSort(nextIdx);
 	}
 
 
