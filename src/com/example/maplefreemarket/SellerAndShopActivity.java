@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.code.freeMarket.R;
+import com.example.interfaces.MyDialogFragmentListener;
 import com.example.maplefreemarket.SellerInfoFragment.OnImageLoadedListener;
 import com.example.maplefreemarket.ShopItemsFragment.OnItemsLoadedListener;
 

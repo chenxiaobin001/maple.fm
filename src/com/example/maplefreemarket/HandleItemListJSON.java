@@ -157,7 +157,7 @@ public class HandleItemListJSON extends AsyncTask<String, Void, String> {
 		/*************** sort ************/
 		Collections.sort(fmItems, FMItem.getComparator(myApp.getSortConfiguration()));
 		Collections.reverse(fmItems);
-		adapter.setItems(fmItems, 10);
+		adapter.setItems(fmItems, 20);
 		myApp.setItemAdapter(adapter);
 		
 //		adapter.resetItemsRefresh(getItems(Math.min(10, fmItems.size())));

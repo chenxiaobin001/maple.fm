@@ -39,10 +39,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.code.freeMarket.R;
+import com.example.interfaces.MyDialogFragmentListener;
+import com.example.interfaces.SwipeInterface;
 
 
 
-public class HomeActivity extends ActionBarActivity implements MyDialogFragmentListener{
+public class HomeActivity extends ActionBarActivity implements MyDialogFragmentListener, SwipeInterface{
 ///	private InterstitialAd interstitial;
 
 	private Spinner spinner;
@@ -61,6 +63,7 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 	private CheckBox cashItemCheckBox;
 	private CheckBox soldItemCheckBox;
 	private Button finishButton;
+	private ActivitySwipeDetector swipe;
 
 	class SortAttrViewHolder {
 		int selected;
@@ -161,7 +164,8 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 		obj = new HandleItemListJSON(HomeActivity.this, 0);
 		obj.execute(result);
     	searchEditText = (EditText) findViewById(R.id.searchEditText);
-
+    	swipe = new ActivitySwipeDetector(HomeActivity.this);
+    	
 /*		searchEditText.setOnTouchListener(new View.OnTouchListener(){
 			@Override
 			public boolean onTouch(View arg0, MotionEvent arg1) {
@@ -241,24 +245,31 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 		refreshButton.setVisibility(View.GONE);
 		
 		listView.setOnScrollListener(newOnScrollListener());
-	
+		
 		listView.setOnItemClickListener(new OnItemClickListener(){
 
 			@Override
 			public void onItemClick(AdapterView<?> adapter, View view, int position,
 					long id) {
-				final ImageView imageView = (ImageView) view.findViewById(R.id.icon1);
-				final BitmapDrawable bitmapDrawable = (BitmapDrawable) imageView.getDrawable();
-				FMItem item = (FMItem) adapter.getAdapter().getItem(position);
-				myApp.setSelectedItem(item);
-				myApp.setDrawable(bitmapDrawable);
-				ItemDetailDialog dialog = ItemDetailDialog.newInstance("");
-				if (dialog == null)	return;
-				FragmentManager fm = getSupportFragmentManager();
-				dialog.show(fm, "language");
+				if(swipe.action != 0) {
+
+		        } else {
+		        	final ImageView imageView = (ImageView) view.findViewById(R.id.icon1);
+					final BitmapDrawable bitmapDrawable = (BitmapDrawable) imageView.getDrawable();
+					FMItem item = (FMItem) adapter.getAdapter().getItem(position);
+					myApp.setSelectedItem(item);
+					myApp.setDrawable(bitmapDrawable);
+					ItemDetailDialog dialog = ItemDetailDialog.newInstance("");
+					if (dialog == null)	return;
+					FragmentManager fm = getSupportFragmentManager();
+					dialog.show(fm, "language");
+		        }
+				
 			}
 
 		});
+		listView.setOnTouchListener(swipe);
+
 	}
 	
 	private void retriveServerData() {
@@ -449,6 +460,17 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 	public void onReturnValue(String result) {
 		searchEditText.setText(result);	
 	}
+
+	@Override
+	public void left2right(View v) {
+		Toast.makeText(myApp, "swipe to right", Toast.LENGTH_SHORT).show();
+	}
+
+	@Override
+	public void right2left(View v) {
+		Toast.makeText(myApp, "swipe to left", Toast.LENGTH_SHORT).show();
+	}
+
 
 	
 }

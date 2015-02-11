@@ -18,6 +18,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.code.freeMarket.R;
+import com.example.interfaces.MyDialogFragmentListener;
 
 public class ItemDetailDialog extends DialogFragment {
 	
