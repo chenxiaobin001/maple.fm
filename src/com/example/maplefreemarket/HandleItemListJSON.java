@@ -3,6 +3,7 @@ package com.example.maplefreemarket;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import com.code.freeMarket.R;
@@ -155,9 +156,10 @@ public class HandleItemListJSON extends AsyncTask<String, Void, String> {
 		ItemArrayAdapter adapter = ((HomeActivity)mContext).getAdapter();
 		adapter.clear();
 		/*************** sort ************/
+		List<FMItem> tmp = new ArrayList<FMItem>(fmItems);
 		Collections.sort(fmItems, FMItem.getComparator(myApp.getSortConfiguration()));
 		Collections.reverse(fmItems);
-		adapter.setItems(fmItems, 20);
+		adapter.setItems(fmItems, 10);
 		myApp.setItemAdapter(adapter);
 		
 //		adapter.resetItemsRefresh(getItems(Math.min(10, fmItems.size())));
@@ -169,8 +171,10 @@ public class HandleItemListJSON extends AsyncTask<String, Void, String> {
 			((Activity) mContext).findViewById(R.id.loadingPanel).setVisibility(View.GONE);
 		}
 		
+		
 		AsyncTask<String, Void, String> computeShopsTask = new ComputeShopItem();
 		computeShopsTask.execute("");
-		
+		AsyncTask<String, Void, HashMap<String, FMItemSummary>> computeMarketSummay = new ComputeMarketSummary(tmp);
+		computeMarketSummay.execute("");
     }
 }

@@ -28,6 +28,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -265,11 +266,12 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 				if(swipe.action != 0) {
 					
 		        } else {
-		        	final ImageView imageView = (ImageView) view.findViewById(R.id.icon1);
-					final BitmapDrawable bitmapDrawable = (BitmapDrawable) imageView.getDrawable();
+		        	ImageView imageView = (ImageView) view.findViewById(R.id.icon1);
+					BitmapDrawable bitmapDrawable = (BitmapDrawable) imageView.getDrawable();
 					FMItem item = (FMItem) adapter.getAdapter().getItem(position);
 					myApp.setSelectedItem(item);
 					myApp.setDrawable(bitmapDrawable);
+					bitmapDrawable = null;
 					ItemDetailDialog dialog = ItemDetailDialog.newInstance("");
 					if (dialog == null)	return;
 					FragmentManager fm = getSupportFragmentManager();
@@ -280,7 +282,25 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 
 		});
 		listView.setOnTouchListener(swipe);
-
+		listView.setOnItemLongClickListener(new OnItemLongClickListener() { 
+			 
+            public boolean onItemLongClick(AdapterView<?> adapter, View view,
+                    int position, long id) {
+            	ImageView imageView = (ImageView) view.findViewById(R.id.icon1);
+				BitmapDrawable bitmapDrawable = (BitmapDrawable) imageView.getDrawable();
+				FMItem item = (FMItem) adapter.getAdapter().getItem(position);
+				myApp.setSelectedItem(item);
+				myApp.setDrawable(bitmapDrawable);
+				bitmapDrawable = null;
+				ItemSummaryDialog dialog = ItemSummaryDialog.newInstance("");
+				if (dialog == null)	return true;
+				FragmentManager fm = getSupportFragmentManager();
+				dialog.show(fm, "language");
+ 
+                return true; 
+            } 
+        });
+		listView.setLongClickable(true);
 	}
 	
 	private void retriveServerData() {
@@ -310,7 +330,7 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 	        	int size = curDataList.size();
 	        	List<FMItem> items = adapter.getFilteredItems();
 	        	if (size >= items.size())	return;
-	        	adapter.addItemsRefresh(items.subList(size, Math.min(page * 20, items.size())));
+	        	adapter.addItemsRefresh(items.subList(size, Math.min(page * 30, items.size())));
 	        }
 	    };
 	    return onScrollListener;
@@ -339,7 +359,9 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 
                }
            });
-        	builder.show();;
+        	AlertDialog dialog = builder.show();
+        	TextView textView = (TextView) dialog.findViewById(android.R.id.message);
+            textView.setTextSize(16);
             return true;
         case R.id.action_profile:
             return true;
@@ -351,13 +373,18 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 	
 	private String getWhatIsNew() {
 		StringBuilder sb = new StringBuilder();
-    	sb.append("V 1.954\n\n");
-    	sb.append("-Optimize UI\n");
-    	sb.append("-Highlight sort choice\n");
-    	sb.append("-Record last sort choice\n\n");
+    	sb.append("V 1.957\n\n");
+    	sb.append("What's new:\n\n");
+    	sb.append("-fix small bug\n");
+    	sb.append("-add item summary dialog\n\n");
+    	sb.append("Tips:\n\n");
+    	sb.append("-You can tap the 'sort by' row to choose sort category\n");
+    	sb.append("-or swipe screen to change sort category\n");
+    	sb.append("-You can short press item to open item detail dialog\n");
+    	sb.append("-or long press item to open item summary dialog\n\n");
     	sb.append("-If you find any bugs or have any suggestions, please feel free to contact me.\n");
     	sb.append("-If you like this app, please give it a rating :)\n");
-    	sb.append("\n");
+    	sb.append("\n\n");
     	sb.append("Happy Mapling!");
     	return sb.toString();
 	}

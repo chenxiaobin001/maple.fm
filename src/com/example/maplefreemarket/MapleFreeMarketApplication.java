@@ -15,6 +15,7 @@ public class MapleFreeMarketApplication extends Application{
 	private BitmapDrawable drawable;
 	private ItemArrayAdapter itemAdapter;
 	private HashMap<String, List<FMItem>> shops;
+	private HashMap<String, FMItemSummary> itemSummary;
 	private FMItem selectedItem;
 	private AsyncTask<String, Void, String> preTask;
 	public static final String PREFS_NAME = "MyPrefsFile";
@@ -103,6 +104,7 @@ public class MapleFreeMarketApplication extends Application{
     public void onCreate() {
         super.onCreate();
         mContext = getApplicationContext();
+        shops = new HashMap<String, List<FMItem>>();
       /*  Parse.enableLocalDatastore(this); 
         ParseObject.registerSubclass(WorkoutDataStore.class);
         
@@ -117,4 +119,12 @@ public class MapleFreeMarketApplication extends Application{
  
         ParseACL.setDefaultACL(defaultACL, true);*/
     }
+
+	public HashMap<String, FMItemSummary> getItemSummary() {
+		return itemSummary;
+	}
+
+	public void setItemSummary(HashMap<String, FMItemSummary> itemSummary) {
+		this.itemSummary = itemSummary;
+	}
 }

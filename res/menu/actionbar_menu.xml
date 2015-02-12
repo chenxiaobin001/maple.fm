@@ -5,7 +5,7 @@
           android:title="Profile"
           yourapp:showAsAction="ifRoom" />
     <item android:id="@+id/action_about"
-          android:icon="@drawable/ic_action_info"
+          android:icon="@drawable/ic_action_about"
           android:title="About" 
           yourapp:showAsAction="ifRoom"/>
 </menu>

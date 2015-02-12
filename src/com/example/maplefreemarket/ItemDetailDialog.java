@@ -23,7 +23,6 @@ import com.example.interfaces.MyDialogFragmentListener;
 public class ItemDetailDialog extends DialogFragment {
 	
 	private FMItem selectedItem;
-	private MapleFreeMarketApplication myApp;
 	private View view;
 	private View titleView;
 	private TextView itemDetailTextView;
@@ -52,7 +51,7 @@ public class ItemDetailDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
     	
-       	myApp = (MapleFreeMarketApplication) getActivity().getApplication();
+    	MapleFreeMarketApplication myApp = (MapleFreeMarketApplication) getActivity().getApplication();
        	selectedItem = myApp.getSelectedItem();
 		return setupDialogView();
 
@@ -224,6 +223,7 @@ public class ItemDetailDialog extends DialogFragment {
     }
     
     private void setTitleView(View titleView){
+    	MapleFreeMarketApplication myApp = (MapleFreeMarketApplication) MapleFreeMarketApplication.getContext();
     	TextView itemNameTextView = (TextView) titleView.findViewById(R.id.itemNameTextView);
     	TextView starTextView = (TextView) titleView.findViewById(R.id.starTextView);
     	TextView rankTextView = (TextView) titleView.findViewById(R.id.rankTextView);

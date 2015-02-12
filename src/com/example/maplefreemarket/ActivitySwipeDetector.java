@@ -33,8 +33,10 @@ public class ActivitySwipeDetector implements View.OnTouchListener {
     
     @Override
     public boolean onTouch(View v, MotionEvent event) { 	
+    	
         switch(event.getAction()){
         case MotionEvent.ACTION_DOWN: {
+            // Add a user's movement to the tracker. 
             downX = event.getX();
             downY = event.getY();
             action = 0;
@@ -44,6 +46,7 @@ public class ActivitySwipeDetector implements View.OnTouchListener {
             //need to let onscrolllistener to get this event!
         }
         case MotionEvent.ACTION_UP: {
+	
             upX = event.getX();
             upY = event.getY();
   //          v.getParent().requestDisallowInterceptTouchEvent(false);
@@ -57,8 +60,8 @@ public class ActivitySwipeDetector implements View.OnTouchListener {
             // swipe horizontal?
             if(Math.abs(deltaX) > MIN_DISTANCE){
                 // left or right
-                if(deltaX < 0) { this.onLeftToRightSwipe(v); action = 1;  }
-                if(deltaX > 0) { this.onRightToLeftSwipe(v); action = 2;  }
+                if(deltaX < 0) { this.onLeftToRightSwipe(v); action = 1; ;}
+                if(deltaX > 0) { this.onRightToLeftSwipe(v); action = 2; ;}
             }
         }
         }
