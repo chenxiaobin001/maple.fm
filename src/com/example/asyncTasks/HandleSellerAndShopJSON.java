@@ -1,9 +1,10 @@
-package com.example.maplefreemarket;
+package com.example.asyncTasks;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.code.freeMarket.R;
+import com.example.infoClasses.CharacterInfo;
 import com.example.maplefreemarket.SellerInfoFragment.OnImageLoadedListener;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;

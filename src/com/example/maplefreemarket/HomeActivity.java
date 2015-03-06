@@ -40,6 +40,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.code.freeMarket.R;
+import com.example.asyncTasks.HandleItemListJSON;
+import com.example.asyncTasks.HandleNotificationJSON;
+import com.example.asyncTasks.RetrieveJSonTask;
+import com.example.infoClasses.FMItem;
 import com.example.interfaces.MyDialogFragmentListener;
 import com.example.interfaces.SwipeInterface;
 
@@ -303,6 +307,12 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 		listView.setLongClickable(true);
 	}
 	
+	private void retriveNotification(int mode) {
+		AsyncTask<String, Void, String> asyncTask;
+		asyncTask = new HandleNotificationJSON(this, mode);
+		new RetrieveJSonTask(HomeActivity.this, asyncTask).execute("https://radiant-sierra-5346.herokuapp.com/notification/index.json");
+	}
+	
 	private void retriveServerData() {
 		
 //		PicassoTools.clearCache(Picasso.with(getApplicationContext()));
@@ -365,6 +375,8 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
             return true;
         case R.id.action_profile:
             return true;
+        case R.id.action_notify:
+        	retriveNotification(1);
         default:
             return super.onOptionsItemSelected(item);
 		}
@@ -375,8 +387,7 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 		StringBuilder sb = new StringBuilder();
     	sb.append("V 1.957\n\n");
     	sb.append("What's new:\n\n");
-    	sb.append("-fix small bug\n");
-    	sb.append("-add item summary dialog\n\n");
+    	sb.append("-add notification\n\n");
     	sb.append("Tips:\n\n");
     	sb.append("-You can tap the 'sort by' row to choose sort category\n");
     	sb.append("-or swipe screen to change sort category\n");
@@ -483,6 +494,10 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 				myApp.saveServerConfiguration(position);
 //				Toast.makeText(myApp, selection +" is selected", Toast.LENGTH_SHORT).show();
 				retriveServerData();
+				if (myApp.init == 0) {
+					retriveNotification(0);		//0-show as needed, 1-show 
+				}
+				
 			}
 
 			@Override

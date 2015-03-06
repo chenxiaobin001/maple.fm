@@ -1,8 +1,11 @@
-package com.example.maplefreemarket;
+package com.example.asyncTasks;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import com.example.infoClasses.FMItem;
+import com.example.maplefreemarket.MapleFreeMarketApplication;
 
 import android.os.AsyncTask;
 

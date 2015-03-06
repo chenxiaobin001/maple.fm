@@ -18,6 +18,9 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.code.freeMarket.R;
+import com.example.asyncTasks.HandleItemUpgradeJSON;
+import com.example.asyncTasks.RetrieveJSonTask;
+import com.example.infoClasses.FMItem;
 import com.example.interfaces.MyDialogFragmentListener;
 
 public class ItemDetailDialog extends DialogFragment {

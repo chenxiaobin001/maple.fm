@@ -3,6 +3,9 @@ package com.example.maplefreemarket;
 import java.util.HashMap;
 import java.util.List;
 
+import com.example.infoClasses.FMItem;
+import com.example.infoClasses.FMItemSummary;
+
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -18,6 +21,7 @@ public class MapleFreeMarketApplication extends Application{
 	private HashMap<String, FMItemSummary> itemSummary;
 	private FMItem selectedItem;
 	private AsyncTask<String, Void, String> preTask;
+	public int init;
 	public static final String PREFS_NAME = "MyPrefsFile";
 	
 	private static Context mContext;
@@ -105,6 +109,7 @@ public class MapleFreeMarketApplication extends Application{
         super.onCreate();
         mContext = getApplicationContext();
         shops = new HashMap<String, List<FMItem>>();
+        init = 0;
       /*  Parse.enableLocalDatastore(this); 
         ParseObject.registerSubclass(WorkoutDataStore.class);
         

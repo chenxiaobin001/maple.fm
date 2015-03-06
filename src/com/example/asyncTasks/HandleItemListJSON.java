@@ -1,4 +1,4 @@
-package com.example.maplefreemarket;
+package com.example.asyncTasks;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -7,6 +7,11 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.code.freeMarket.R;
+import com.example.infoClasses.FMItem;
+import com.example.infoClasses.FMItemSummary;
+import com.example.maplefreemarket.HomeActivity;
+import com.example.maplefreemarket.ItemArrayAdapter;
+import com.example.maplefreemarket.MapleFreeMarketApplication;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
@@ -176,5 +181,7 @@ public class HandleItemListJSON extends AsyncTask<String, Void, String> {
 		computeShopsTask.execute("");
 		AsyncTask<String, Void, HashMap<String, FMItemSummary>> computeMarketSummay = new ComputeMarketSummary(tmp);
 		computeMarketSummay.execute("");
+		this.mContext = null;
+		this.myApp = null;
     }
 }

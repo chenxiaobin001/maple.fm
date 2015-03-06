@@ -18,11 +18,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.code.freeMarket.R;
+import com.example.infoClasses.FMItem;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
 import android.widget.Filter;
-class ItemArrayAdapter extends ArrayAdapter<FMItem> {
+public class ItemArrayAdapter extends ArrayAdapter<FMItem> {
 	  private final Context context;
 	  private List<FMItem> items;				//original data
 	  private List<FMItem> filteredData;		//filtered data

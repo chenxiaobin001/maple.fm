@@ -1,4 +1,4 @@
-package com.example.maplefreemarket;
+package com.example.infoClasses;
 
 import java.util.Comparator;
 
@@ -433,7 +433,7 @@ public class FMItem {
 	public void setDrawableImage(Drawable drawableImage) {
 		this.drawableImage = drawableImage;
 	}*/
-	static Comparator<FMItem> getComparator(int idx) {
+	public static Comparator<FMItem> getComparator(int idx) {
 		switch (idx){
 		case 0:	return getItemNameComparator();
 		case 1:	return getQtyComparator();
@@ -445,7 +445,7 @@ public class FMItem {
 		return getItemNameComparator();
 	}
 	
-	static Comparator<FMItem> getItemNameComparator() {
+	public static Comparator<FMItem> getItemNameComparator() {
         return new Comparator<FMItem>() {
 
 			@Override
@@ -457,7 +457,7 @@ public class FMItem {
         };
     }
 
-	static Comparator<FMItem> getPriceComparator() {
+	public static Comparator<FMItem> getPriceComparator() {
         return new Comparator<FMItem>() {
 
 			@Override
@@ -474,7 +474,7 @@ public class FMItem {
 
         };
     }
-	static Comparator<FMItem> getChannelComparator() {
+	public static Comparator<FMItem> getChannelComparator() {
         return new Comparator<FMItem>() {
 
 			@Override
@@ -484,7 +484,7 @@ public class FMItem {
 
         };
     }
-	static Comparator<FMItem> getRoomComparator() {
+	public static Comparator<FMItem> getRoomComparator() {
         return new Comparator<FMItem>() {
 
 			@Override
@@ -494,7 +494,7 @@ public class FMItem {
 
         };
     }
-	static Comparator<FMItem> getPercentComparator() {
+	public static Comparator<FMItem> getPercentComparator() {
         return new Comparator<FMItem>() {
 
 			@Override
@@ -506,7 +506,7 @@ public class FMItem {
 
         };
     }
-	static Comparator<FMItem> getQtyComparator() {
+	public static Comparator<FMItem> getQtyComparator() {
         return new Comparator<FMItem>() {
 
 			@Override
@@ -517,7 +517,7 @@ public class FMItem {
         };
     }
 	
-	static Comparator<FMItem> getEnhancementComparator() {
+	public static Comparator<FMItem> getEnhancementComparator() {
         return new Comparator<FMItem>() {
 
 			@Override
@@ -528,7 +528,7 @@ public class FMItem {
         };
     }
 	
-	static Comparator<FMItem> getRankComparator() {
+	public static Comparator<FMItem> getRankComparator() {
         return new Comparator<FMItem>() {
         	
         	private int[] mapping = new int[]{0, 2, 3, 4, 5, 1};

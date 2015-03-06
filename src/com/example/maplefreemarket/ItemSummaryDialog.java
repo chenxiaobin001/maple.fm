@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 import com.code.freeMarket.R;
+import com.example.infoClasses.FMItem;
+import com.example.infoClasses.FMItemSummary;
 import com.example.interfaces.MyDialogFragmentListener;
 
 public class ItemSummaryDialog extends DialogFragment {

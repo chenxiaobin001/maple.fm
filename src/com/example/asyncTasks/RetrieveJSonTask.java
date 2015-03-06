@@ -1,4 +1,4 @@
-package com.example.maplefreemarket;
+package com.example.asyncTasks;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -37,7 +37,8 @@ public class RetrieveJSonTask extends AsyncTask<String, Void, String> {
     //	HandleItemListJSON obj = ((HomeActivity)mContext).getObj();
   	//	obj = new HandleItemListJSON(mContext);
     	if (result == null)
-    		Toast.makeText(mContext, "Failed to get data, please check your network.",  Toast.LENGTH_SHORT).show(); 
+    		Toast.makeText(mContext, "Failed to get data, please check your network.",  Toast.LENGTH_SHORT).show();
+    	mContext = null;
 //		Toast.makeText(mContext, "processing", Toast.LENGTH_SHORT).show();
     	if (parseJSONAsyncTask.isCancelled()){
     		return;

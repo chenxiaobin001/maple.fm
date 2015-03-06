@@ -1,16 +1,16 @@
-package com.example.maplefreemarket;
+package com.example.infoClasses;
 
 public class CharacterInfo {
-	String name;
-	int level;
-	String exp;
-	String expRequired;
-	String job;
-	String world;
-	Images image;
-	Ranking ranking;
-	long fameRank;
-	int fame;
+	public String name;
+	public int level;
+	public String exp;
+	public String expRequired;
+	public String job;
+	public String world;
+	public Images image;
+	public Ranking ranking;
+	public long fameRank;
+	public int fame;
 	
 	public String getOverallRand(){
 		return String.valueOf(ranking.overall.rank);
@@ -21,24 +21,24 @@ public class CharacterInfo {
 	public String getJobRand(){
 		return String.valueOf(ranking.job.rank);
 	}
-	class Images{
-		String petImage;
-		String characterImage;
+	public class Images{
+		public String petImage;
+		public String characterImage;
 	}
-	class Ranking{
-		RankDetail overall;
-		RankDetail world;
-		RankDetail job;
+	public class Ranking{
+		public RankDetail overall;
+		public RankDetail world;
+		public RankDetail job;
 		Ranking(){
 			overall = new RankDetail();
 			world = new RankDetail();
 			job = new RankDetail();
 		}
 	}
-	class RankDetail{
-		int moveRank;
-		String direction;
-		long rank;
+	public class RankDetail{
+		public int moveRank;
+		public String direction;
+		public long rank;
 		public void setRankDetail(int moveRank, String direction, long rank){
 			this.moveRank = moveRank;
 			this.direction = direction;

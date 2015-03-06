@@ -1,4 +1,5 @@
-package com.example.maplefreemarket;
+package com.example.infoClasses;
+
 
 public class FMItemSummary {
 	private String itemName;	//itemName;

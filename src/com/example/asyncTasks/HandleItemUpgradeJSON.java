@@ -1,8 +1,10 @@
-package com.example.maplefreemarket;
+package com.example.asyncTasks;
 
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.example.infoClasses.ItemMore;
 
 import android.content.Context;
 import android.os.AsyncTask;

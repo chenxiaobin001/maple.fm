@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.code.freeMarket.R;
+import com.example.infoClasses.FMItem;
+
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;

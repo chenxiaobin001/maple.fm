@@ -1,6 +1,8 @@
 package com.example.maplefreemarket;
 
 import com.code.freeMarket.R;
+import com.example.asyncTasks.HandleSellerAndShopJSON;
+import com.example.asyncTasks.RetrieveJSonTask;
 
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
