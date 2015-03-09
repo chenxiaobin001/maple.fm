@@ -2,20 +2,28 @@ package com.example.acountManagement;
 
 
 import com.code.freeMarket.R;
-import com.example.asyncTasks.SignUpAccountTask;
+import com.example.asyncTasks.HandleNotificationJSON;
+import com.example.asyncTasks.HandleUserSignUpJSON;
+import com.example.asyncTasks.RetriveJSONAPITask;
+import com.example.maplefreemarket.HomeActivity;
+import com.example.maplefreemarket.MyAdapter;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnShowListener;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemSelectedListener;
  
 
  
@@ -25,7 +33,7 @@ public class SignupDialog extends DialogFragment{
 	private EditText password;
 	private EditText passwordConfirm;
 	private EditText email;
-	private EditText server;
+	private int server;
 	private EditText deviceToken;
 	private View view;
 	private Dialog mDialog;
@@ -40,9 +48,10 @@ public class SignupDialog extends DialogFragment{
 		username = (EditText) view.findViewById(R.id.usernameEditText);
 		password = (EditText) view.findViewById(R.id.passwordEditText);
 		passwordConfirm = (EditText) view.findViewById(R.id.passwordConfirmEditText);
-		server = (EditText) view.findViewById(R.id.serverEditText);
 		deviceToken = (EditText) view.findViewById(R.id.deviceTokenEditText);
+		deviceToken.setEnabled(false); 
 		email = (EditText) view.findViewById(R.id.emailEditText);
+		setSpinnerContent( );
 		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 			 
 			@Override 
@@ -172,21 +181,85 @@ public class SignupDialog extends DialogFragment{
 	private boolean usernameOrPasswordEmpty(){ 
 		username = (EditText) view.findViewById(R.id.usernameEditText);
 		password = (EditText) view.findViewById(R.id.passwordEditText);
-		password = (EditText) view.findViewById(R.id.emailEditText);
-		if (username.getText().toString().trim().equals("") || password.getText().toString().trim().equals("")){
+		email = (EditText) view.findViewById(R.id.emailEditText);
+		if (username.getText().toString().trim().equals("") || password.getText().toString().trim().equals("")
+				|| email.getText().toString().trim().equals("")){
 			return true; 
 		} 
 		return false; 
 	} 
  
+	private String bowlingJson() {
+        return "{" +
+        		"\"user\" :" +
+        	      "{ \"name\": \"" + username.getText().toString() + "\"," +
+        	       " \"email\": \"" + email.getText().toString() + "\"," +
+        	       " \"password\" : \"" + password.getText().toString() + "\"," +
+        	       " \"password_confirmation\" : \"" + passwordConfirm.getText().toString() + "\"," +
+        	       " \"server\" : \"" + String.valueOf(server) + "\"," +
+        	       " \"device_token\" : \"" + deviceToken.getText().toString() + "\"}" + 
+       	    "}"; 
+      } 
  
 	private void signup() throws Exception {
-		
-		SignUpAccountTask task = new SignUpAccountTask(getActivity(), null);
-		task.execute("");
+		AsyncTask<String, Void, String> asyncTask = new HandleUserSignUpJSON(getActivity());
+		RetriveJSONAPITask task = new RetriveJSONAPITask(getActivity(), asyncTask, 0);
+		task.execute(bowlingJson());
 	} 
 	 
- 
+	private void setSpinnerContent( )
+	{	
+		Integer[] serverImages = new Integer[] { R.drawable.scania, R.drawable.windia,
+				R.drawable.bera, R.drawable.broa, R.drawable.khaini, R.drawable.mardia, R.drawable.arcania,
+				R.drawable.bellocan, R.drawable.renegades};
+		String[] serverNames = getResources().getStringArray(R.array.servers); 
+		Spinner spinner = (Spinner) view.findViewById(R.id.signupServerSpinner);
+		spinner.setAdapter(new MyAdapter(getActivity(), R.layout.row,
+				serverNames, serverImages));
+		spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view,
+					int position, long id) {
+				server = position;
+				switch(position) {
+				case 0:
+
+					break;
+				case 1:
+
+					break;
+				case 2:
+
+					break;
+				case 3:
+		
+					break;
+				case 4:
+	
+					break;
+				case 5:
+		
+					break;
+				case 6:
+	
+					break;
+				case 7:
+		
+					break;
+				case 8:
+	
+				}				
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				
+			}
+			
+		});
+
+	}
  
 } 
  
