@@ -40,6 +40,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.code.freeMarket.R;
+import com.example.acountManagement.SignupDialog;
 import com.example.asyncTasks.HandleItemListJSON;
 import com.example.asyncTasks.HandleNotificationJSON;
 import com.example.asyncTasks.RetrieveJSonTask;
@@ -374,9 +375,12 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
             textView.setTextSize(16);
             return true;
         case R.id.action_profile:
+        	SignupDialog signupDialog = new SignupDialog();
+    		signupDialog.show(getFragmentManager(), "signup");
             return true;
         case R.id.action_notify:
         	retriveNotification(1);
+        	return true;
         default:
             return super.onOptionsItemSelected(item);
 		}
@@ -385,9 +389,9 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 	
 	private String getWhatIsNew() {
 		StringBuilder sb = new StringBuilder();
-    	sb.append("V 1.957\n\n");
+    	sb.append("V 2.000\n\n");
     	sb.append("What's new:\n\n");
-    	sb.append("-add notification\n\n");
+    	sb.append("-add profile (alpha)\n\n");
     	sb.append("Tips:\n\n");
     	sb.append("-You can tap the 'sort by' row to choose sort category\n");
     	sb.append("-or swipe screen to change sort category\n");

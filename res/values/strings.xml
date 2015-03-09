@@ -31,4 +31,5 @@
     </string-array>
 	<string name="adBuddizPublishKey">dd03f247-4586-408f-9612-a792fe8e450d</string>
 	<string name="admob_fullscreen">ca-app-pub-4670301653330348/8972451916</string>
+	<string name="myServerUrl">https://radiant-sierra-5346.herokuapp.com/</string>
 </resources>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:layout_marginTop="20dp">
+ 
+ 
+    <EditText
+        android:paddingTop="10dp"
+        android:id="@+id/usernameEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Username" >
+ 
+ 
+        <requestFocus />
+    </EditText>
+ 
+    <EditText
+        android:paddingTop="10dp"
+        android:id="@+id/emailEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="email"
+        android:inputType="textEmailAddress" />
+ 
+    <EditText
+        android:paddingTop="10dp"
+        android:id="@+id/passwordEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword" />
+    
+ 	<EditText
+ 	    android:paddingTop="10dp"
+        android:id="@+id/passwordConfirmEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Password(confirm)"
+        android:inputType="textPassword" />
+ 
+ 
+ 	 <EditText
+ 	     android:paddingTop="10dp"
+         android:id="@+id/serverEditText"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:ems="10"
+         android:hint="server"
+         android:inputType="textPersonName" />
+ 
+ 
+     <EditText
+         android:paddingTop="10dp"
+         android:id="@+id/deviceTokenEditText"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:ems="10"
+         android:hint="device token"
+         android:inputType="textPersonName" />
+</LinearLayout>
