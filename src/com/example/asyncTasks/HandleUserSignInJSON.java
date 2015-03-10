@@ -11,9 +11,9 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-public class HandleUserSignUpJSON extends AsyncTask<String, Void, String> {
+public class HandleUserSignInJSON extends AsyncTask<String, Void, String> {
 
-	public HandleUserSignUpJSON(Context context) {
+	public HandleUserSignInJSON(Context context) {
 
 	}
 	
@@ -26,7 +26,7 @@ public class HandleUserSignUpJSON extends AsyncTask<String, Void, String> {
 		} else {
 			AccessAcountSettings account = AccessAcountSettings.getInstance();
 			account.SaveAccountInformation(strs[0]);
-			return "Successfully signed up!";
+			return "Successfully signed in!";
 		}
 	}
 

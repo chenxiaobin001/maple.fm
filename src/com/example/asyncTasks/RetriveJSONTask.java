@@ -42,10 +42,11 @@ public class RetriveJSONTask extends AsyncTask<String, Void, String> {
     	}
     	mContext = null;
 //		Toast.makeText(mContext, "processing", Toast.LENGTH_SHORT).show();
-    	if (parseJSONAsyncTask.isCancelled()){
+    	if (parseJSONAsyncTask != null && parseJSONAsyncTask.isCancelled()){
     		return;
     	}
-    	parseJSONAsyncTask.execute(result);
+    	if (parseJSONAsyncTask != null)
+    		parseJSONAsyncTask.execute(result);
     }
     
 

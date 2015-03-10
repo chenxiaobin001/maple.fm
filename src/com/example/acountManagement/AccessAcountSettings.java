@@ -149,7 +149,7 @@ public class AccessAcountSettings {
 		    } 
 		} 
 	}
-	public void clearAccountInfo(String value) {
+	public void clearAccountInfo() {
 		setAccountName(null);	
 		setAccountEmail(null);
 		setAccountID(-1);

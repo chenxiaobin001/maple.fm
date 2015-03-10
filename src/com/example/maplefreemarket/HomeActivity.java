@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-
-
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
@@ -15,6 +13,7 @@ import android.text.TextWatcher;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
@@ -40,7 +39,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.code.freeMarket.R;
+import com.example.acountManagement.AccessAcountSettings;
 import com.example.acountManagement.SignupDialog;
+import com.example.acountManagement.UserProfilePanelActivity;
 import com.example.asyncTasks.HandleItemListJSON;
 import com.example.asyncTasks.HandleNotificationJSON;
 import com.example.asyncTasks.RetriveJSONAPITask;
@@ -376,8 +377,14 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
             textView.setTextSize(16);
             return true;
         case R.id.action_profile:
-        	SignupDialog signupDialog = new SignupDialog();
-    		signupDialog.show(getFragmentManager(), "signup");
+        	AccessAcountSettings settings = AccessAcountSettings.getInstance();
+			if (settings.isSignIn()) {
+				Intent myIntent = new Intent(this, UserProfilePanelActivity.class);
+				startActivity(myIntent);
+			} else {
+				SignupDialog signupDialog = new SignupDialog();
+	    		signupDialog.show(getFragmentManager(), "signup");
+			}	
             return true;
         case R.id.action_notify:
         	retriveNotification(1);

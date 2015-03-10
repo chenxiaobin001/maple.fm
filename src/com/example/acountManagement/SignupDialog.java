@@ -2,10 +2,8 @@ package com.example.acountManagement;
 
 
 import com.code.freeMarket.R;
-import com.example.asyncTasks.HandleNotificationJSON;
 import com.example.asyncTasks.HandleUserSignUpJSON;
 import com.example.asyncTasks.PostJSONAPITask;
-import com.example.maplefreemarket.HomeActivity;
 import com.example.maplefreemarket.MyAdapter;
 
 import android.app.AlertDialog;
@@ -52,15 +50,16 @@ public class SignupDialog extends DialogFragment{
 		deviceToken.setEnabled(false); 
 		email = (EditText) view.findViewById(R.id.emailEditText);
 		setSpinnerContent( );
-		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+		builder.setNegativeButton("Sign In", new DialogInterface.OnClickListener() {
 			 
 			@Override 
 			public void onClick(DialogInterface dialog, int which) {
 				// TODO Auto-generated method stub 
-				 
+				SignInDialog signinDialog = new SignInDialog();
+	    		signinDialog.show(getFragmentManager(), "signin"); 
 			} 
 		}); 
-		builder.setPositiveButton("SignUp", new DialogInterface.OnClickListener() {
+		builder.setPositiveButton("Sign Up", new DialogInterface.OnClickListener() {
 			 
 			@Override 
 			public void onClick(DialogInterface dialog, int which) {

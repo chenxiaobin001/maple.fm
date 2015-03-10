@@ -12,7 +12,7 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
-public class RetriveJSONAPITask extends AsyncTask<String, Void, String> {
+public class DeleteJSONAPITask extends AsyncTask<String, Void, String> {
 
     private OkHttpClient client;
     private Context mContext;
@@ -20,7 +20,7 @@ public class RetriveJSONAPITask extends AsyncTask<String, Void, String> {
     private String ret;
     private int type;
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8"); 
-    public RetriveJSONAPITask (Context context, AsyncTask<String, Void, String> asyncTask, int type){
+    public DeleteJSONAPITask (Context context, AsyncTask<String, Void, String> asyncTask, int type){
          mContext = context;
          client = new OkHttpClient();
          this.parseJSONAsyncTask = asyncTask;
@@ -32,9 +32,7 @@ public class RetriveJSONAPITask extends AsyncTask<String, Void, String> {
         	String serverUrl = getRequestURL(type);
         	Request request = new Request.Builder() 
             .url(serverUrl) 
-  //          .header("User-Agent", "OkHttp Headers.java") 
-  //          .addHeader("Accept", "application/json; q=0.5") 
-  //          .addHeader("Accept", "application/vnd.github.v3+json") 
+            .delete()
             .build(); 
         	
 		    Response response = client.newCall(request).execute();
@@ -69,15 +67,10 @@ public class RetriveJSONAPITask extends AsyncTask<String, Void, String> {
     private String getRequestURL(int type) {
     	String ret = "";
     	switch(type) {
-    	case 0: {	//create new user
+    	case 0: {	//sign out
     		String serverUrl = mContext.getResources().getString(R.string.myServerUrl);
-        	serverUrl += "users.json";
+        	serverUrl += "users/sign_out.json";
         	ret = serverUrl;
-    	}
-    	case 1: {
-    		String serverUrl = mContext.getResources().getString(R.string.myServerUrl);
-    		String notificationURL = serverUrl + "notification/index.json";
-    		ret = notificationURL;
     	}
     	}
     	return ret;

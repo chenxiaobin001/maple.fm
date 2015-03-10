@@ -65,7 +65,8 @@ public class PostJSONAPITask extends AsyncTask<String, Void, String> {
     	}
   //  	Toast.makeText(mContext, result,  Toast.LENGTH_SHORT).show();
     	mContext = null;
-    	parseJSONAsyncTask.execute(result);
+    	if (parseJSONAsyncTask != null)
+    		parseJSONAsyncTask.execute(result);
     }
     
     private String getRequestURL(int type) {
@@ -75,6 +76,13 @@ public class PostJSONAPITask extends AsyncTask<String, Void, String> {
     		String serverUrl = mContext.getResources().getString(R.string.myServerUrl);
         	serverUrl += "users.json";
         	ret = serverUrl;
+        	break;
+    	}
+    	case 1: {	//sign in
+    		String serverUrl = mContext.getResources().getString(R.string.myServerUrl);
+        	serverUrl += "users/sign_in.json";
+        	ret = serverUrl;
+        	break;
     	}
     	}
     	return ret;

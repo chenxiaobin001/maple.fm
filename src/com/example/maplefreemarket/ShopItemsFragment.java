@@ -109,8 +109,10 @@ public class ShopItemsFragment extends Fragment{
 		List<FMItem> filteredItems = new ArrayList<FMItem>();
 		String filterableString = characterName;
 		List<FMItem> shopItems = myApp.getShops().get(filterableString);
-		for (int i = 0; i < shopItems.size(); i++) {		
+		if (shopItems != null) {
+			for (int i = 0; i < shopItems.size(); i++) {		
 				filteredItems.add(shopItems.get(i));
+			}
 		}
 		return filteredItems;
 	}
