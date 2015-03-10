@@ -1,5 +1,8 @@
 package com.example.acountManagement;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -7,6 +10,7 @@ import com.example.maplefreemarket.MapleFreeMarketApplication;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 
 public class AccessAcountSettings {
 	private static final String PREFS_NAME = "MyPrefsAccountFile";
@@ -18,6 +22,13 @@ public class AccessAcountSettings {
     	this.mContext = mContext;
     }
  
+    public boolean isSignIn() {
+    	SharedPreferences settings = mContext.getSharedPreferences(PREFS_NAME, 0);
+    	String email = settings.getString("Email", null);
+    	String authToken = settings.getString("AuthToken", null);
+    	return (email != null && authToken != null);
+    }
+    
     public static synchronized AccessAcountSettings getInstance() {
         if (instance == null) {
         	MapleFreeMarketApplication myApp = (MapleFreeMarketApplication) MapleFreeMarketApplication.getContext();
@@ -40,7 +51,6 @@ public class AccessAcountSettings {
 			setAccountDeviceToken(jObject.optString("device_token"));
 			setAccountAuthToken(jObject.optString("authentication_token"));
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 		//	e.printStackTrace();
 		}
 			
@@ -119,6 +129,33 @@ public class AccessAcountSettings {
     	SharedPreferences.Editor editor = settings.edit();
     	editor.putString("Name", value);
     	editor.commit();
+	}
+	
+	public void setAccountImage(Bitmap bitmap) {
+		FileOutputStream out = null;
+		try { 
+		    out = new FileOutputStream("characterImage");
+		    bitmap.compress(Bitmap.CompressFormat.PNG, 100, out); // bmp is your Bitmap instance
+		    // PNG is a lossless format, the compression factor (100) is ignored 
+		} catch (Exception e) {
+		    e.printStackTrace();
+		} finally { 
+		    try { 
+		        if (out != null) {
+		            out.close();
+		        } 
+		    } catch (IOException e) {
+		        e.printStackTrace();
+		    } 
+		} 
+	}
+	public void clearAccountInfo(String value) {
+		setAccountName(null);	
+		setAccountEmail(null);
+		setAccountID(-1);
+		setAccountServer(0);
+		setAccountDeviceToken(null);
+		setAccountAuthToken(null);
 	}
 
 	

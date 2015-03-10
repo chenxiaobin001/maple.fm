@@ -13,8 +13,6 @@ import android.widget.Toast;
 
 public class HandleUserSignUpJSON extends AsyncTask<String, Void, String> {
 
-	
-
 	public HandleUserSignUpJSON(Context context) {
 
 	}

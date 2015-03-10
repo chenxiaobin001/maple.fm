@@ -31,11 +31,15 @@ public class FMItemSummary {
 	}
 	
 	public void updateWith(FMItem item) {
-		this.quantity += item.getQuantity();
+		int oldQty = this.quantity;
+		long oldAvgPrice = this.curAvgPrice;
+		this.quantity += item.getQuantity();	
 		this.maxPrice = Math.max(this.maxPrice, item.getPrice());
 		this.minPrice = Math.min(this.minPrice, item.getPrice());
-		this.sumPrice += item.getPrice() ;
-		this.setCurAvgPrice(this.sumPrice / this.quantity);			//careful!
+		this.sumPrice += item.getPrice();
+		if (this.quantity == 0) return;
+		this.setCurAvgPrice((long)(item.getPrice() * (((double)item.getQuantity() )/ this.quantity) + oldAvgPrice * (((double)oldQty) / this.quantity)));			//careful!
+//		this.setCurAvgPrice(this.sumPrice / this.quantity);
 	}
 	public String getItemName() {
 		return itemName;

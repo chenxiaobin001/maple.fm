@@ -25,7 +25,7 @@
         android:id="@+id/itemSummaryTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:text="It seems that all items are sold out." />
 
 
 </LinearLayout>

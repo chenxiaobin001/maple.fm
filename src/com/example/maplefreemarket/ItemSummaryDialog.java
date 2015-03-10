@@ -108,7 +108,7 @@ public class ItemSummaryDialog extends DialogFragment {
     	sb.append("Quantity: 			<font color=" + getPriceColor(itemSum.getQuantity()) + ">" + itemSum.getQuantity() + "</font><br />");
     	sb.append("MinPrice: 			<font color=" + getPriceColor(itemSum.getMinPrice()) + ">" + itemSum.getMinPrice() + "</font><br />");
     	sb.append("MaxPrice: 			<font color=" + getPriceColor(itemSum.getMaxPrice()) + ">" + itemSum.getMaxPrice() + "</font><br />");
-    	sb.append("AvgPrice:			<font color=" + getPriceColor(itemSum.getAvgPrice()) + ">" + itemSum.getAvgPrice() + "</font><br />");
+    	sb.append("AvgPrice: 			<font color=" + getPriceColor(itemSum.getCurAvgPrice()) + ">" + itemSum.getCurAvgPrice() + "</font><br />");
     	itemSummaryTextView.setText(Html.fromHtml(sb.toString()));
     }
     
