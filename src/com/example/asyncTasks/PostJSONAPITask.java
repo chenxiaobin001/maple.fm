@@ -10,9 +10,10 @@ import com.code.freeMarket.R;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
-public class RetriveJSONAPITask extends AsyncTask<String, Void, String> {
+public class PostJSONAPITask extends AsyncTask<String, Void, String> {
 
     private OkHttpClient client;
     private Context mContext;
@@ -20,7 +21,7 @@ public class RetriveJSONAPITask extends AsyncTask<String, Void, String> {
     private String ret;
     private int type;
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8"); 
-    public RetriveJSONAPITask (Context context, AsyncTask<String, Void, String> asyncTask, int type){
+    public PostJSONAPITask (Context context, AsyncTask<String, Void, String> asyncTask, int type){
          mContext = context;
          client = new OkHttpClient();
          this.parseJSONAsyncTask = asyncTask;
@@ -29,12 +30,14 @@ public class RetriveJSONAPITask extends AsyncTask<String, Void, String> {
     protected String doInBackground(String... contents) {
     	ret = null;
         try {
+        	RequestBody body = RequestBody.create(JSON, contents[0]);
         	String serverUrl = getRequestURL(type);
         	Request request = new Request.Builder() 
             .url(serverUrl) 
   //          .header("User-Agent", "OkHttp Headers.java") 
   //          .addHeader("Accept", "application/json; q=0.5") 
   //          .addHeader("Accept", "application/vnd.github.v3+json") 
+            .post(body)
             .build(); 
         	
 		    Response response = client.newCall(request).execute();
@@ -72,11 +75,6 @@ public class RetriveJSONAPITask extends AsyncTask<String, Void, String> {
     		String serverUrl = mContext.getResources().getString(R.string.myServerUrl);
         	serverUrl += "users.json";
         	ret = serverUrl;
-    	}
-    	case 1: {
-    		String serverUrl = mContext.getResources().getString(R.string.myServerUrl);
-    		String notificationURL = serverUrl + "notification/index.json";
-    		ret = notificationURL;
     	}
     	}
     	return ret;

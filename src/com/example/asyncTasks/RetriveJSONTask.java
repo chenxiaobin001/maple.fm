@@ -8,13 +8,13 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
-public class RetrieveJSonTask extends AsyncTask<String, Void, String> {
+public class RetriveJSONTask extends AsyncTask<String, Void, String> {
 
     private OkHttpClient client;
     private Context mContext;
     private AsyncTask<String, Void, String> parseJSONAsyncTask;
     
-    public RetrieveJSonTask (Context context, AsyncTask<String, Void, String> asyncTask){
+    public RetriveJSONTask (Context context, AsyncTask<String, Void, String> asyncTask){
          mContext = context;
          client = new OkHttpClient();
          this.parseJSONAsyncTask = asyncTask;

@@ -3,6 +3,7 @@ package com.example.maplefreemarket;
 import java.util.HashMap;
 import java.util.List;
 
+import com.example.acountManagement.AccessAcountSettings;
 import com.example.infoClasses.FMItem;
 import com.example.infoClasses.FMItemSummary;
 
@@ -132,4 +133,5 @@ public class MapleFreeMarketApplication extends Application{
 	public void setItemSummary(HashMap<String, FMItemSummary> itemSummary) {
 		this.itemSummary = itemSummary;
 	}
+
 }

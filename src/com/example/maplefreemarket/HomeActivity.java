@@ -43,7 +43,8 @@ import com.code.freeMarket.R;
 import com.example.acountManagement.SignupDialog;
 import com.example.asyncTasks.HandleItemListJSON;
 import com.example.asyncTasks.HandleNotificationJSON;
-import com.example.asyncTasks.RetrieveJSonTask;
+import com.example.asyncTasks.RetriveJSONAPITask;
+import com.example.asyncTasks.RetriveJSONTask;
 import com.example.infoClasses.FMItem;
 import com.example.interfaces.MyDialogFragmentListener;
 import com.example.interfaces.SwipeInterface;
@@ -311,7 +312,7 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 	private void retriveNotification(int mode) {
 		AsyncTask<String, Void, String> asyncTask;
 		asyncTask = new HandleNotificationJSON(this, mode);
-		new RetrieveJSonTask(HomeActivity.this, asyncTask).execute("https://radiant-sierra-5346.herokuapp.com/notification/index.json");
+		new RetriveJSONAPITask(HomeActivity.this, asyncTask, 1).execute("");
 	}
 	
 	private void retriveServerData() {
@@ -328,7 +329,7 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 		AsyncTask<String, Void, String> asyncTask;
 		asyncTask = new HandleItemListJSON(HomeActivity.this, 1);
 		myApp.setPreTask(asyncTask);
-		new RetrieveJSonTask(HomeActivity.this, asyncTask).execute(getSearchRequestURL());	
+		new RetriveJSONTask(HomeActivity.this, asyncTask).execute(getSearchRequestURL());	
 		
 	}
 	

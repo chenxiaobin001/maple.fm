@@ -2,7 +2,7 @@ package com.example.maplefreemarket;
 
 import com.code.freeMarket.R;
 import com.example.asyncTasks.HandleSellerAndShopJSON;
-import com.example.asyncTasks.RetrieveJSonTask;
+import com.example.asyncTasks.RetriveJSONTask;
 
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -39,7 +39,7 @@ public class SellerInfoFragment extends Fragment{
 	
 	public void getSellerInfo(){
 		AsyncTask<String, Void, String> parseJSON = new HandleSellerAndShopJSON(getActivity(), view);
-		RetrieveJSonTask task = new RetrieveJSonTask(getActivity().getApplicationContext(), parseJSON);
+		RetriveJSONTask task = new RetriveJSONTask(getActivity().getApplicationContext(), parseJSON);
 		String url = getActivity().getResources().getString(R.string.api_rankings);
 		url += ("name=" + characterName);
 		task.execute(url);

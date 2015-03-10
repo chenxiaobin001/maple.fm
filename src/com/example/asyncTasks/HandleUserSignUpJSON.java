@@ -4,13 +4,11 @@ package com.example.asyncTasks;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.example.infoClasses.ItemMore;
+import com.example.acountManagement.AccessAcountSettings;
 import com.example.maplefreemarket.MapleFreeMarketApplication;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class HandleUserSignUpJSON extends AsyncTask<String, Void, String> {
@@ -26,6 +24,8 @@ public class HandleUserSignUpJSON extends AsyncTask<String, Void, String> {
 		if (jObject.has("errors")) {
 			return jObject.getJSONObject("errors").toString();
 		} else {
+			AccessAcountSettings account = AccessAcountSettings.getInstance();
+			account.SaveAccountInformation(strs[0]);
 			return "Successfully signed up!";
 		}
 	}

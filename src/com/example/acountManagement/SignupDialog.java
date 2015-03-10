@@ -4,7 +4,7 @@ package com.example.acountManagement;
 import com.code.freeMarket.R;
 import com.example.asyncTasks.HandleNotificationJSON;
 import com.example.asyncTasks.HandleUserSignUpJSON;
-import com.example.asyncTasks.RetriveJSONAPITask;
+import com.example.asyncTasks.PostJSONAPITask;
 import com.example.maplefreemarket.HomeActivity;
 import com.example.maplefreemarket.MyAdapter;
 
@@ -203,7 +203,7 @@ public class SignupDialog extends DialogFragment{
  
 	private void signup() throws Exception {
 		AsyncTask<String, Void, String> asyncTask = new HandleUserSignUpJSON(getActivity());
-		RetriveJSONAPITask task = new RetriveJSONAPITask(getActivity(), asyncTask, 0);
+		PostJSONAPITask task = new PostJSONAPITask(getActivity(), asyncTask, 0);
 		task.execute(bowlingJson());
 	} 
 	 

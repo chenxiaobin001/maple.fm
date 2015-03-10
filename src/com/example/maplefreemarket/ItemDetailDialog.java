@@ -19,7 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.code.freeMarket.R;
 import com.example.asyncTasks.HandleItemUpgradeJSON;
-import com.example.asyncTasks.RetrieveJSonTask;
+import com.example.asyncTasks.RetriveJSONTask;
 import com.example.infoClasses.FMItem;
 import com.example.interfaces.MyDialogFragmentListener;
 
@@ -359,7 +359,7 @@ public class ItemDetailDialog extends DialogFragment {
     }
     private void updateItemDetails(){
     	AsyncTask<String, Void, String> upgradeAsyncTask = new HandleItemUpgradeJSON(getActivity(), itemDetailTextView, selectedItem.getItemMore());
-    	new RetrieveJSonTask(getActivity(), upgradeAsyncTask).execute(getSearchRequestURL());		
+    	new RetriveJSONTask(getActivity(), upgradeAsyncTask).execute(getSearchRequestURL());		
     }
     
     private String getSearchRequestURL(){
