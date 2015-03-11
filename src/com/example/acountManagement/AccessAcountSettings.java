@@ -1,22 +1,23 @@
 package com.example.acountManagement;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.example.maplefreemarket.MapleFreeMarketApplication;
-
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 public class AccessAcountSettings {
 	private static final String PREFS_NAME = "MyPrefsAccountFile";
 	private Context mContext;
 	//{"id":12,"email":"1231#@gmail.com","created_at":"2015-03-10T00:02:40.149Z","updated_at":"2015-03-10T00:02:40.197Z","name":"123123","role":"user","device_token":"","server":0,"authentication_token":"X1NfoFbm2sqtC8Krt2jq"}
-
+	
 	private static AccessAcountSettings instance = null;
     private AccessAcountSettings(Context mContext) { 
     	this.mContext = mContext;
@@ -47,7 +48,7 @@ public class AccessAcountSettings {
 			setAccountName(jObject.optString("name"));	
 			setAccountEmail(jObject.optString("email"));
 			setAccountID(jObject.optInt("id"));
-			setAccountServer(jObject.optInt("id"));
+			setAccountServer(jObject.optInt("Server"));
 			setAccountDeviceToken(jObject.optString("device_token"));
 			setAccountAuthToken(jObject.optString("authentication_token"));
 		} catch (JSONException e) {
@@ -87,6 +88,22 @@ public class AccessAcountSettings {
     	return settings.getString("Name", null);
     }
 	
+	public String getAccountCharacter() {
+		SharedPreferences settings = mContext.getSharedPreferences(PREFS_NAME, 0);
+    	return settings.getString("Character", null);
+    }
+	
+	public String getAccountCharacterInfo() {
+		SharedPreferences settings = mContext.getSharedPreferences(PREFS_NAME, 0);
+    	return settings.getString("CharacterInfo", null);
+    }
+	
+	public void setAccountCharacterInfo(String value) {
+		SharedPreferences settings = mContext.getSharedPreferences(PREFS_NAME, 0);
+    	SharedPreferences.Editor editor = settings.edit();
+    	editor.putString("CharacterInfo", value);
+    	editor.commit();
+	}
 	
 	public void setAccountAuthToken(String value) {
 		SharedPreferences settings = mContext.getSharedPreferences(PREFS_NAME, 0);
@@ -131,23 +148,49 @@ public class AccessAcountSettings {
     	editor.commit();
 	}
 	
-	public void setAccountImage(Bitmap bitmap) {
-		FileOutputStream out = null;
-		try { 
-		    out = new FileOutputStream("characterImage");
-		    bitmap.compress(Bitmap.CompressFormat.PNG, 100, out); // bmp is your Bitmap instance
-		    // PNG is a lossless format, the compression factor (100) is ignored 
-		} catch (Exception e) {
-		    e.printStackTrace();
-		} finally { 
-		    try { 
-		        if (out != null) {
-		            out.close();
-		        } 
-		    } catch (IOException e) {
-		        e.printStackTrace();
-		    } 
-		} 
+	public void setAccountCharacter(String value) {
+		SharedPreferences settings = mContext.getSharedPreferences(PREFS_NAME, 0);
+    	SharedPreferences.Editor editor = settings.edit();
+    	editor.putString("Character", value);
+    	editor.commit();
+	}
+	
+	public Bitmap getAccountImage(String path) {
+		try {
+	        File f=new File(path, "profile.png");
+	        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+
+	        Bitmap bitmap = BitmapFactory.decodeFile(f.getAbsolutePath(),bmOptions);
+	 //       Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
+	        return bitmap;
+	    } 
+	    catch (Exception e) 
+	    {
+	        e.printStackTrace();
+	    }
+		return null;
+	}
+	
+	public String setAccountImage(Bitmap bitmap) {
+		ContextWrapper cw = new ContextWrapper(mContext.getApplicationContext());
+        // path to /data/data/yourapp/app_data/imageDir
+        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        // Create imageDir
+        File mypath=new File(directory,"profile.png");
+
+        FileOutputStream fos = null;
+        try {           
+
+            fos = new FileOutputStream(mypath);
+
+        // Use the compress method on the BitMap object to write image to the OutputStream
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.flush();
+            fos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return directory.getAbsolutePath();
 	}
 	public void clearAccountInfo() {
 		setAccountName(null);	
@@ -156,7 +199,9 @@ public class AccessAcountSettings {
 		setAccountServer(0);
 		setAccountDeviceToken(null);
 		setAccountAuthToken(null);
+		setAccountCharacter(null);
 	}
-
 	
+
+
 }

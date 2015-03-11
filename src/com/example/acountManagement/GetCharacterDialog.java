@@ -1,9 +1,8 @@
 package com.example.acountManagement;
 
-
 import com.code.freeMarket.R;
-import com.example.asyncTasks.HandleUserSignInJSON;
-import com.example.asyncTasks.PostJSONAPITask;
+import com.example.asyncTasks.HandleProfileStatTask;
+import com.example.asyncTasks.RetriveJSONTask;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -21,10 +20,9 @@ import android.widget.Toast;
  
 
  
-public class SignInDialog extends DialogFragment{
+public class GetCharacterDialog extends DialogFragment{
 	 
-	private EditText password;
-	private EditText email;
+	private EditText characterName;
 	private Dialog mDialog;
 	 
 	@Override 
@@ -32,9 +30,8 @@ public class SignInDialog extends DialogFragment{
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		LayoutInflater inflater = getActivity().getLayoutInflater();
-		View view = inflater.inflate(R.layout.popup_window_signin, null);
-		password = (EditText) view.findViewById(R.id.passwordSignInEditText);
-		email = (EditText) view.findViewById(R.id.emailSignInEditText);
+		View view = inflater.inflate(R.layout.popup_window_getcharacter, null);
+		characterName = (EditText) view.findViewById(R.id.characterNameSignInEditText);
 		
 		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 			 
@@ -44,12 +41,12 @@ public class SignInDialog extends DialogFragment{
 				 
 			} 
 		}); 
-		builder.setPositiveButton("Sign In", new DialogInterface.OnClickListener() {
+		builder.setPositiveButton("Get", new DialogInterface.OnClickListener() {
 			 
 			@Override 
 			public void onClick(DialogInterface dialog, int which) {
 				try {
-					signIn();
+					getCharacter(characterName.getText().toString());
 				} catch (Exception e) {
 					e.printStackTrace();
 					Toast.makeText(getActivity(), "Failed to sign in.", Toast.LENGTH_SHORT).show();
@@ -58,7 +55,7 @@ public class SignInDialog extends DialogFragment{
 		}); 
 	 
 		builder.setView(view);
-		builder.setTitle("Sign In");
+		builder.setTitle("Get Character Stats");
 		Dialog dialog = builder.create();
 		mDialog = dialog;
 		 
@@ -72,40 +69,11 @@ public class SignInDialog extends DialogFragment{
 			} 
 		}); 
 		 
-		email.addTextChangedListener(new TextWatcher() {
+		characterName.addTextChangedListener(new TextWatcher() {
 			 
 			@Override 
 			public void afterTextChanged(Editable s) {
-				if (!usernameOrPasswordEmpty()){ 
-					((AlertDialog) mDialog).getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
-				}else{ 
-					((AlertDialog) mDialog).getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-				} 
-				 
-			} 
- 
- 
-			@Override 
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
-				// TODO Auto-generated method stub 
-				 
-			} 
- 
- 
-			@Override 
-			public void onTextChanged(CharSequence s, int start, int before,
-					int count) {
-				// TODO Auto-generated method stub 
-				 
-			} 
-		}); 
-		 
-		password.addTextChangedListener(new TextWatcher() {
-			 
-			@Override 
-			public void afterTextChanged(Editable s) {
-				if (!usernameOrPasswordEmpty()){ 
+				if (!isCharacterNameEmpty()){ 
 					((AlertDialog) mDialog).getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
 				}else{ 
 					((AlertDialog) mDialog).getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
@@ -134,26 +102,19 @@ public class SignInDialog extends DialogFragment{
 		return dialog;
 	}	 
 	 
-	private boolean usernameOrPasswordEmpty(){ 
-		if (email.getText().toString().trim().equals("") || password.getText().toString().trim().equals("")){
+	private boolean isCharacterNameEmpty(){ 
+		if (characterName.getText().toString().trim().equals("")){
 			return true; 
 		} 
 		return false; 
 	} 
  
-	private String bowlingJson() {
-        return "{" +
-        		"\"user\" :" +
-        	      "{ \"email\": \"" + email.getText().toString() + "\"," +
-        	       " \"password\" : \"" + password.getText().toString() + "\"" +
-        	       "}" + 
-       	    "}"; 
-      } 
- 
-	private void signIn() throws Exception {
-		AsyncTask<String, Void, String> asyncTask = new HandleUserSignInJSON(getActivity());
-		PostJSONAPITask task = new PostJSONAPITask(getActivity(), asyncTask, 1);
-		task.execute(bowlingJson());
+	private void getCharacter(String name) throws Exception {
+		String URL = getActivity().getResources().getString(R.string.api_rankings);
+		URL += ("name=" + name);
+		AsyncTask<String, Void, String> asyncTask = new HandleProfileStatTask(getActivity(), getActivity().findViewById(android.R.id.content), true);
+		RetriveJSONTask task = new RetriveJSONTask(getActivity(), asyncTask);
+		task.execute(URL);
 	} 
 	 
  

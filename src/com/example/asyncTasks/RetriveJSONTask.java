@@ -38,7 +38,6 @@ public class RetriveJSONTask extends AsyncTask<String, Void, String> {
   	//	obj = new HandleItemListJSON(mContext);
     	if (result == null) {
     		Toast.makeText(mContext, "Failed to get data, please check your network.",  Toast.LENGTH_SHORT).show();
-    		return;
     	}
     	mContext = null;
 //		Toast.makeText(mContext, "processing", Toast.LENGTH_SHORT).show();
