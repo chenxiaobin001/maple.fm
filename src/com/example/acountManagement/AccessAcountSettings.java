@@ -1,7 +1,6 @@
 package com.example.acountManagement;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -184,7 +183,7 @@ public class AccessAcountSettings {
             fos = new FileOutputStream(mypath);
 
         // Use the compress method on the BitMap object to write image to the OutputStream
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 80, fos);
             fos.flush();
             fos.close();
         } catch (Exception e) {

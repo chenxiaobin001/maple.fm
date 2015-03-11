@@ -5,13 +5,18 @@ import java.io.File;
 import com.code.freeMarket.R;
 import com.example.asyncTasks.DeleteJSONAPITask;
 import com.example.asyncTasks.HandleProfileStatTask;
+import com.example.asyncTasks.RetriveJSONTask;
 import com.example.maplefreemarket.SellerInfoFragment.OnImageLoadedListener;
-import android.app.Activity;
+
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -19,7 +24,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class UserProfilePanelActivity extends Activity implements  OnImageLoadedListener {
+public class UserProfilePanelActivity extends ActionBarActivity implements  OnImageLoadedListener {
 
 	private Button backButton;
 	private Button signoutButton;
@@ -27,7 +32,7 @@ public class UserProfilePanelActivity extends Activity implements  OnImageLoaded
 	private TextView accountNameTextView;
 	private TextView accountEmailTextView;
 	private TextView accountServerTextView;
-	private ImageView accountPetImage;
+//	private ImageView accountPetImage;
 	private ImageView accountCharImage;
 	private AccessAcountSettings account;
 	
@@ -39,7 +44,7 @@ public class UserProfilePanelActivity extends Activity implements  OnImageLoaded
 		accountNameTextView = (TextView) findViewById(R.id.profileNameTextView);
 		accountEmailTextView = (TextView) findViewById(R.id.profileEmailTextView);
 		accountServerTextView = (TextView) findViewById(R.id.profileServerTextView);
-		accountPetImage = (ImageView) findViewById(R.id.petImageimageView);
+//		accountPetImage = (ImageView) findViewById(R.id.petImageimageView);
 		accountCharImage = (ImageView) findViewById(R.id.characterImageView);
 		backButton = (Button) findViewById(R.id.profileBackButton);
 		backButton.setOnClickListener(new OnClickListener() {		
@@ -87,16 +92,14 @@ public class UserProfilePanelActivity extends Activity implements  OnImageLoaded
 			Bitmap bitmap = account.getAccountImage(directory.getAbsolutePath());
 			if (bitmap != null) 
 				accountCharImage.setImageBitmap(bitmap);
-			final AsyncTask<String, Void, String> asyncTask = new HandleProfileStatTask(this, findViewById(android.R.id.content), true);
-			accountCharImage.post(new Runnable() {
-			    @Override
-			    public void run() {
-			    	
-					asyncTask.execute(json);
-			    }
-			});
-
-		}	
+			
+		}
+/*		try {
+			getCharacter(account.getAccountCharacter());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
 	}
 	
 	private String getServerName(int server) {
@@ -117,7 +120,41 @@ public class UserProfilePanelActivity extends Activity implements  OnImageLoaded
 
 	@Override
 	public void onImageLoaded(Bitmap bitmap, boolean isSeller) {
-		account.setAccountImage(bitmap);
+//		account.setAccountImage(bitmap);
+	}
+	
+	private void getCharacter(String name) throws Exception {
+		String URL = getResources().getString(R.string.api_rankings);
+		URL += ("name=" + name);
+		AsyncTask<String, Void, String> asyncTask = new HandleProfileStatTask(this, findViewById(android.R.id.content), true);
+		RetriveJSONTask task = new RetriveJSONTask(this, asyncTask);
+		task.execute(URL);
+	} 
+	 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.profile_menu, menu);
+	    return super.onCreateOptionsMenu(menu);
 	}
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		switch (item.getItemId()) {
+        case R.id.action_refresh:
+    		try {
+    			getCharacter(account.getAccountCharacter());
+    		} catch (Exception e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+		}
+	}
 }

@@ -28,6 +28,7 @@ public class HandleProfileStatTask extends AsyncTask<String, Void, String> {
 	private CharacterInfo characterInfo;
 	private View view;
 	private boolean isNew;
+	private final AccessAcountSettings account = AccessAcountSettings.getInstance();
 	
 	public HandleProfileStatTask(Context context, View view, boolean isNew) {
 		this.mContext = context;
@@ -36,10 +37,11 @@ public class HandleProfileStatTask extends AsyncTask<String, Void, String> {
 		this.isNew = isNew;
 	}
 	
-	private void handleJson(String[] strs) throws JSONException{
+	private boolean handleJson(String[] strs) throws JSONException{
+		if (strs == null)	return false;
 		JSONObject jObject = new JSONObject(strs[0]);		//early termination.
 		if (jObject.optString("name") == null){
-			return;
+			return false;
 		}
 	
 		characterInfo.name = jObject.optString("name");		
@@ -61,6 +63,7 @@ public class HandleProfileStatTask extends AsyncTask<String, Void, String> {
 		JSONObject fame = rank.getJSONObject("fame"); 
 		characterInfo.fameRank = fame.optLong("rank");
 		characterInfo.fame = jObject.optInt("fame");
+		return true;
 	}
 	
 	private void updateTextView(){
@@ -76,7 +79,7 @@ public class HandleProfileStatTask extends AsyncTask<String, Void, String> {
 		TextView fameRankingTextView = (TextView) view.findViewById(R.id.fameRankingTextView);
 		TextView fameTextView = (TextView) view.findViewById(R.id.fameTextView);
 		ImageView charImage = (ImageView) view.findViewById(R.id.characterImageView);
-		ImageView petImage = (ImageView) view.findViewById(R.id.petImageimageView);
+//		ImageView petImage = (ImageView) view.findViewById(R.id.petImageimageView);
 		TextView globalRankingMoveTextView = (TextView) view.findViewById(R.id.globalRankingMoveTextView);
 		TextView worldRankingMoveTextView = (TextView) view.findViewById(R.id.worldRankingMoveTextView);
 		TextView jobRankingMoveTextView = (TextView) view.findViewById(R.id.jobRankingMoveTextView);
@@ -96,8 +99,10 @@ public class HandleProfileStatTask extends AsyncTask<String, Void, String> {
 		jobRankingMoveTextView.setText(getMoveRank(characterInfo.ranking.job));
 		if (isNew) {
 			getSellerImage(characterInfo.image.characterImage, charImage, true);
-			getSellerImage(characterInfo.image.petImage, petImage, false);
+//			getSellerImage(characterInfo.image.petImage, petImage, false);
 		}	
+		AccessAcountSettings account = AccessAcountSettings.getInstance();
+		account.setAccountCharacter(characterInfo.name);
 	}
 	
 	private Spanned getMoveRank(CharacterInfo.RankDetail detail){
@@ -120,12 +125,12 @@ public class HandleProfileStatTask extends AsyncTask<String, Void, String> {
 	@Override
 	protected String doInBackground(String... JSonString) {
 		try {
-
-			AccessAcountSettings accounts = AccessAcountSettings.getInstance();
-			accounts.setAccountCharacterInfo(JSonString[0]);
-			
-			handleJson(JSonString);
-			return "OK";
+			if (handleJson(JSonString)) {
+				AccessAcountSettings accounts = AccessAcountSettings.getInstance();
+				accounts.setAccountCharacterInfo(JSonString[0]);
+				return "OK";
+			}
+			return null;
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	            return null;
@@ -140,6 +145,8 @@ public class HandleProfileStatTask extends AsyncTask<String, Void, String> {
             return;
 		}
 		updateTextView();
+		if (isNew)
+			Toast.makeText(mContext, "Character's info updated", Toast.LENGTH_SHORT).show();
     }
 	private void getSellerImage(String URL, ImageView view, boolean seller){
 		
@@ -155,10 +162,13 @@ public class HandleProfileStatTask extends AsyncTask<String, Void, String> {
 
             @Override
             public void onBitmapLoaded(Bitmap bitmap, LoadedFrom arg1) {
-            	int width = mView.getMeasuredHeight();
+            	int width = 390;
             	int height = (int) (width*1.0/bitmap.getWidth() *bitmap.getHeight());
             	bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
             	Bitmap oldBitmap = bitmap;
+            	account.setAccountImage(bitmap);
+/*            	ContextWrapper cw = new ContextWrapper(mContext.getApplicationContext());
+    			File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);*/
             	mView.setImageBitmap(bitmap);
             	OnImageLoadedListener activity = (OnImageLoadedListener)mContext;
             	activity.onImageLoaded(oldBitmap, isSeller);
