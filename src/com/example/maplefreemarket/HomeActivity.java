@@ -49,6 +49,10 @@ import com.example.asyncTasks.RetriveJSONTask;
 import com.example.infoClasses.FMItem;
 import com.example.interfaces.MyDialogFragmentListener;
 import com.example.interfaces.SwipeInterface;
+import com.nhaarman.listviewanimations.appearance.AnimationAdapter;
+import com.nhaarman.listviewanimations.appearance.simple.AlphaInAnimationAdapter;
+import com.nhaarman.listviewanimations.appearance.simple.ScaleInAnimationAdapter;
+import com.nhaarman.listviewanimations.appearance.simple.SwingLeftInAnimationAdapter;
 
 
 
@@ -67,6 +71,7 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 	private HandleItemListJSON obj;
 //	private OkHttpClient client;
 	private ItemArrayAdapter adapter;
+	private AnimationAdapter animator;
 	private EditText searchEditText;
 	private CheckBox cashItemCheckBox;
 	private CheckBox soldItemCheckBox;
@@ -113,6 +118,7 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
     		String colName = newAttr.getText().toString();
     		sortAttrViewHolder.selected = idx;
     		Toast.makeText(myApp, sortAttrViewHolder.mmap.get(colName).str, Toast.LENGTH_SHORT).show();
+    		animator.reset();
     		adapter.sortByAttribute(idx, sortAttrViewHolder.descs[idx]);
     		sortAttrViewHolder.descs[idx] = !sortAttrViewHolder.descs[idx];
     		myApp.saveSortConfiguration(idx);
@@ -167,9 +173,18 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 		listView = (ListView) findViewById(R.id.itemListView);
 		findViewById(R.id.loadingPanel).setVisibility(View.GONE);
 		adapter = new ItemArrayAdapter(HomeActivity.this, new ArrayList<FMItem>());
+		
+		ScaleInAnimationAdapter animationAdapter = new ScaleInAnimationAdapter(adapter);
+//		AlphaInAnimationAdapter animationAdapter = new AlphaInAnimationAdapter (adapter);
+//		SwingLeftInAnimationAdapter animationAdapter = new SwingLeftInAnimationAdapter(adapter);
+//		ScaleInAnimationAdapter animationAdapter = new ScaleInAnimationAdapter(adapter);
+//		ScaleInAnimationAdapter animationAdapter = new ScaleInAnimationAdapter(adapter);
+		animator = animationAdapter;
+		animationAdapter.setAbsListView(listView);
+		listView.setAdapter(animationAdapter);
 //		ItemArrayAdapter oriAdapter = new ItemArrayAdapter(HomeActivity.this, new ArrayList<FMItem>());
 		myApp.setItemAdapter(adapter);
-		listView.setAdapter(adapter);
+//		listView.setAdapter(adapter);
 		cashItemCheckBox = (CheckBox) findViewById(R.id.cashItemCheckBox);
 		soldItemCheckBox = (CheckBox) findViewById(R.id.soldItemCheckBox);
 		refreshButton = (Button) findViewById(R.id.refreshButton);
@@ -224,6 +239,7 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 		    public void onTextChanged(CharSequence s, int start, int before, int count) {
 		        System.out.println("Text ["+s+"]");
 	//	        adapter.resetItemsRefresh(filteredData.subList(0, Math.min(10, filteredData.size())));
+		        animator.reset();
 		        adapter.getFilter().filter(s.toString()+"2");    
 	        	finishButton.setVisibility(View.VISIBLE);
 		        refreshButton.setVisibility(View.GONE);

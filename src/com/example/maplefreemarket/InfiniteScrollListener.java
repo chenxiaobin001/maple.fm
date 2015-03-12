@@ -8,7 +8,7 @@ public abstract class InfiniteScrollListener implements OnScrollListener{
 	static class SetLoading{
 		boolean loading;
 	}
-	private int bufferItemCount  = 3;
+	private int bufferItemCount  = 2;
 	// The current offset index of data you have loaded
     private int currentPage = 0;
     // The total number of items in the dataset after the last load
