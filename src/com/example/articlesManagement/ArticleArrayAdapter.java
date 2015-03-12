@@ -1,6 +1,9 @@
 package com.example.articlesManagement;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import android.content.Context;
@@ -9,19 +12,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.code.freeMarket.R;
 import com.example.infoClasses.Article;
+import com.github.curioustechizen.ago.RelativeTimeTextView;
 
 
 
 public class ArticleArrayAdapter extends ArrayAdapter<Article> {
 	
-	private final int previewLength = 150;
+	private final int previewLength = 500;
 	
     static class ViewHolder {
 	    public TextView articleTitleTextView;
-	    public TextView articleTimeTextView;
+	    public RelativeTimeTextView articleTimeTextView;
 	    public TextView articleContentTextView;
+	    public TextView articleAuthorTextView;
 	    public TextView articleLikeTextView;
 	    public TextView articleDislikeTextView;
 	    public TextView articleCommentTextView;
@@ -89,8 +96,9 @@ public class ArticleArrayAdapter extends ArrayAdapter<Article> {
 			    LayoutInflater inflater = (LayoutInflater) context
 			        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			    rowView = inflater.inflate(R.layout.article_row, parent, false);
+			    viewHolder.articleAuthorTextView = (TextView) rowView.findViewById(R.id.articleAuthorTextView);
 			    viewHolder.articleTitleTextView = (TextView) rowView.findViewById(R.id.articleTitleTextView);
-			    viewHolder.articleTimeTextView = (TextView) rowView.findViewById(R.id.articleTimeTextView);
+			    viewHolder.articleTimeTextView = (RelativeTimeTextView) rowView.findViewById(R.id.articleTimeTextView);
 			    viewHolder.articleContentTextView = (TextView) rowView.findViewById(R.id.articleContentTextView);
 			    viewHolder.articleLikeTextView = (TextView) rowView.findViewById(R.id.articleLikeTextView);
 			    viewHolder.articleDislikeTextView = (TextView) rowView.findViewById(R.id.articleDislikeTextView);
@@ -106,13 +114,25 @@ public class ArticleArrayAdapter extends ArrayAdapter<Article> {
 	}
 	 
 	private void setArticleInfo(ViewHolder viewHolder, int position) {
-		 Article article = articles.get(position);
+		 Article article = articles.get(position);	 
+		 String dateString = article.getUpdateTime();
+		 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+		 Date date;
+		 try {
+			 date = sdf.parse(dateString);
+			 long startDate = date.getTime() - 10800000 - 3600000;
+			 viewHolder.articleTimeTextView.setReferenceTime(startDate);
+		 } catch (ParseException e) {
+			 viewHolder.articleTimeTextView.setText("unexpected");
+			 e.printStackTrace();
+			 Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+		 } 
 		 viewHolder.articleTitleTextView.setText(article.getTitle());
-		 viewHolder.articleTimeTextView.setText(article.getUpdateTime());
+		 viewHolder.articleAuthorTextView.setText(article.getAuthor());
 		 viewHolder.articleContentTextView.setText(getPreview(article.getContent()));
-		 viewHolder.articleLikeTextView.setText(String.valueOf(article.getLike()));
-		 viewHolder.articleDislikeTextView.setText(String.valueOf(article.getDislike()));
-		 viewHolder.articleCommentTextView.setText(String.valueOf(article.getComment()));
+		 viewHolder.articleLikeTextView.setText("O " + String.valueOf(article.getLike()));
+		 viewHolder.articleDislikeTextView.setText("X " + String.valueOf(article.getDislike()));
+		 viewHolder.articleCommentTextView.setText("Reply " + String.valueOf(article.getComment()));
 	}
 	
 	private String getPreview(String content) {

@@ -1,6 +1,7 @@
 package com.example.asyncTasks;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -58,10 +59,14 @@ public class HandleArticlesTask extends AsyncTask<String, Void, String> {
 		ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.articleProgress);
 		progressBar.setVisibility(View.GONE);
 		if (result == null){
-            Toast.makeText(mContext, "Failed to get character's info", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "Failed to get posts", Toast.LENGTH_SHORT).show();
             return;
 		}
 		//render view
+		Toast.makeText(mContext, "Updated.", Toast.LENGTH_SHORT).show();
+		Article head = articles.get(0);
+		Collections.reverse(articles);
+		articles.add(0, head);
 		adapter.setArticles(articles);
 		adapter.notifyDataSetChanged();
     }

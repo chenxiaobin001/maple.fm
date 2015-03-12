@@ -4,18 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.code.freeMarket.R;
+import com.example.acountManagement.UserProfilePanelActivity;
 import com.example.asyncTasks.HandleArticlesTask;
-import com.example.asyncTasks.HandleNotificationJSON;
-import com.example.asyncTasks.HandleProfileStatTask;
 import com.example.asyncTasks.RetriveJSONAPITask;
-import com.example.asyncTasks.RetriveJSONTask;
 import com.example.infoClasses.Article;
-import com.example.maplefreemarket.HomeActivity;
 import com.example.maplefreemarket.InfiniteScrollListener;
 import com.nhaarman.listviewanimations.appearance.AnimationAdapter;
 import com.nhaarman.listviewanimations.appearance.simple.ScaleInAnimationAdapter;
 
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -23,8 +21,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ProgressBar;
@@ -51,6 +47,7 @@ public class ArticlesActivity extends ActionBarActivity {
 		animationAdapter.setAbsListView(listView);
 		listView.setAdapter(animationAdapter);
 		progressBar = (ProgressBar) findViewById(R.id.articleProgress);
+		progressBar.setVisibility(View.GONE);
 /*		backButton = (Button) findViewById(R.id.articleBackButton);
 		backButton.setOnClickListener(new OnClickListener() {		
 			@Override
@@ -76,7 +73,7 @@ public class ArticlesActivity extends ActionBarActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.profile_menu, menu);
+	    inflater.inflate(R.menu.article_menu, menu);
 	    return super.onCreateOptionsMenu(menu);
 	}
 
@@ -93,6 +90,10 @@ public class ArticlesActivity extends ActionBarActivity {
     			// TODO Auto-generated catch block
     			e.printStackTrace();
     		}
+            return true;
+        case R.id.action_edit:
+        	Intent myIntent = new Intent(this, NewPostActivity.class);
+			startActivity(myIntent);
             return true;
         default:
             return super.onOptionsItemSelected(item);

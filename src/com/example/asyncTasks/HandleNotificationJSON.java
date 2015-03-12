@@ -9,6 +9,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
+import android.widget.TextView;
 
 public class HandleNotificationJSON extends AsyncTask<String, Void, String> {
 	
@@ -55,6 +56,8 @@ public class HandleNotificationJSON extends AsyncTask<String, Void, String> {
 		        } 
 		    }); 
 		alertDialog.show(); 
+		TextView textView = (TextView) alertDialog.findViewById(android.R.id.message);
+        textView.setTextSize(16);
 		context = null;
     }
 	

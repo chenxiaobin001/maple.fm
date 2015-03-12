@@ -1,11 +1,13 @@
 package com.example.infoClasses;
 
+import java.util.Comparator;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Article {
 	@JsonProperty("id")
 	private int id;
-	@JsonProperty("author")
+	@JsonProperty("name")
 	private String author;
 	@JsonProperty("title")
 	private String title;
@@ -83,4 +85,16 @@ public class Article {
 	public void setId(int id) {
 		this.id = id;
 	}
+	
+	public static Comparator<Article> getCreateDateComparator() {
+        return new Comparator<Article>() {
+
+			@Override
+			public int compare(Article first, Article second) {
+				if (first.getCreateTime() == null || second.getCreateTime() ==  null)	return	0;
+				return first.getId() - second.getId();
+			}
+
+        };
+    }
 }
