@@ -42,7 +42,7 @@ public class RetriveJSONAPITask extends AsyncTask<String, Void, String> {
 		    ret = response.body().string();
 		    if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
 		 
-		    System.out.println(response.body().string());
+	//	    System.out.println(response.body().string());
 		    
     	    return ret;
         } catch (Exception e) {
@@ -52,15 +52,12 @@ public class RetriveJSONAPITask extends AsyncTask<String, Void, String> {
     }
 
     protected void onPostExecute(String result) {
-    //	HandleItemListJSON obj = ((HomeActivity)mContext).getObj();
-  	//	obj = new HandleItemListJSON(mContext);
+
     	if (result == null)
     		Toast.makeText(mContext, "Failed to get data, please check your network.",  Toast.LENGTH_SHORT).show();
-//		Toast.makeText(mContext, "processing", Toast.LENGTH_SHORT).show();
     	if (parseJSONAsyncTask != null && parseJSONAsyncTask.isCancelled()){
     		return;
     	}
-  //  	Toast.makeText(mContext, result,  Toast.LENGTH_SHORT).show();
     	mContext = null;
     	if (parseJSONAsyncTask != null)
     		parseJSONAsyncTask.execute(result);
@@ -73,11 +70,19 @@ public class RetriveJSONAPITask extends AsyncTask<String, Void, String> {
     		String serverUrl = mContext.getResources().getString(R.string.myServerUrl);
         	serverUrl += "users.json";
         	ret = serverUrl;
+        	break;
     	}
-    	case 1: {
+    	case 1: {	//get notification
     		String serverUrl = mContext.getResources().getString(R.string.myServerUrl);
     		String notificationURL = serverUrl + "notification/index.json";
     		ret = notificationURL;
+    		break;
+    	}
+    	case 2: {	//get articles
+    		String serverUrl = mContext.getResources().getString(R.string.myServerUrl);
+    		String notificationURL = serverUrl + "articles.json";
+    		ret = notificationURL;
+    		break;
     	}
     	}
     	return ret;

@@ -42,6 +42,7 @@ import com.code.freeMarket.R;
 import com.example.acountManagement.AccessAcountSettings;
 import com.example.acountManagement.SignupDialog;
 import com.example.acountManagement.UserProfilePanelActivity;
+import com.example.articlesManagement.ArticlesActivity;
 import com.example.asyncTasks.HandleItemListJSON;
 import com.example.asyncTasks.HandleNotificationJSON;
 import com.example.asyncTasks.RetriveJSONAPITask;
@@ -405,6 +406,9 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
         case R.id.action_notify:
         	retriveNotification(1);
         	return true;
+        case R.id.action_article:
+        	Intent myIntent = new Intent(this, ArticlesActivity.class);
+			startActivity(myIntent);
         default:
             return super.onOptionsItemSelected(item);
 		}
