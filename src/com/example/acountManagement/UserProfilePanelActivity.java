@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +36,8 @@ public class UserProfilePanelActivity extends ActionBarActivity implements  OnIm
 //	private ImageView accountPetImage;
 	private ImageView accountCharImage;
 	private AccessAcountSettings account;
+	private ProgressBar progressBar;
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +50,7 @@ public class UserProfilePanelActivity extends ActionBarActivity implements  OnIm
 //		accountPetImage = (ImageView) findViewById(R.id.petImageimageView);
 		accountCharImage = (ImageView) findViewById(R.id.characterImageView);
 		backButton = (Button) findViewById(R.id.profileBackButton);
+		progressBar = (ProgressBar) findViewById(R.id.profileProgress);
 		backButton.setOnClickListener(new OnClickListener() {		
 			@Override
 			public void onClick(View v) {
@@ -129,8 +133,9 @@ public class UserProfilePanelActivity extends ActionBarActivity implements  OnIm
 		AsyncTask<String, Void, String> asyncTask = new HandleProfileStatTask(this, findViewById(android.R.id.content), true);
 		RetriveJSONTask task = new RetriveJSONTask(this, asyncTask);
 		task.execute(URL);
+		progressBar.setVisibility(View.VISIBLE);
 	} 
-	 
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.

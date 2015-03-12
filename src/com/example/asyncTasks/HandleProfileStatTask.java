@@ -19,6 +19,7 @@ import android.text.Html;
 import android.text.Spanned;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -140,6 +141,8 @@ public class HandleProfileStatTask extends AsyncTask<String, Void, String> {
 	
 	@Override
 	protected void onPostExecute(String result) {
+		ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.profileProgress);
+		progressBar.setVisibility(View.GONE);
 		if (result == null){
             Toast.makeText(mContext, "Failed to get character's info", Toast.LENGTH_SHORT).show();
             return;

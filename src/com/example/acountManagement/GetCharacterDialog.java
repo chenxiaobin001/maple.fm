@@ -16,6 +16,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
  
 
@@ -115,6 +116,8 @@ public class GetCharacterDialog extends DialogFragment{
 		AsyncTask<String, Void, String> asyncTask = new HandleProfileStatTask(getActivity(), getActivity().findViewById(android.R.id.content), true);
 		RetriveJSONTask task = new RetriveJSONTask(getActivity(), asyncTask);
 		task.execute(URL);
+		ProgressBar progressBar = (ProgressBar) getActivity().findViewById(R.id.profileProgress);
+		progressBar.setVisibility(View.VISIBLE);
 	} 
 	 
  

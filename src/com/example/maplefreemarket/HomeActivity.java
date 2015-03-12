@@ -359,7 +359,7 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 	        	int size = curDataList.size();
 	        	List<FMItem> items = adapter.getFilteredItems();
 	        	if (size >= items.size())	return;
-	        	adapter.addItemsRefresh(items.subList(size, Math.min(page * 30, items.size())));
+	        	adapter.addItemsRefresh(items.subList(size, Math.min(page * 50, items.size())));
 	        }
 	    };
 	    return onScrollListener;
