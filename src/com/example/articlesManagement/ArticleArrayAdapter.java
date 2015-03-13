@@ -32,7 +32,6 @@ public class ArticleArrayAdapter extends ArrayAdapter<Article> {
 	    public TextView articleLikeTextView;
 	    public TextView articleDislikeTextView;
 	    public TextView articleCommentTextView;
-	    public View rowView;
 	}
 	
 	private Context context;

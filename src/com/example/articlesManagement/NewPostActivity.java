@@ -31,7 +31,7 @@ public class NewPostActivity extends ActionBarActivity implements MyAsyncTaskLis
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.new_article_activity);
+		setContentView(R.layout.article_new_activity);
 		Intent i = getIntent();
 		final int type = i.getIntExtra("type", 0);
 		Article article = i.getParcelableExtra("article");

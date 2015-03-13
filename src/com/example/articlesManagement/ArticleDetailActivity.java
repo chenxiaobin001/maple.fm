@@ -7,7 +7,8 @@ import java.util.Date;
 
 import com.code.freeMarket.R;
 import com.example.acountManagement.AccessAcountSettings;
-import com.example.asyncTasks.HandleArticlesTask;
+import com.example.asyncTasks.HandleCommentsTask;
+import com.example.asyncTasks.RetriveJSONAPITask;
 import com.example.infoClasses.Article;
 import com.github.curioustechizen.ago.RelativeTimeTextView;
 import com.nhaarman.listviewanimations.appearance.simple.ScaleInAnimationAdapter;
@@ -27,11 +28,12 @@ import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import com.example.infoClasses.Comment;
 
 public class ArticleDetailActivity extends ActionBarActivity {
 
 	private ListView listView;
-	private ArticleArrayAdapter adapter;
+	private CommentArrayAdapter adapter;
 	private ProgressBar progressBar;
 	static final int REQUEST = 1;  // The request code
 	private ViewHolder viewHolder;
@@ -56,7 +58,7 @@ public class ArticleDetailActivity extends ActionBarActivity {
 		setContentView(R.layout.article_detail_activity);
 		
 		listView = (ListView) findViewById(R.id.commentListView);
-		adapter = new ArticleArrayAdapter(this, new ArrayList<Article>());
+		adapter = new CommentArrayAdapter(this, new ArrayList<Comment>());
 		ScaleInAnimationAdapter animationAdapter = new ScaleInAnimationAdapter(adapter);
 		animationAdapter.setAbsListView(listView);
 		listView.setAdapter(animationAdapter);
@@ -69,7 +71,7 @@ public class ArticleDetailActivity extends ActionBarActivity {
 			@Override
 			public void onItemClick(AdapterView<?> adapter, View view, int position,
 					long id) {
-				
+				replyDialog((Comment) adapter.getItemAtPosition(position));
 			}
 
 		});
@@ -99,8 +101,7 @@ public class ArticleDetailActivity extends ActionBarActivity {
     		}
             return true;
         case R.id.action_edit:
-        	Intent myIntent = new Intent(this, NewPostActivity.class);
-			startActivity(myIntent);
+        	replyDialog(new Comment());
             return true;
         default:
             return super.onOptionsItemSelected(item);
@@ -123,8 +124,8 @@ public class ArticleDetailActivity extends ActionBarActivity {
 	}
 	
 	private void loadComments() {
-		AsyncTask<String, Void, String> asyncTask = new HandleArticlesTask(this, findViewById(android.R.id.content), adapter);
-	//	new RetriveJSONAPITask(this, null, 3).execute("");
+		AsyncTask<String, Void, String> asyncTask = new HandleCommentsTask(this, findViewById(android.R.id.content), adapter);
+		new RetriveJSONAPITask(this, asyncTask, 3).execute(String.valueOf(article.getId()));
 		progressBar.setVisibility(View.VISIBLE);
 	}
 	
@@ -173,5 +174,16 @@ public class ArticleDetailActivity extends ActionBarActivity {
 		viewHolder.articleCommentTextView.setText("Reply " + String.valueOf(article.getComment()));
 	
 
+	}
+	
+	private void replyDialog(Comment comment) {
+		String[] args = new String[4];
+		AccessAcountSettings account = AccessAcountSettings.getInstance();
+		args[0] = account.getAccountName();
+		args[1] = String.valueOf(comment.getCommenterID1());
+		args[2] = comment.getCommenter1();
+		args[3] = String.valueOf(article.getId());
+		ReplyArticleDialog dialog = ReplyArticleDialog.newInstance(args);
+		dialog.show(getFragmentManager(), "reply"); 
 	}
 }

@@ -22,6 +22,7 @@ public class PostJSONAPITask extends AsyncTask<String, Void, String> {
     private AsyncTask<String, Void, String> parseJSONAsyncTask;
     private String ret;
     private int type;
+    private String resourceID;
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8"); 
     public PostJSONAPITask (Context context, AsyncTask<String, Void, String> asyncTask, int type){
          mContext = context;
@@ -37,16 +38,18 @@ public class PostJSONAPITask extends AsyncTask<String, Void, String> {
         	String serverUrl = getRequestURL(type);
         	Builder request = new Request.Builder() 
             .url(serverUrl) 
-  //          .header("User-Agent", "OkHttp Headers.java")  
             .post(body);
-        	if (type == 2) {
+        	// check login
+        	if (type == 2 || type == 3) {
         		String auth = account.getAccountAuthToken();
         		String email = account.getAccountEmail();
         		if (auth == null || email == null) return "login";
         		request.addHeader("X-User-Token", auth) 
                 .addHeader("X-User-Email", email); 
+        	} 
+        	if (type == 3) {
+        		resourceID = contents[1];
         	}
-        	
 		    Response response = client.newCall(request.build()).execute();
 		    ret = response.body().string();
 		    if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
@@ -59,18 +62,14 @@ public class PostJSONAPITask extends AsyncTask<String, Void, String> {
     }
 
     protected void onPostExecute(String result) {
-    //	HandleItemListJSON obj = ((HomeActivity)mContext).getObj();
-  	//	obj = new HandleItemListJSON(mContext);
     	if ("login".equals(result)) {
     		Toast.makeText(mContext, "Log in or sign up first.",  Toast.LENGTH_SHORT).show();
     	}
     	if (result == null)
     		Toast.makeText(mContext, "Failed to get data, please check your network.",  Toast.LENGTH_SHORT).show();
-//		Toast.makeText(mContext, "processing", Toast.LENGTH_SHORT).show();
     	if (parseJSONAsyncTask != null && parseJSONAsyncTask.isCancelled()){
     		return;
     	}
-  //  	Toast.makeText(mContext, result,  Toast.LENGTH_SHORT).show();
     	mContext = null;
     	if (parseJSONAsyncTask != null)
     		parseJSONAsyncTask.execute(result);
@@ -94,6 +93,12 @@ public class PostJSONAPITask extends AsyncTask<String, Void, String> {
     	case 2: {	//post article
     		String serverUrl = mContext.getResources().getString(R.string.myServerUrl);
         	serverUrl += "articles.json";
+        	ret = serverUrl;
+        	break;
+    	}
+    	case 3: {	//post comment
+    		String serverUrl = mContext.getResources().getString(R.string.myServerUrl);
+        	serverUrl += "articles/" + resourceID + "/comments.json";
         	ret = serverUrl;
         	break;
     	}

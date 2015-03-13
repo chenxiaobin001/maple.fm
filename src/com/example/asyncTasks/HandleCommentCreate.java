@@ -3,23 +3,27 @@ package com.example.asyncTasks;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import com.code.freeMarket.R;
 import com.example.interfaces.MyAsyncTaskListener;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
-public class HandleArticleEditTask extends AsyncTask<String, Void, String> {
+public class HandleCommentCreate extends AsyncTask<String, Void, String> {
 
 	private Context mContext;
+	private View view;
 	private int mode;
-	public HandleArticleEditTask(Context context, View view) {
+	public HandleCommentCreate(Context context, View view) {
 		this.mContext = context;
+		this.view = view;
 	}
 	
 	private String handleJson(String[] strs) throws JSONException{
-		JSONObject jObject = new JSONObject(strs[0]);
 		mode = 0;
+		JSONObject jObject = new JSONObject(strs[0]);
 		if (strs[0] == null)	return null;
 		if (jObject.has("errors")) {
 			return jObject.optString("errors").toString();
@@ -27,7 +31,7 @@ public class HandleArticleEditTask extends AsyncTask<String, Void, String> {
 			return jObject.optString("error").toString();
 		} else {
 			mode = 1;
-			return "Successfully edited!";
+			return "Successfully posted!";
 		}
 	}
 
@@ -46,8 +50,10 @@ public class HandleArticleEditTask extends AsyncTask<String, Void, String> {
 	
 	@Override
 	protected void onPostExecute(String result) {
+		ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.commentsProgress);
+		progressBar.setVisibility(View.GONE);
 		if (result == null) {
-			Toast.makeText(mContext, "failed to post", Toast.LENGTH_SHORT).show();
+			Toast.makeText(mContext, "failed to reply", Toast.LENGTH_SHORT).show();
 		} else {
 			MyAsyncTaskListener activity = (MyAsyncTaskListener)mContext;
 	    	activity.onAsyncTaskFinished(String.valueOf(mode));

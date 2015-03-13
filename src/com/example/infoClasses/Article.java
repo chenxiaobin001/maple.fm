@@ -89,6 +89,15 @@ public class Article implements Parcelable {
 		this.id = id;
 	}
 	
+/*	public static Comparator<Article> getUpdateDateComparator() {
+		return new Comparator<Article>() {
+			@Override
+			public int compare(Article first, Article second) {
+				if (first.getc)
+			}
+		}
+ 	}*/
+	
 	public static Comparator<Article> getCreateDateComparator() {
         return new Comparator<Article>() {
 

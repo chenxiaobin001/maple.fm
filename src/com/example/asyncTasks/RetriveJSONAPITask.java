@@ -19,6 +19,7 @@ public class RetriveJSONAPITask extends AsyncTask<String, Void, String> {
     private AsyncTask<String, Void, String> parseJSONAsyncTask;
     private String ret;
     private int type;
+    private String recourceID;
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8"); 
     public RetriveJSONAPITask (Context context, AsyncTask<String, Void, String> asyncTask, int type){
          mContext = context;
@@ -29,6 +30,7 @@ public class RetriveJSONAPITask extends AsyncTask<String, Void, String> {
     protected String doInBackground(String... contents) {
     	ret = null;
         try {
+        	recourceID = contents[0];
         	String serverUrl = getRequestURL(type);
         	if ("".equals(serverUrl))	return null;
         	Request request = new Request.Builder() 
@@ -79,6 +81,12 @@ public class RetriveJSONAPITask extends AsyncTask<String, Void, String> {
     	case 2: {	//get articles
     		String serverUrl = mContext.getResources().getString(R.string.myServerUrl);
     		String notificationURL = serverUrl + "articles.json";
+    		ret = notificationURL;
+    		break;
+    	}
+    	case 3: {	//get comments
+    		String serverUrl = mContext.getResources().getString(R.string.myServerUrl);
+    		String notificationURL = serverUrl + "articles/" + recourceID + "/comments.json";
     		ret = notificationURL;
     		break;
     	}
