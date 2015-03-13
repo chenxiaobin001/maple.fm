@@ -3,22 +3,19 @@ package com.example.asyncTasks;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.code.freeMarket.R;
 import com.example.interfaces.MyAsyncTaskListener;
-import com.example.maplefreemarket.SellerInfoFragment.OnImageLoadedListener;
-
 import android.content.Context;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-public class HandlePostArticleTask extends AsyncTask<String, Void, String> {
+public class HandleArticleCreateTask extends AsyncTask<String, Void, String> {
 
 	private Context mContext;
 	private View view;
-	public HandlePostArticleTask(Context context, View view) {
+	public HandleArticleCreateTask(Context context, View view) {
 		this.mContext = context;
 		this.view = view;
 	}
@@ -27,7 +24,7 @@ public class HandlePostArticleTask extends AsyncTask<String, Void, String> {
 		JSONObject jObject = new JSONObject(strs[0]);
 		if (strs[0] == null)	return null;
 		if (jObject.has("errors")) {
-			return jObject.getJSONObject("errors").toString();
+			return jObject.optString("errors").toString();
 		} else if (jObject.has("error")) {
 			return jObject.optString("error").toString();
 		} else {

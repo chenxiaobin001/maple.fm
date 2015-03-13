@@ -54,6 +54,10 @@
             android:name="com.example.articlesManagement.NewPostActivity"
             android:label="@string/app_name" >
         </activity>
+        <activity
+            android:name="com.example.articlesManagement.ArticleDetailActivity"
+            android:label="@string/app_name" >
+        </activity>
         <activity android:name="com.purplebrain.adbuddiz.sdk.AdBuddizActivity" 
                android:theme="@android:style/Theme.Translucent" />
     </application>

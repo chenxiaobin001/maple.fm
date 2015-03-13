@@ -7,12 +7,15 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 
 import com.code.freeMarket.R;
+import com.example.acountManagement.AccessAcountSettings;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
+import com.squareup.okhttp.Request.Builder;
 
-public class RetriveJSONAPITask extends AsyncTask<String, Void, String> {
+public class PatchJSONAPITask extends AsyncTask<String, Void, String> {
 
     private OkHttpClient client;
     private Context mContext;
@@ -20,28 +23,34 @@ public class RetriveJSONAPITask extends AsyncTask<String, Void, String> {
     private String ret;
     private int type;
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8"); 
-    public RetriveJSONAPITask (Context context, AsyncTask<String, Void, String> asyncTask, int type){
+    public PatchJSONAPITask (Context context, AsyncTask<String, Void, String> asyncTask, int type){
          mContext = context;
          client = new OkHttpClient();
          this.parseJSONAsyncTask = asyncTask;
          this.type = type;
     }
-    protected String doInBackground(String... contents) {
+    protected String doInBackground(String... contents) {		//pass type and resource id
     	ret = null;
         try {
-        	String serverUrl = getRequestURL(type);
-        	if ("".equals(serverUrl))	return null;
-        	Request request = new Request.Builder() 
+        	AccessAcountSettings account = AccessAcountSettings.getInstance();
+        	RequestBody body = RequestBody.create(JSON, contents[0]);
+        	String serverUrl = getRequestURL(type, contents[1]);
+
+        	Builder request = new Request.Builder() 
             .url(serverUrl) 
-  //          .header("User-Agent", "OkHttp Headers.java") 
-  //          .addHeader("Accept", "application/json; q=0.5") 
-  //          .addHeader("Accept", "application/vnd.github.v3+json") 
-            .build(); 
-        	
-		    Response response = client.newCall(request).execute();
+            .patch(body);
+
+          	if (true) {
+        		String auth = account.getAccountAuthToken();
+        		String email = account.getAccountEmail();
+        		if (auth == null || email == null) return "login";
+        		request.addHeader("X-User-Token", auth) 
+                .addHeader("X-User-Email", email); 
+        	}
+		    Response response = client.newCall(request.build()).execute();
 		    ret = response.body().string();
 		    if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-		 		    
+
     	    return ret;
         } catch (IOException e) {
         //    e.printStackTrace();
@@ -61,26 +70,13 @@ public class RetriveJSONAPITask extends AsyncTask<String, Void, String> {
     		parseJSONAsyncTask.execute(result);
     }
     
-    private String getRequestURL(int type) {
+    private String getRequestURL(int type, String id) {
     	String ret = "";
     	switch(type) {
-    	case 0: {	//create new user
+    	case 0: {	//edit post
     		String serverUrl = mContext.getResources().getString(R.string.myServerUrl);
-        	serverUrl += "users.json";
+        	serverUrl += "articles/" + id +".json";
         	ret = serverUrl;
-        	break;
-    	}
-    	case 1: {	//get notification
-    		String serverUrl = mContext.getResources().getString(R.string.myServerUrl);
-    		String notificationURL = serverUrl + "notification/index.json";
-    		ret = notificationURL;
-    		break;
-    	}
-    	case 2: {	//get articles
-    		String serverUrl = mContext.getResources().getString(R.string.myServerUrl);
-    		String notificationURL = serverUrl + "articles.json";
-    		ret = notificationURL;
-    		break;
     	}
     	}
     	return ret;

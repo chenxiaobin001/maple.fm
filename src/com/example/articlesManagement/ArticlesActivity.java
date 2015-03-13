@@ -16,11 +16,14 @@ import com.nhaarman.listviewanimations.appearance.simple.ScaleInAnimationAdapter
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ProgressBar;
@@ -30,7 +33,6 @@ public class ArticlesActivity extends ActionBarActivity {
 	private ListView listView;
 //	private Button backButton;
 	private ArticleArrayAdapter adapter;
-	private AnimationAdapter animator;
 	private ProgressBar progressBar;
 //	private CharacterInfo charInfo;
 
@@ -43,7 +45,6 @@ public class ArticlesActivity extends ActionBarActivity {
 		listView = (ListView) findViewById(R.id.articleListView);
 		adapter = new ArticleArrayAdapter(this, new ArrayList<Article>());
 		ScaleInAnimationAdapter animationAdapter = new ScaleInAnimationAdapter(adapter);
-		animator = animationAdapter;
 		animationAdapter.setAbsListView(listView);
 		listView.setAdapter(animationAdapter);
 		progressBar = (ProgressBar) findViewById(R.id.articleProgress);
@@ -57,16 +58,17 @@ public class ArticlesActivity extends ActionBarActivity {
 		});*/
 		listView.setOnScrollListener(newOnScrollListener());
 		loadArticles();
-/*		listView.setOnItemClickListener(new OnItemClickListener(){
+		listView.setOnItemClickListener(new OnItemClickListener(){
 
 			@Override
 			public void onItemClick(AdapterView<?> adapter, View view, int position,
 					long id) {
+				Intent myIntent = new Intent(ArticlesActivity.this, ArticleDetailActivity.class);
+				myIntent.putExtra("article", (Parcelable) adapter.getItemAtPosition(position));
+				startActivity(myIntent);
+			} 
 
-		
-			}
-
-		});*/
+		});
 	}
 
 	@Override

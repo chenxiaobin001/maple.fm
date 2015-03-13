@@ -2,9 +2,12 @@ package com.example.infoClasses;
 
 import java.util.Comparator;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Article {
+public class Article implements Parcelable {
 	@JsonProperty("id")
 	private int id;
 	@JsonProperty("name")
@@ -97,4 +100,45 @@ public class Article {
 
         };
     }
+	
+	public static final Parcelable.Creator<Article> CREATOR = new Parcelable.Creator<Article>() {
+        public Article createFromParcel(Parcel source) {
+        	Article article = new Article(); 
+        	article.author = source.readString(); 
+        	article.title = source.readString(); 
+        	article.authorImage = source.readString(); 
+        	article.updateTime = source.readString(); 
+        	article.createTime = source.readString(); 
+        	article.content = source.readString(); 
+        	article.id = source.readInt(); 
+        	article.like = source.readInt(); 
+        	article.dislike = source.readInt(); 
+        	article.comment = source.readInt(); 
+        	return article;  
+        }
+
+		@Override
+		public Article[] newArray(int arg0) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+    }; 
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+	@Override
+	public void writeToParcel(Parcel parcel, int arg1) {
+		parcel.writeString(author); 
+		parcel.writeString(title); 
+		parcel.writeString(authorImage); 
+		parcel.writeString(updateTime); 
+		parcel.writeString(createTime); 
+		parcel.writeString(content); 
+		parcel.writeInt(id);  
+		parcel.writeInt(like);
+		parcel.writeInt(dislike);
+		parcel.writeInt(comment);
+	}
 }

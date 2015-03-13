@@ -48,14 +48,11 @@ public class PostJSONAPITask extends AsyncTask<String, Void, String> {
         	}
         	
 		    Response response = client.newCall(request.build()).execute();
-	//        		    System.out.println(response.body().string());
 		    ret = response.body().string();
 		    if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-		 
-		    System.out.println(response.body().string());
-		    
+	    
     	    return ret;
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         	return ret;
         }

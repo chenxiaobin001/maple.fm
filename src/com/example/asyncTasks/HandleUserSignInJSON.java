@@ -20,7 +20,7 @@ public class HandleUserSignInJSON extends AsyncTask<String, Void, String> {
 	private String handleJson(String[] strs) throws JSONException{
 		JSONObject jObject = new JSONObject(strs[0]);
 		if (jObject.has("errors")) {
-			return jObject.getJSONObject("errors").toString();
+			return jObject.optString("errors").toString();
 		} else if (jObject.has("error")) {
 			return jObject.optString("error").toString();
 		} else {
