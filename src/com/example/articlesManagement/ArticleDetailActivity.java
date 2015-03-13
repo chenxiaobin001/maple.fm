@@ -18,6 +18,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -141,7 +142,7 @@ public class ArticleDetailActivity extends ActionBarActivity implements MyAsyncT
 	    viewHolder.articleDislikeTextView = (TextView) findViewById(R.id.articleDislikeTextView);
 	    viewHolder.articleCommentTextView = (TextView) findViewById(R.id.articleCommentTextView);
 	    viewHolder.articleEditTextView = (TextView) findViewById(R.id.articleEditTextView);
-	    
+	    viewHolder.articleContentTextView.setMovementMethod(new ScrollingMovementMethod());
 	    AccessAcountSettings account = AccessAcountSettings.getInstance();
 	    String user = account.getAccountName();
 	    if (user != null && user.equals(article.getAuthor())) {
