@@ -20,16 +20,9 @@ public class HandleArticleCreateTask extends AsyncTask<String, Void, String> {
 		this.view = view;
 	}
 	
-	private String handleJson(String[] strs) throws JSONException{
-		JSONObject jObject = new JSONObject(strs[0]);
+	private String handleJson(String[] strs) throws JSONException{		
 		if (strs[0] == null)	return null;
-		if (jObject.has("errors")) {
-			return jObject.optString("errors").toString();
-		} else if (jObject.has("error")) {
-			return jObject.optString("error").toString();
-		} else {
-			return "Successfully posted!";
-		}
+		return strs[0];
 	}
 
 	@Override
@@ -49,12 +42,25 @@ public class HandleArticleCreateTask extends AsyncTask<String, Void, String> {
 	protected void onPostExecute(String result) {
 		ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.articleProgress);
 		progressBar.setVisibility(View.GONE);
+		JSONObject jObject;
+		try {
+			jObject = new JSONObject(result);
+		} catch (JSONException e) {
+			Toast.makeText(mContext, "failed to post", Toast.LENGTH_SHORT).show();
+			return;
+		}
 		if (result == null) {
 			Toast.makeText(mContext, "failed to post", Toast.LENGTH_SHORT).show();
 		} else {
-			MyAsyncTaskListener activity = (MyAsyncTaskListener)mContext;
-	    	activity.onAsyncTaskFinished(result);
-			Toast.makeText(mContext, result, Toast.LENGTH_SHORT).show();
+			
+			if (jObject.has("errors")) {
+				Toast.makeText(mContext, jObject.optString("errors").toString(), Toast.LENGTH_SHORT).show();
+			} else if (jObject.has("error")) {
+				Toast.makeText(mContext, jObject.optString("error").toString(), Toast.LENGTH_SHORT).show();
+			} else {
+				MyAsyncTaskListener activity = (MyAsyncTaskListener)mContext;
+		    	activity.onAsyncTaskFinished(result);
+			}
 		}
 		
     }

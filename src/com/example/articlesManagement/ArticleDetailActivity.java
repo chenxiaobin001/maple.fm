@@ -182,7 +182,7 @@ public class ArticleDetailActivity extends ActionBarActivity implements MyAsyncT
 		String[] args = new String[4];
 		AccessAcountSettings account = AccessAcountSettings.getInstance();
 		args[0] = account.getAccountName();
-		args[1] = String.valueOf(comment.getCommenterID1());
+		args[1] = String.valueOf(comment.getId());
 		args[2] = comment.getCommenter1();
 		args[3] = String.valueOf(article.getId());
 		ReplyArticleDialog dialog = ReplyArticleDialog.newInstance(args);

@@ -42,6 +42,12 @@ public class ArticleArrayAdapter extends ArrayAdapter<Article> {
 	    this.articles = articles;
 
 	}
+	@Override
+	public void add(Article article) {
+		super.add(article);
+		articles.add(1, article);
+		notifyDataSetChanged();
+	}
 	
 	@Override
 	public int getCount() {

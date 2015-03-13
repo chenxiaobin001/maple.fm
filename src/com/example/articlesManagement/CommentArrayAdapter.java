@@ -125,12 +125,14 @@ public class CommentArrayAdapter extends ArrayAdapter<Comment> {
 		 viewHolder.CommentContentTextView.setText(comment.getText());
 		 if (comment.getCommenterID2() != 0) {
 			 for (int i = 0; i < comments.size(); i++) {
-				 if (comments.get(i).getCommenterID1() == comment.getCommenterID2()) {
-					 viewHolder.replycontentTextView.setText(comment.getText());
-					 viewHolder.replyCommentAuthorTextView.setText(String.valueOf(comment.getCommenter1()));
+				 if (comments.get(i).getId() == comment.getCommenterID2()) {
+					 viewHolder.replycontentTextView.setText(comments.get(i).getText());
+					 viewHolder.replyCommentAuthorTextView.setText(String.valueOf(comments.get(i).getCommenter1()));
 					 viewHolder.replyLayout.setVisibility(View.VISIBLE);
 				 }
 			 }
-		 } 
+		 }  else {
+			 viewHolder.replyLayout.setVisibility(View.GONE);
+		 }
 	}
 }

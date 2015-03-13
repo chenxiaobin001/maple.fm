@@ -1,15 +1,17 @@
 package com.example.articlesManagement;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.code.freeMarket.R;
-import com.example.acountManagement.UserProfilePanelActivity;
 import com.example.asyncTasks.HandleArticlesTask;
 import com.example.asyncTasks.RetriveJSONAPITask;
 import com.example.infoClasses.Article;
 import com.example.maplefreemarket.InfiniteScrollListener;
-import com.nhaarman.listviewanimations.appearance.AnimationAdapter;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nhaarman.listviewanimations.appearance.simple.ScaleInAnimationAdapter;
 
 
@@ -23,13 +25,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ProgressBar;
 
 public class ArticlesActivity extends ActionBarActivity {
-
+	
+	static final int REQUEST = 2;  // The request code
 	private ListView listView;
 //	private Button backButton;
 	private ArticleArrayAdapter adapter;
@@ -49,13 +53,6 @@ public class ArticlesActivity extends ActionBarActivity {
 		listView.setAdapter(animationAdapter);
 		progressBar = (ProgressBar) findViewById(R.id.articleProgress);
 		progressBar.setVisibility(View.GONE);
-/*		backButton = (Button) findViewById(R.id.articleBackButton);
-		backButton.setOnClickListener(new OnClickListener() {		
-			@Override
-			public void onClick(View v) {
-				finish();
-			}
-		});*/
 		listView.setOnScrollListener(newOnScrollListener());
 		loadArticles();
 		listView.setOnItemClickListener(new OnItemClickListener(){
@@ -95,11 +92,38 @@ public class ArticlesActivity extends ActionBarActivity {
             return true;
         case R.id.action_edit:
         	Intent myIntent = new Intent(this, NewPostActivity.class);
-			startActivity(myIntent);
+        	startActivityForResult(myIntent, REQUEST);		
             return true;
         default:
             return super.onOptionsItemSelected(item);
 		}
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	    // Check which request we're responding to
+	    if (requestCode == REQUEST) {
+	        // Make sure the request was successful
+	        if (resultCode == RESULT_OK) {
+	            String articles = data.getStringExtra("articles");
+	            ObjectMapper mapper = new ObjectMapper();
+	            try {
+					Article article = mapper.readValue(articles, Article.class);
+					adapter.add(article);
+					adapter.notifyDataSetChanged();
+					Toast.makeText(getApplicationContext(), "Successfully posted.", Toast.LENGTH_SHORT).show();
+				} catch (JsonParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (JsonMappingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	        }
+	    }
 	}
 	
 	private OnScrollListener newOnScrollListener(){

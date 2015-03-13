@@ -97,6 +97,10 @@ public class NewPostActivity extends ActionBarActivity implements MyAsyncTaskLis
 			articleReturn.setContent(contentEditText.getText().toString());
 			returnIntent.putExtra("article", articleReturn);
 			setResult(RESULT_OK,returnIntent);	
+		} else {
+			Intent returnIntent = new Intent();
+			returnIntent.putExtra("articles", foo);
+			setResult(RESULT_OK,returnIntent);
 		}
 		finish();		
 	}

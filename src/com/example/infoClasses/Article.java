@@ -103,8 +103,8 @@ public class Article implements Parcelable {
 		return new Comparator<Article>() {
 			@Override
 			public int compare(Article first, Article second) {
-				if (first.updateTimeL < second.updateTimeL)	return -1;
-				else if (first.updateTimeL > second.updateTimeL)	return 1;
+				if (first.updateTimeL < second.updateTimeL)	return 1;
+				else if (first.updateTimeL > second.updateTimeL)	return -1;
 				else return 0;
 			}
 		};
