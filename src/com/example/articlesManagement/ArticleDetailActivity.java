@@ -29,8 +29,9 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import com.example.infoClasses.Comment;
+import com.example.interfaces.MyAsyncTaskListener;
 
-public class ArticleDetailActivity extends ActionBarActivity {
+public class ArticleDetailActivity extends ActionBarActivity implements MyAsyncTaskListener{
 
 	private ListView listView;
 	private CommentArrayAdapter adapter;
@@ -38,6 +39,7 @@ public class ArticleDetailActivity extends ActionBarActivity {
 	static final int REQUEST = 1;  // The request code
 	private ViewHolder viewHolder;
 	private Article article;
+
 	static class ViewHolder {
 	    public TextView articleTitleTextView;
 	    public RelativeTimeTextView articleTimeTextView;
@@ -185,5 +187,11 @@ public class ArticleDetailActivity extends ActionBarActivity {
 		args[3] = String.valueOf(article.getId());
 		ReplyArticleDialog dialog = ReplyArticleDialog.newInstance(args);
 		dialog.show(getFragmentManager(), "reply"); 
+	}
+
+	@Override
+	public void onAsyncTaskFinished(String foo) {
+		HandleCommentsTask task = new HandleCommentsTask(this, findViewById(android.R.id.content), adapter);
+		task.execute(foo);
 	}
 }

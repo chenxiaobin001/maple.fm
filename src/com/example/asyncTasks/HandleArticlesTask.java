@@ -1,6 +1,7 @@
 package com.example.asyncTasks;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -23,8 +24,29 @@ public class HandleArticlesTask extends AsyncTask<String, Void, String> {
 	private Context mContext;
 	private View view;
 	private List<Article> articles;
+	private List<TmpObject> objects;
 	private ArticleArrayAdapter adapter;
 	
+	//your inner class should be defined as static
+	private static class TmpObject {
+		private Article article;
+		private int comment;
+		public TmpObject(){
+			
+		}
+		public Article getArticle() {
+			return article;
+		}
+		public void setArticle(Article article) {
+			this.article = article;
+		}
+		public int getComment() {
+			return comment;
+		}
+		public void setComment(int comment) {
+			this.comment = comment;
+		}
+	}
 	public HandleArticlesTask(Context context, View view, ArticleArrayAdapter adapter) {
 		this.mContext = context;
 		this.view = view;
@@ -34,9 +56,9 @@ public class HandleArticlesTask extends AsyncTask<String, Void, String> {
 	private boolean handleJson(String[] strs) throws JsonParseException, JsonMappingException, IOException{
 		if (strs == null)	return false;
 		ObjectMapper objectMapper = new ObjectMapper();
-		articles = objectMapper.readValue(
+		objects = objectMapper.readValue(
 				strs[0], objectMapper.getTypeFactory().constructCollectionType(
-	                    List.class, Article.class));
+	                    List.class, TmpObject.class));
 		return true;
 	}
 	
@@ -63,9 +85,18 @@ public class HandleArticlesTask extends AsyncTask<String, Void, String> {
             return;
 		}
 		//render view
+		articles = new ArrayList<Article>();
+		for (int i = 0; i < objects.size(); i++) {
+			Article article = objects.get(i).getArticle();
+			article.setComment(objects.get(i).getComment());
+			articles.add(article);
+		}
+		objects.clear();
 		Toast.makeText(mContext, "Updated.", Toast.LENGTH_SHORT).show();
+		Collections.sort(articles, Article.getCreateDateComparator());
 		Article head = articles.get(0);
-		Collections.reverse(articles);
+		articles.remove(0);
+		Collections.sort(articles, Article.getUpdateDateComparator());
 		articles.add(0, head);
 		adapter.setArticles(articles);
 		adapter.notifyDataSetChanged();

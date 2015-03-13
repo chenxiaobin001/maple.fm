@@ -32,6 +32,9 @@ public class PostJSONAPITask extends AsyncTask<String, Void, String> {
     }
     protected String doInBackground(String... contents) {
     	ret = null;
+    	if (type == 3) {
+    		resourceID = contents[1];
+    	}
         try {
         	AccessAcountSettings account = AccessAcountSettings.getInstance();
         	RequestBody body = RequestBody.create(JSON, contents[0]);
@@ -47,9 +50,7 @@ public class PostJSONAPITask extends AsyncTask<String, Void, String> {
         		request.addHeader("X-User-Token", auth) 
                 .addHeader("X-User-Email", email); 
         	} 
-        	if (type == 3) {
-        		resourceID = contents[1];
-        	}
+        	
 		    Response response = client.newCall(request.build()).execute();
 		    ret = response.body().string();
 		    if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);

@@ -1,6 +1,7 @@
 package com.example.articlesManagement;
 
 import com.code.freeMarket.R;
+import com.example.asyncTasks.HandleCommentCreate;
 import com.example.asyncTasks.HandleUserSignInJSON;
 import com.example.asyncTasks.PostJSONAPITask;
 import android.app.AlertDialog;
@@ -125,15 +126,15 @@ public class ReplyArticleDialog extends DialogFragment{
         return "{" +
         		"\"comment\" :" +
         	      "{ \"commenter\": \"" + commenter1 + "\"," +
-        	       " \"body\" : \"" + content.getText().toString() + "\"" +
-        	       " \"comment_id2\" : \"" + commenterID2 + "\"" +
+        	       " \"body\" : \"" + content.getText().toString() + "\"," +
+        	       " \"comment_id2\" : \"" + commenterID2 + "\"," +
         	       " \"commenter2\" : \"" + commenter2 + "\"" +
         	       "}" + 
        	    "}"; 
       } 
  
 	private void reply() throws Exception {
-		AsyncTask<String, Void, String> asyncTask = new HandleUserSignInJSON(getActivity());
+		AsyncTask<String, Void, String> asyncTask = new HandleCommentCreate(getActivity(), getActivity().findViewById(android.R.id.content));
 		PostJSONAPITask task = new PostJSONAPITask(getActivity(), asyncTask, 3);
 		String[] args = new String[2];
 		args[0] = bowlingJson();

@@ -23,15 +23,19 @@ public class HandleCommentCreate extends AsyncTask<String, Void, String> {
 	
 	private String handleJson(String[] strs) throws JSONException{
 		mode = 0;
-		JSONObject jObject = new JSONObject(strs[0]);
 		if (strs[0] == null)	return null;
-		if (jObject.has("errors")) {
-			return jObject.optString("errors").toString();
-		} else if (jObject.has("error")) {
-			return jObject.optString("error").toString();
-		} else {
+		
+		if (strs[0].contains("errors") || strs[0].contains("error")) {
+			JSONObject jObject = new JSONObject(strs[0]);
+			if (jObject.has("errors")) {
+				return jObject.optString("errors").toString();
+			} else {
+				return jObject.optString("error").toString();
+			}
+		}
+		else {
 			mode = 1;
-			return "Successfully posted!";
+			return strs[0];
 		}
 	}
 
@@ -56,8 +60,10 @@ public class HandleCommentCreate extends AsyncTask<String, Void, String> {
 			Toast.makeText(mContext, "failed to reply", Toast.LENGTH_SHORT).show();
 		} else {
 			MyAsyncTaskListener activity = (MyAsyncTaskListener)mContext;
-	    	activity.onAsyncTaskFinished(String.valueOf(mode));
-			Toast.makeText(mContext, result, Toast.LENGTH_SHORT).show();
+			if (mode == 1)
+				activity.onAsyncTaskFinished(result);
+			else
+				Toast.makeText(mContext, result, Toast.LENGTH_SHORT).show();
 		}
 		
     }

@@ -64,6 +64,8 @@
                 android:id="@+id/articleContentTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:scrollbars = "vertical"
+                android:maxLines="10"
                 android:text="content" />
         </LinearLayout>
 

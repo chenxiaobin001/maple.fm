@@ -1,7 +1,9 @@
 package com.example.infoClasses;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Comparator;
-
+import java.util.Date;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -31,6 +33,13 @@ public class Article implements Parcelable {
 	public String getAuthor() {
 		return author;
 	}
+	private long updateTimeL;
+	public long getUpdateTimeL() {
+		return updateTimeL;
+	}
+	public void setUpdateTimeL(long updateTimeL) {
+		this.updateTimeL = updateTimeL;
+	}
 	public void setAuthor(String author) {
 		this.author = author;
 	}
@@ -51,6 +60,7 @@ public class Article implements Parcelable {
 	}
 	public void setUpdateTime(String updateTime) {
 		this.updateTime = updateTime;
+		this.updateTimeL = dateToLong(updateTime);
 	}
 	public String getCreateTime() {
 		return createTime;
@@ -89,14 +99,16 @@ public class Article implements Parcelable {
 		this.id = id;
 	}
 	
-/*	public static Comparator<Article> getUpdateDateComparator() {
+	public static Comparator<Article> getUpdateDateComparator() {
 		return new Comparator<Article>() {
 			@Override
 			public int compare(Article first, Article second) {
-				if (first.getc)
+				if (first.updateTimeL < second.updateTimeL)	return -1;
+				else if (first.updateTimeL > second.updateTimeL)	return 1;
+				else return 0;
 			}
-		}
- 	}*/
+		};
+ 	}
 	
 	public static Comparator<Article> getCreateDateComparator() {
         return new Comparator<Article>() {
@@ -149,5 +161,17 @@ public class Article implements Parcelable {
 		parcel.writeInt(like);
 		parcel.writeInt(dislike);
 		parcel.writeInt(comment);
+	}
+	
+	private long dateToLong(String dateString) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+		Date date;
+		try {
+			date = sdf.parse(dateString);
+			long longDate = date.getTime() - 10800000 - 3600000;
+			return longDate;
+		 } catch (ParseException e) {
+			return 0;
+		 } 
 	}
 }

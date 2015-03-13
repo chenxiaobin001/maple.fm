@@ -1,6 +1,7 @@
 package com.example.asyncTasks;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import com.code.freeMarket.R;
 import com.example.articlesManagement.CommentArrayAdapter;
@@ -61,6 +62,7 @@ public class HandleCommentsTask extends AsyncTask<String, Void, String> {
 		}
 		//render view
 		Toast.makeText(mContext, "Updated.", Toast.LENGTH_SHORT).show();
+		Collections.reverse(comments);
 		adapter.setComments(comments);
 		adapter.notifyDataSetChanged();
     }
