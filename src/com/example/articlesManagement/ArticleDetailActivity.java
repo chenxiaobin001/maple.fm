@@ -68,7 +68,7 @@ public class ArticleDetailActivity extends ActionBarActivity implements MyAsyncT
 		progressBar = (ProgressBar) findViewById(R.id.commentsProgress);
 		progressBar.setVisibility(View.GONE);
 
-		loadComments();
+		
 		listView.setOnItemClickListener(new OnItemClickListener(){
 
 			@Override
@@ -77,8 +77,13 @@ public class ArticleDetailActivity extends ActionBarActivity implements MyAsyncT
 				replyDialog((Comment) adapter.getItemAtPosition(position));
 			}
 
-		});
+		});	
 		setArticleInfo();
+		listView.postDelayed(new Runnable() {
+		    public void run() {
+		    	loadComments();
+		    }
+		 }, 1000); //Every 120000 ms (2 minutes)
 	}
 
 	@Override

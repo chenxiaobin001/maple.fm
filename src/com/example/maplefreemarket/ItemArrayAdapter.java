@@ -192,6 +192,7 @@ public class ItemArrayAdapter extends ArrayAdapter<FMItem> {
 		  	if (!("0".equals(scroll))){
 		  		itemName += "(+" + scroll + ")";
 	    	}
+				  	
 		  	viewHolder.itemNameTextView.setText(itemName);
 		  	viewHolder.itemPriceTextView.setText(NumberFormat.getNumberInstance(Locale.US).format(filteredDataDisplay.get(position).getPrice()));
 		  	viewHolder.itemPriceTextView.setTextColor(Color.parseColor(getPriceColor(filteredDataDisplay.get(position).getPrice())));

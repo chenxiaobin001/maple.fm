@@ -30,17 +30,28 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Author"
-                android:textColor="#336699"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#336699" />
 
             <com.github.curioustechizen.ago.RelativeTimeTextView
                 android:id="@+id/articleTimeTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="0.67"
                 android:paddingLeft="15dp"
+                android:text="time"
                 android:textColor="#ffa500"
-                app:relative_time_prefix="Posted "
-                android:text="time" />
+                app:relative_time_prefix="Posted " />
+
+            <TextView
+                android:id="@+id/articleEditTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.22"
+                android:paddingLeft="20dp"
+                android:text="Edit"
+                android:visibility="gone" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -72,7 +83,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="10dp" >
+            android:paddingTop="10dp"
+            android:visibility="gone" >
 
             <TextView
                 android:id="@+id/articleLikeTextView"
@@ -93,14 +105,6 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="15dp"
                 android:text="comment" />
-
-            <TextView
-                android:id="@+id/articleEditTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="50dp"
-                android:visibility="gone"
-                android:text="Edit" />
 
         </LinearLayout>
         

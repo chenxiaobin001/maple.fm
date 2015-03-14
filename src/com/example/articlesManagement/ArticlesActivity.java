@@ -3,6 +3,8 @@ package com.example.articlesManagement;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import com.code.freeMarket.R;
 import com.example.asyncTasks.HandleArticlesTask;
@@ -24,6 +26,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.AdapterView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
@@ -54,7 +57,7 @@ public class ArticlesActivity extends ActionBarActivity {
 		progressBar = (ProgressBar) findViewById(R.id.articleProgress);
 		progressBar.setVisibility(View.GONE);
 		listView.setOnScrollListener(newOnScrollListener());
-		loadArticles();
+		
 		listView.setOnItemClickListener(new OnItemClickListener(){
 
 			@Override
@@ -66,6 +69,19 @@ public class ArticlesActivity extends ActionBarActivity {
 			} 
 
 		});
+		listView.postDelayed(new Runnable() {
+		    public void run() {
+		    	loadArticles();
+		    }
+		 }, 1000); //Every 120000 ms (2 minutes)
+
+/*		listView.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+
+	        public void onGlobalLayout() {
+	        	listView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+	        	
+	        }
+	    });*/
 	}
 
 	@Override
