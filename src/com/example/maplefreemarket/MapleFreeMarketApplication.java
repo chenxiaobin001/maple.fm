@@ -109,7 +109,7 @@ public class MapleFreeMarketApplication extends Application{
         super.onCreate();
         mContext = getApplicationContext();
         shops = new HashMap<String, List<FMItem>>();
-        init = 0;
+        init = -1;
       /*  Parse.enableLocalDatastore(this); 
         ParseObject.registerSubclass(WorkoutDataStore.class);
         

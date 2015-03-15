@@ -40,11 +40,17 @@ public class HandleNotificationJSON extends AsyncTask<String, Void, String> {
 	}
 	
 	@Override
-	protected void onPostExecute(String result) {
+	protected void onPostExecute(String result) {		//mode - 0 show as needed, 1 must show this time
 		if (result == null)	return;
-		if (mode == 0 && !"2025mapleNotify".equals(id))	return;
-		if (!"2025mapleNotify".equals(id)) {
-			((MapleFreeMarketApplication) MapleFreeMarketApplication.getContext()).init = 1;
+		if ("2024mapleNotify".equals(id)) {
+			int tmp = ((MapleFreeMarketApplication) MapleFreeMarketApplication.getContext()).init;
+			((MapleFreeMarketApplication) MapleFreeMarketApplication.getContext()).init = 0;	//back to normal
+			if (mode == 0 || tmp == -1)	return;		//2024 quiet mode
+		}else if ("2025mapleNotify".equals(id)) {	//2025
+			((MapleFreeMarketApplication) MapleFreeMarketApplication.getContext()).init = 1;	//set to emergency
+		} else {		//2026 show once at start up
+			((MapleFreeMarketApplication) MapleFreeMarketApplication.getContext()).init = 2;	//set to emergency
+			if (mode == 0)	return;		//2026 quiet mode
 		}
 		AlertDialog alertDialog = new AlertDialog.Builder(context).create();
 		alertDialog.setTitle("Notification"); 

@@ -120,7 +120,7 @@ public class ArticleArrayAdapter extends ArrayAdapter<Article> {
 	 
 	private void setArticleInfo(ViewHolder viewHolder, int position) {
 		 Article article = articles.get(position);	 
-		 String dateString = article.getUpdateTime();
+		 String dateString = article.getLastEditted();
 		 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 		 Date date;
 		 try {

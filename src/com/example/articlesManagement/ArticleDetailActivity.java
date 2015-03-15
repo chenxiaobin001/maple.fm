@@ -163,7 +163,7 @@ public class ArticleDetailActivity extends ActionBarActivity implements MyAsyncT
 				}
 			});
 	    }
-		String dateString = article.getUpdateTime();
+		String dateString = article.getLastEditted();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 		Date date;
 		try {

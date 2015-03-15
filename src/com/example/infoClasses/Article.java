@@ -22,6 +22,8 @@ public class Article implements Parcelable {
 	private String updateTime;
 	@JsonProperty("created_at")
 	private String createTime;
+	@JsonProperty("lastEditted")
+	private String lastEditted;
 	@JsonProperty("text")
 	private String content;
 	@JsonProperty("like")
@@ -34,6 +36,7 @@ public class Article implements Parcelable {
 		return author;
 	}
 	private long updateTimeL;
+	private long lastEditTimeL;
 	public long getUpdateTimeL() {
 		return updateTimeL;
 	}
@@ -67,6 +70,13 @@ public class Article implements Parcelable {
 	}
 	public void setCreateTime(String createTime) {
 		this.createTime = createTime;
+	}
+	public String getLastEditted() {
+		return lastEditted;
+	}
+	public void setLastEditted(String lastEditted) {
+		this.lastEditted = lastEditted;
+		this.lastEditTimeL = dateToLong(lastEditted);
 	}
 	public String getContent() {
 		return content;
@@ -110,6 +120,17 @@ public class Article implements Parcelable {
 		};
  	}
 	
+	public static Comparator<Article> getLastEditComparator() {
+		return new Comparator<Article>() {
+			@Override
+			public int compare(Article first, Article second) {
+				if (first.lastEditTimeL < second.lastEditTimeL)	return 1;
+				else if (first.lastEditTimeL > second.lastEditTimeL)	return -1;
+				else return 0;
+			}
+		};
+ 	}
+	
 	public static Comparator<Article> getCreateDateComparator() {
         return new Comparator<Article>() {
 
@@ -130,6 +151,7 @@ public class Article implements Parcelable {
         	article.authorImage = source.readString(); 
         	article.updateTime = source.readString(); 
         	article.createTime = source.readString(); 
+        	article.lastEditted = source.readString(); 
         	article.content = source.readString(); 
         	article.id = source.readInt(); 
         	article.like = source.readInt(); 
@@ -156,6 +178,7 @@ public class Article implements Parcelable {
 		parcel.writeString(authorImage); 
 		parcel.writeString(updateTime); 
 		parcel.writeString(createTime); 
+		parcel.writeString(lastEditted); 
 		parcel.writeString(content); 
 		parcel.writeInt(id);  
 		parcel.writeInt(like);
@@ -174,4 +197,11 @@ public class Article implements Parcelable {
 			return 0;
 		 } 
 	}
+	public long getLastEditTimeL() {
+		return lastEditTimeL;
+	}
+	public void setLastEditTimeL(long lastEditTimeL) {
+		this.lastEditTimeL = lastEditTimeL;
+	}
+
 }

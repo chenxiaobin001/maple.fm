@@ -31,18 +31,21 @@ public class HandleArticlesTask extends AsyncTask<String, Void, String> {
 	private static class TmpObject {
 		private Article article;
 		private int comment;
+		@SuppressWarnings("unused")
 		public TmpObject(){
 			
 		}
 		public Article getArticle() {
 			return article;
 		}
+		@SuppressWarnings("unused")
 		public void setArticle(Article article) {
 			this.article = article;
 		}
 		public int getComment() {
 			return comment;
 		}
+		@SuppressWarnings("unused")
 		public void setComment(int comment) {
 			this.comment = comment;
 		}
@@ -96,7 +99,7 @@ public class HandleArticlesTask extends AsyncTask<String, Void, String> {
 		Collections.sort(articles, Article.getCreateDateComparator());
 		Article head = articles.get(0);
 		articles.remove(0);
-		Collections.sort(articles, Article.getUpdateDateComparator());
+		Collections.sort(articles, Article.getLastEditComparator());
 		articles.add(0, head);
 		adapter.setArticles(articles);
 		adapter.notifyDataSetChanged();

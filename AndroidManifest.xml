@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.code.freeMarket"
-    android:versionCode="25"
-    android:versionName="2.002" >
+    android:versionCode="27"
+    android:versionName="2.004" >
 
     <uses-sdk
         android:minSdkVersion="11"
@@ -14,7 +14,7 @@
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 	 <!--   android:largeHeap="true" -->
     <application
-     
+     	android:hardwareAccelerated="true"
         android:allowBackup="true"
         android:largeHeap="true"
         android:name="com.example.maplefreemarket.MapleFreeMarketApplication" 

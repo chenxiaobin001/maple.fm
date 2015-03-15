@@ -161,6 +161,8 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 	@Override
 	protected void onResume(){
 		super.onResume();
+/*		if (myApp.init != 0)
+		retriveNotification(1);*/
 	}
 	
 
@@ -417,11 +419,12 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 	
 	private String getWhatIsNew() {
 		StringBuilder sb = new StringBuilder();
-    	sb.append("V 2.000\n\n");
+    	sb.append("V 2.004\n\n");
     	sb.append("What's new:\n\n");
     	sb.append("-add user profile \n");
     	sb.append("-add simple animation \n");
-    	sb.append("-add small forum \n\n");
+    	sb.append("-add small forum \n");
+    	sb.append("-fix bugs \n\n");
     	sb.append("Tips:\n\n");
     	sb.append("-Sorting\n");
     	sb.append("-You can tap the 'sort by' row to choose sort category\n");
@@ -533,9 +536,9 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 				myApp.saveServerConfiguration(position);
 //				Toast.makeText(myApp, selection +" is selected", Toast.LENGTH_SHORT).show();
 				retriveServerData();
-				if (myApp.init == 0) {
-					retriveNotification(0);		//0-show as needed, 1-show 
-				}
+				if (myApp.init == 1 || myApp.init == -1) {
+					retriveNotification(1);		//0-show as needed, 1-show 
+				} 
 				
 			}
 
