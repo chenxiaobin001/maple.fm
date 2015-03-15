@@ -1,9 +1,6 @@
 package com.example.articlesManagement;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import android.content.Context;
@@ -12,8 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.code.freeMarket.R;
 import com.example.infoClasses.Comment;
 import com.github.curioustechizen.ago.RelativeTimeTextView;
@@ -109,18 +104,7 @@ public class CommentArrayAdapter extends ArrayAdapter<Comment> {
 	 
 	private void setCommentInfo(ViewHolder viewHolder, int position) {
 		 Comment comment = comments.get(position);	 
-		 String dateString = comment.getCreatedDate();
-		 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-		 Date date;
-		 try {
-			 date = sdf.parse(dateString);
-			 long startDate = date.getTime() - 10800000 - 3600000;
-			 viewHolder.CommentTimeTextView.setReferenceTime(startDate);
-		 } catch (ParseException e) {
-			 viewHolder.CommentTimeTextView.setText("unexpected");
-			 e.printStackTrace();
-			 Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-		 } 
+		 viewHolder.CommentTimeTextView.setReferenceTime(comment.getUpdatedAtL()); 
 		 viewHolder.CommentAuthorTextView.setText(comment.getCommenter1());
 		 viewHolder.CommentContentTextView.setText(comment.getText());
 		 if (comment.getCommenterID2() != 0) {

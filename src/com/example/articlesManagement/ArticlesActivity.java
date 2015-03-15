@@ -2,10 +2,6 @@ package com.example.articlesManagement;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import com.code.freeMarket.R;
 import com.example.asyncTasks.HandleArticlesTask;
 import com.example.asyncTasks.RetriveJSONAPITask;
@@ -26,7 +22,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.AdapterView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
@@ -146,9 +141,9 @@ public class ArticlesActivity extends ActionBarActivity {
 		OnScrollListener onScrollListener = new InfiniteScrollListener() {
 	        @Override
 	        public void loadMore(int page, int totalItemsCount) {
-	        	List<Article> curDataList = adapter.getArticles();
+	//        	List<Article> curDataList = adapter.getArticles();
 	//        	System.out.print(totalItemsCount + "load more");
-	        	int size = curDataList.size();
+	//        	int size = curDataList.size();
 	        	//TODO
 
 	        	adapter.addArticles(null);

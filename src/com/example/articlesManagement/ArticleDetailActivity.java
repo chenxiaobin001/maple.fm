@@ -1,9 +1,6 @@
 package com.example.articlesManagement;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 import com.code.freeMarket.R;
 import com.example.acountManagement.AccessAcountSettings;
@@ -80,7 +77,7 @@ public class ArticleDetailActivity extends ActionBarActivity implements MyAsyncT
 		});	
 		setArticleInfo();
 		listView.postDelayed(new Runnable() {
-		    public void run() {
+		    public void run() {	    	
 		    	loadComments();
 		    }
 		 }, 1000); //Every 120000 ms (2 minutes)
@@ -163,17 +160,9 @@ public class ArticleDetailActivity extends ActionBarActivity implements MyAsyncT
 				}
 			});
 	    }
-		String dateString = article.getLastEditted();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-		Date date;
-		try {
-			date = sdf.parse(dateString);
-			long startDate = date.getTime() - 10800000 - 3600000;
-			viewHolder.articleTimeTextView.setReferenceTime(startDate);
-		} catch (ParseException e) {
-			viewHolder.articleTimeTextView.setText("unexpected");
-			e.printStackTrace();
-		} 
+//			date = sdf.parse(dateString);
+//			long startDate = date.getTime();
+		viewHolder.articleTimeTextView.setReferenceTime(article.getLastEditTimeL()); 
 		viewHolder.articleTitleTextView.setText(article.getTitle());
 		viewHolder.articleAuthorTextView.setText(article.getAuthor());
 		viewHolder.articleContentTextView.setText(article.getContent());

@@ -2,8 +2,11 @@ package com.example.infoClasses;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.TimeZone;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -187,11 +190,16 @@ public class Article implements Parcelable {
 	}
 	
 	private long dateToLong(String dateString) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-		Date date;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+		Calendar cal = Calendar.getInstance(); 
+		TimeZone tz = cal.getTimeZone();
+		Date d = cal.getTime();
+		long msFromEpochGmt = d.getTime();
+		int offsetFromUTC = tz.getOffset(msFromEpochGmt);
+		Date date;	
 		try {
 			date = sdf.parse(dateString);
-			long longDate = date.getTime() - 10800000 - 3600000;
+			long longDate = date.getTime() + offsetFromUTC;
 			return longDate;
 		 } catch (ParseException e) {
 			return 0;

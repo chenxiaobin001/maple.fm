@@ -1,9 +1,6 @@
 package com.example.articlesManagement;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import android.content.Context;
@@ -12,8 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.code.freeMarket.R;
 import com.example.infoClasses.Article;
 import com.github.curioustechizen.ago.RelativeTimeTextView;
@@ -120,18 +115,9 @@ public class ArticleArrayAdapter extends ArrayAdapter<Article> {
 	 
 	private void setArticleInfo(ViewHolder viewHolder, int position) {
 		 Article article = articles.get(position);	 
-		 String dateString = article.getLastEditted();
-		 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-		 Date date;
-		 try {
-			 date = sdf.parse(dateString);
-			 long startDate = date.getTime() - 10800000 - 3600000;
-			 viewHolder.articleTimeTextView.setReferenceTime(startDate);
-		 } catch (ParseException e) {
-			 viewHolder.articleTimeTextView.setText("unexpected");
-			 e.printStackTrace();
-			 Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-		 } 
+//			 date = sdf.parse(dateString);
+//			 long startDate = date.getTime();
+		 viewHolder.articleTimeTextView.setReferenceTime(article.getLastEditTimeL()); 
 		 viewHolder.articleTitleTextView.setText(article.getTitle());
 		 viewHolder.articleAuthorTextView.setText(article.getAuthor());
 		 viewHolder.articleContentTextView.setText(getPreview(article.getContent()));

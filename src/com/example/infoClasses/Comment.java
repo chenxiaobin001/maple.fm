@@ -1,5 +1,11 @@
 package com.example.infoClasses;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -23,6 +29,8 @@ public class Comment implements Parcelable {
 	private String createdDate;
 	@JsonProperty("body")
 	private String text;
+	private long updatedAtL;
+	private long createdAtL;
 	
 	public int getArticleID() {
 		return articleID;
@@ -65,12 +73,14 @@ public class Comment implements Parcelable {
 	}
 	public void setUpdatedDate(String updatedDate) {
 		this.updatedDate = updatedDate;
+		this.updatedAtL = dateToLong(updatedDate);
 	}
 	public String getCreatedDate() {
 		return createdDate;
 	}
 	public void setCreatedDate(String createdDate) {
 		this.createdDate = createdDate;
+		this.createdAtL = dateToLong(createdDate);
 	}
 	public String getText() {
 		return text;
@@ -100,7 +110,26 @@ public class Comment implements Parcelable {
 			return null;
 		}
 
-    }; 
+    };
+    
+    private long dateToLong(String dateString) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+		Calendar cal = Calendar.getInstance(); 
+		TimeZone tz = cal.getTimeZone();
+		Date d = cal.getTime();
+		long msFromEpochGmt = d.getTime();
+		int offsetFromUTC = tz.getOffset(msFromEpochGmt);
+		Date date;	
+		try {
+			date = sdf.parse(dateString);
+			long longDate = date.getTime() + offsetFromUTC;
+			return longDate;
+		 } catch (ParseException e) {
+			return 0;
+		 } 
+	}
+    
+    
 	@Override
 	public int describeContents() {
 		return 0;
@@ -116,5 +145,17 @@ public class Comment implements Parcelable {
 		parcel.writeInt(id);
 		parcel.writeInt(commenterID1);
 		parcel.writeInt(commenterID2);
+	}
+	public long getUpdatedAtL() {
+		return updatedAtL;
+	}
+	public void setUpdatedAtL(long updatedAtL) {
+		this.updatedAtL = updatedAtL;
+	}
+	public long getCreatedAtL() {
+		return createdAtL;
+	}
+	public void setCreatedAtL(long createdAtL) {
+		this.createdAtL = createdAtL;
 	}
 }
