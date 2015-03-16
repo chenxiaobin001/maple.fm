@@ -62,7 +62,8 @@ public class HandleCommentsTask extends AsyncTask<String, Void, String> {
 		}
 		//render view
 		Toast.makeText(mContext, "Updated.", Toast.LENGTH_SHORT).show();
-		Collections.reverse(comments);
+		Collections.sort(comments, Comment.getUpdateDateComparator());
+//		Collections.reverse(comments);
 		adapter.setComments(comments);
 		adapter.notifyDataSetChanged();
     }

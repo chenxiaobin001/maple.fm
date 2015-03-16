@@ -3,6 +3,7 @@ package com.example.infoClasses;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -129,6 +130,16 @@ public class Comment implements Parcelable {
 		 } 
 	}
     
+    public static Comparator<Comment> getUpdateDateComparator() {
+		return new Comparator<Comment>() {
+			@Override
+			public int compare(Comment first, Comment second) {
+				if (first.updatedAtL < second.updatedAtL)	return 1;
+				else if (first.updatedAtL > second.updatedAtL)	return -1;
+				else return 0;
+			}
+		};
+ 	}
     
 	@Override
 	public int describeContents() {

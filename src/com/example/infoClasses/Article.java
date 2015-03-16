@@ -159,7 +159,9 @@ public class Article implements Parcelable {
         	article.id = source.readInt(); 
         	article.like = source.readInt(); 
         	article.dislike = source.readInt(); 
-        	article.comment = source.readInt(); 
+        	article.comment = source.readInt();
+        	article.lastEditTimeL = source.readLong();
+        	article.updateTimeL = source.readLong();
         	return article;  
         }
 
@@ -187,6 +189,8 @@ public class Article implements Parcelable {
 		parcel.writeInt(like);
 		parcel.writeInt(dislike);
 		parcel.writeInt(comment);
+		parcel.writeLong(lastEditTimeL);
+		parcel.writeLong(updateTimeL);
 	}
 	
 	private long dateToLong(String dateString) {
