@@ -419,7 +419,7 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 	
 	private String getWhatIsNew() {
 		StringBuilder sb = new StringBuilder();
-    	sb.append("V 2.007\n\n");
+    	sb.append("V 2.008\n\n");
     	sb.append("What's new:\n\n");
     	sb.append("-add user profile \n");
     	sb.append("-add simple animation \n");
