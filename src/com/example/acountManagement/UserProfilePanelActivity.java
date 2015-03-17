@@ -29,12 +29,15 @@ public class UserProfilePanelActivity extends ActionBarActivity implements  OnIm
 
 	private Button backButton;
 	private Button signoutButton;
-
+	private Integer[] serverImages = new Integer[] { R.drawable.scania, R.drawable.windia,
+			R.drawable.bera, R.drawable.broa, R.drawable.khaini, R.drawable.mardia, R.drawable.arcania,
+			R.drawable.bellocan, R.drawable.renegades};
 	private TextView accountNameTextView;
 	private TextView accountEmailTextView;
 	private TextView accountServerTextView;
 //	private ImageView accountPetImage;
 	private ImageView accountCharImage;
+	private ImageView accountServerImage;
 	private AccessAcountSettings account;
 	private ProgressBar progressBar;
 	
@@ -47,6 +50,7 @@ public class UserProfilePanelActivity extends ActionBarActivity implements  OnIm
 		accountNameTextView = (TextView) findViewById(R.id.profileNameTextView);
 		accountEmailTextView = (TextView) findViewById(R.id.profileEmailTextView);
 		accountServerTextView = (TextView) findViewById(R.id.profileServerTextView);
+		accountServerImage = (ImageView) findViewById(R.id.profileServerImageView);
 //		accountPetImage = (ImageView) findViewById(R.id.petImageimageView);
 		accountCharImage = (ImageView) findViewById(R.id.characterImageView);
 		backButton = (Button) findViewById(R.id.profileBackButton);
@@ -87,6 +91,7 @@ public class UserProfilePanelActivity extends ActionBarActivity implements  OnIm
 		accountNameTextView.setText(account.getAccountName());
 		accountEmailTextView.setText(account.getAccountEmail());
 		accountServerTextView.setText(getServerName(account.getAccountServer())); 
+		accountServerImage.setImageResource(serverImages[account.getAccountServer()]);
 		final String json = account.getAccountCharacterInfo();
 		AsyncTask<String, Void, String> asyncTask0 = new HandleProfileStatTask(this, findViewById(android.R.id.content), false);
 		asyncTask0.execute(json); 

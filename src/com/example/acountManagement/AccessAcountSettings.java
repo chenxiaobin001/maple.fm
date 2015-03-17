@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.example.maplefreemarket.MapleFreeMarketApplication;
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -16,7 +15,6 @@ public class AccessAcountSettings {
 	private static final String PREFS_NAME = "MyPrefsAccountFile";
 	private Context mContext;
 	//{"id":12,"email":"1231#@gmail.com","created_at":"2015-03-10T00:02:40.149Z","updated_at":"2015-03-10T00:02:40.197Z","name":"123123","role":"user","device_token":"","server":0,"authentication_token":"X1NfoFbm2sqtC8Krt2jq"}
-	
 	private static AccessAcountSettings instance = null;
     private AccessAcountSettings(Context mContext) { 
     	this.mContext = mContext;
@@ -47,7 +45,7 @@ public class AccessAcountSettings {
 			setAccountName(jObject.optString("name"));	
 			setAccountEmail(jObject.optString("email"));
 			setAccountID(jObject.optInt("id"));
-			setAccountServer(jObject.optInt("Server"));
+			setAccountServer(jObject.optInt("server"));
 			setAccountDeviceToken(jObject.optString("device_token"));
 			setAccountAuthToken(jObject.optString("authentication_token"));
 		} catch (JSONException e) {
