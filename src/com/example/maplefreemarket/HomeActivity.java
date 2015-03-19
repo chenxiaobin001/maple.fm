@@ -419,16 +419,16 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 	
 	private String getWhatIsNew() {
 		StringBuilder sb = new StringBuilder();
-    	sb.append("V 2.008\n\n");
+    	sb.append("V 2.009\n\n");
     	sb.append("What's new:\n\n");
     	sb.append("-add user profile \n");
     	sb.append("-add simple animation \n");
     	sb.append("-add small forum \n");
-    	sb.append("-fix bugs \n\n");
+    	sb.append("-fix a bug: multiple-line comment \n\n");
     	sb.append("Tips:\n\n");
     	sb.append("-Sorting\n");
     	sb.append("-You can tap the 'sort by' row to choose sort category\n");
-    	sb.append("-or swipe screen to change sort category\n");
+    	sb.append("-or swipe screen to change sort category\n\n");
     	sb.append("-Item\n");
     	sb.append("-You can short press item to open item detail dialog\n");
     	sb.append("-or long press item to open item summary dialog\n\n");

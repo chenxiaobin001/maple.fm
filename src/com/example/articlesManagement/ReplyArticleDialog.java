@@ -121,11 +121,11 @@ public class ReplyArticleDialog extends DialogFragment{
 		String commenter1 = args[0];
 		String commenter2 = args[2];
 		String commenterID2 = args[1];
-		
+
         return "{" +
         		"\"comment\" :" +
         	      "{ \"commenter\": \"" + commenter1 + "\"," +
-        	       " \"body\" : \"" + content.getText().toString() + "\"," +
+        	       " \"body\" : \"" + content.getText().toString().replace("\n", "\\n") + "\"," +
         	       " \"comment_id2\" : \"" + commenterID2 + "\"," +
         	       " \"commenter2\" : \"" + commenter2 + "\"" +
         	       "}" + 
