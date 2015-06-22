@@ -30,9 +30,9 @@ public class ItemArrayAdapter extends ArrayAdapter<FMItem> {
 	  private List<FMItem> filteredDataDisplay;	//displayed data
 	  private int preResetSize = -1;					//avoid infinite scroll out of function
 	  private ItemFilter mFilter = new ItemFilter();
-	  private ItemFilter categoryFilter = new ItemFilter();
 	  private boolean filterCashItem;
 	  private boolean filterSoldItem;
+	  private String[] categoryFilter;
 	  private final ReentrantLock lock = new ReentrantLock();
 	  private boolean DEBUG = false;
 	  public InfiniteScrollListener.SetLoading setLoading = new InfiniteScrollListener.SetLoading();
@@ -66,6 +66,18 @@ public class ItemArrayAdapter extends ArrayAdapter<FMItem> {
 		return filterCashItem;
 	}
 
+	public void setFilterCategory(String[] strs) {
+		if (strs.length != 3) {
+			categoryFilter[0] = "All";
+		    categoryFilter[1] = "All";
+		    categoryFilter[2] = "All";
+			return;
+		}
+		for (int i = 0; i < 3; i++) {
+			categoryFilter[i] = strs[i];
+		}
+	}
+	
 	public void setFilterCashItem(boolean filterCashItem) {
 		this.filterCashItem = filterCashItem;
 	}
@@ -86,6 +98,10 @@ public class ItemArrayAdapter extends ArrayAdapter<FMItem> {
 	    this.filteredDataDisplay = items;
 	    this.filterCashItem = false;
 	    this.filterSoldItem = false;
+	    this.categoryFilter = new String[3];
+	    categoryFilter[0] = "All";
+	    categoryFilter[1] = "All";
+	    categoryFilter[2] = "All";
 	  }
 	  
 	  @Override
@@ -244,6 +260,29 @@ public class ItemArrayAdapter extends ArrayAdapter<FMItem> {
 		  return newList;
 	  }
 	  
+	  private List<FMItem> filterCategory(List<FMItem> oldList){
+		  if (oldList == null || "All".equals(categoryFilter[0]))	return oldList;
+		  List<FMItem> newList = new ArrayList<FMItem>();
+		  for (int i = 0; i < oldList.size(); i++){
+			  if (oldList.get(i).getCategory() == null || oldList.get(i).getSubcategory() == null || oldList.get(i).getDetailcategory() == null) {
+				  newList.add(oldList.get(i));
+				  continue;
+			  }
+			  if (oldList.get(i).getCategory().equals(categoryFilter[0])) {
+				  if ("All".equals(categoryFilter[1])) {
+					  newList.add(oldList.get(i));
+				  } else if (oldList.get(i).getSubcategory().equals(categoryFilter[1])) {
+					  if ("All".equals(categoryFilter[2])) {
+						  newList.add(oldList.get(i));
+					  } else if (oldList.get(i).getDetailcategory().equals(categoryFilter[2])) {
+						  newList.add(oldList.get(i));
+					  }
+				  }
+			  }
+		  }
+		  return newList;
+	  }
+	  
 	  private String getPercentColor(String percent){
 		  String result = "#000000";
 		  int percentage = 0;
@@ -316,25 +355,6 @@ public class ItemArrayAdapter extends ArrayAdapter<FMItem> {
 		  return mFilter;
 	  }
 	  
-	  public Filter getFilter1() {
-		  return mFilter;
-	  }
-	  private class CategoryFilter extends Filter {
-
-		@Override
-		protected FilterResults performFiltering(CharSequence constraint) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		protected void publishResults(CharSequence constraint,
-				FilterResults results) {
-			// TODO Auto-generated method stub
-			
-		}
-		  
-	  }
 	  private class ItemFilter extends Filter {
 	//	  private String touch = "1";
 		  @Override
@@ -398,6 +418,7 @@ public class ItemArrayAdapter extends ArrayAdapter<FMItem> {
 			  }
 			  nlist = filterNonCashItems(nlist);
 			  nlist = filterSoldItems(nlist);
+			  nlist = filterCategory(nlist);
 			  results.values = nlist;
 			  results.count = 1;
 			  return results;

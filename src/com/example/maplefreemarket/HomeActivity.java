@@ -94,9 +94,9 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 		HashMap<Integer, Integer> map;
 		
 		public CategoryViewHolder() {
-			category = false;
+			category = true;
 			categoryView = findViewById(R.id.categoryLayout);
-			categoryView.setVisibility(View.GONE);
+//			categoryView.setVisibility(View.GONE);
 			categoryTextView = (TextView) findViewById(R.id.filterTextView);
 			setupHashMap();
 			categoryTextView.setOnClickListener(
@@ -158,6 +158,9 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 						category2.setEnabled(true); 
 						category2.setAdapter(adapter);
 					}
+					adapter.setFilterCategory(computeCategoryStrs());
+					String str = searchEditText.getText().toString();
+					adapter.getFilter().filter(str + "1");
 //					Toast.makeText(myApp, selection +" is selected", Toast.LENGTH_SHORT).show();
 				
 				}
@@ -198,7 +201,9 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 						category3.setAdapter(adapter);
 					}
 //					Toast.makeText(myApp, selection +" is selected", Toast.LENGTH_SHORT).show();
-				
+					adapter.setFilterCategory(computeCategoryStrs());
+					String str = searchEditText.getText().toString();
+					adapter.getFilter().filter(str + "1");
 				}
 
 				@Override
@@ -216,7 +221,9 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 				public void onItemSelected(AdapterView<?> parent, View view,
 						int position, long id) {
 					c3 = position;
-	
+					adapter.setFilterCategory(computeCategoryStrs());
+					String str = searchEditText.getText().toString();
+					adapter.getFilter().filter(str + "1");
 				}
 
 				@Override
@@ -235,6 +242,40 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 				categoryView.setVisibility(View.GONE);
 				((TextView) arg0).setTextColor(Color.parseColor("#278bd3"));
 			}
+		}
+		
+		private String[] computeCategoryStrs() {
+			String[] strs = new String[]{"All", "All", "All"};
+			String[] mTestArray;
+			int tmp = c1;
+			mTestArray = getResources().getStringArray(R.array.category1);  
+			if (mTestArray == null || c1 < 0 || c1 >= mTestArray.length) {
+				return strs;
+			}
+			strs[0] = mTestArray[c1];
+			
+			tmp = c1;
+			if (c1 == 0) {
+				strs[1] = "All";
+			} else {
+				mTestArray = getResources().getStringArray(map.get(tmp));  
+				if (mTestArray == null || c2 < 0 || c2 >= mTestArray.length) {
+					return strs;
+				}
+				strs[1] = mTestArray[c2];
+			}
+					
+			if (c2 == 0) {
+				strs[2] = "All";
+			} else {
+				tmp = c1 * 20 + c2;
+				mTestArray = getResources().getStringArray(map.get(tmp));  
+				if (mTestArray == null || c3 < 0 || c3 >= mTestArray.length) {
+					return strs;
+				}
+				strs[2] = mTestArray[c3];
+			}		
+			return strs;
 		}
 		
 		private void setupHashMap() {
@@ -610,16 +651,16 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 	
 	private String getWhatIsNew() {
 		StringBuilder sb = new StringBuilder();
-    	sb.append("V 2.009\n\n");
+    	sb.append("V 2.012\n\n");
     	sb.append("What's new:\n\n");
-    	sb.append("-add user profile \n");
-    	sb.append("-add simple animation \n");
-    	sb.append("-add small forum \n");
-    	sb.append("-fix a bug: multiple-line comment \n\n");
+    	sb.append("-add category filter \n");
+    	sb.append("-fix a bug\n\n");
     	sb.append("Tips:\n\n");
+    	sb.append("-Category filter\n");
+    	sb.append("-You can tap \"Category\" text in the first row to open/hide category filter\n\n");
     	sb.append("-Sorting\n");
-    	sb.append("-You can tap the 'sort by' row to choose sort category\n");
-    	sb.append("-or swipe screen to change sort category\n\n");
+    	sb.append("-You can tap the attribute text in the first row to sort\n");
+    	sb.append("-or swipe screen to left/right\n\n");
     	sb.append("-Item\n");
     	sb.append("-You can short press item to open item detail dialog\n");
     	sb.append("-or long press item to open item summary dialog\n\n");
