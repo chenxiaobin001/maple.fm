@@ -23,6 +23,17 @@
         <item>Scania</item>
         <item>Windia</item>
         <item>Bera</item>
+        <item>Khroa</item>
+        <item>MYBCKN</item>
+        <item>GRAZED</item>
+<!--         <item>GAZED</item>
+        <item>BelloNova</item>
+        <item>Renegades</item> -->
+    </string-array>
+    <string-array name="servers1">
+        <item>Scania</item>
+        <item>Windia</item>
+        <item>Bera</item>
         <item>Broa</item>
         <item>Khaini</item>
         <item>YMCK</item>

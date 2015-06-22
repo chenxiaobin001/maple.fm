@@ -208,10 +208,10 @@ public class SignupDialog extends DialogFragment{
 	 
 	private void setSpinnerContent( )
 	{	
-		Integer[] serverImages = new Integer[] { R.drawable.scania, R.drawable.windia,
+		Integer[] serverImages = new Integer[] {  R.drawable.scania, R.drawable.windia,
 				R.drawable.bera, R.drawable.broa, R.drawable.khaini, R.drawable.mardia, R.drawable.arcania,
 				R.drawable.bellocan, R.drawable.renegades};
-		String[] serverNames = getResources().getStringArray(R.array.servers); 
+		String[] serverNames = getResources().getStringArray(R.array.servers1); 
 		Spinner spinner = (Spinner) view.findViewById(R.id.signupServerSpinner);
 		spinner.setAdapter(new MyAdapter(getActivity(), R.layout.row,
 				serverNames, serverImages));

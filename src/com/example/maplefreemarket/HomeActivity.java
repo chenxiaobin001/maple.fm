@@ -490,13 +490,17 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 	private void setSpinnerContent( )
 	{	
 		serverImages = new Integer[] { R.drawable.scania, R.drawable.windia,
-				R.drawable.bera, R.drawable.broa, R.drawable.khaini, R.drawable.mardia, R.drawable.arcania,
-				R.drawable.bellocan, R.drawable.renegades};
+				R.drawable.bera, R.drawable.khaini, R.drawable.mardia, R.drawable.arcania};
 		serverNames = getResources().getStringArray(R.array.servers); 
+		int size = serverNames.length;
 		spinner = (Spinner) findViewById(R.id.serverSpinner);
 		spinner.setAdapter(new MyAdapter(HomeActivity.this, R.layout.row,
 				serverNames, serverImages));
-		spinner.setSelection(myApp.getServerConfiguration());
+		int pos = myApp.getServerConfiguration();
+		if (pos < 0 || pos >= size) {	// error check
+			pos = 0;
+		}
+		spinner.setSelection(pos);
 		spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			@Override
@@ -515,22 +519,22 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 					selection = "Bera";
 					break;
 				case 3:
-					selection = "Broa";
+					selection = "Khroa";
 					break;
 				case 4:
-					selection = "Khaini";
+					selection = "MYBCKN";
 					break;
 				case 5:
-					selection = "YMCK";
+					selection = "GRAZED";
 					break;
-				case 6:
+/*				case 6:
 					selection = "GAZED";
 					break;
 				case 7:
 					selection = "BelloNova";
 					break;
 				case 8:
-					selection = "Renegades";
+					selection = "Renegades";*/
 		
 				}
 				myApp.saveServerConfiguration(position);
