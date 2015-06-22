@@ -30,6 +30,7 @@ public class ItemArrayAdapter extends ArrayAdapter<FMItem> {
 	  private List<FMItem> filteredDataDisplay;	//displayed data
 	  private int preResetSize = -1;					//avoid infinite scroll out of function
 	  private ItemFilter mFilter = new ItemFilter();
+	  private ItemFilter categoryFilter = new ItemFilter();
 	  private boolean filterCashItem;
 	  private boolean filterSoldItem;
 	  private final ReentrantLock lock = new ReentrantLock();
@@ -315,6 +316,25 @@ public class ItemArrayAdapter extends ArrayAdapter<FMItem> {
 		  return mFilter;
 	  }
 	  
+	  public Filter getFilter1() {
+		  return mFilter;
+	  }
+	  private class CategoryFilter extends Filter {
+
+		@Override
+		protected FilterResults performFiltering(CharSequence constraint) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		protected void publishResults(CharSequence constraint,
+				FilterResults results) {
+			// TODO Auto-generated method stub
+			
+		}
+		  
+	  }
 	  private class ItemFilter extends Filter {
 	//	  private String touch = "1";
 		  @Override

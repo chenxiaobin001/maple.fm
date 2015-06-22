@@ -41,6 +41,236 @@
         <item>BelloNova</item>
         <item>Renegades</item>
     </string-array>
+    
+    
+    <string-array name="category1">
+        <item>All</item>
+        <item>Equip</item>
+        <item>Use</item>
+        <item>Etc</item>
+        <item>Setup</item>
+    </string-array>
+    <string-array name="Equip">
+        <item>All</item>
+        <item>One-Handed Weapon</item>
+        <item>Armor</item>
+        <item>Secondary Weapon</item>
+        <item>Accessory</item>
+        <item>Two-Handed Weapon</item>
+        <item>Other</item>
+    </string-array>
+    <string-array name="One_Handed_Weapon">
+        <item>All</item>
+        <item>One-Handed Blunt Weapon</item>
+        <item>Dagger</item>
+        <item>Katara</item>
+        <item>Staff</item>
+        <item>One-Handed Axe</item>
+        <item>Whip Blade</item>
+        <item>Desperado</item>
+        <item>Cash</item>
+        <item>Shining Rod</item>
+        <item>One-Handed Sword</item>
+        <item>Scepter</item>
+        <item>Wand</item>
+        <item>Cane</item>
+        <item>Soul Shooter</item>
+    </string-array>
+    <string-array name="Armor">
+        <item>All</item>
+        <item>Cape</item>
+        <item>Hat</item>
+        <item>Shoes</item>
+        <item>Bottom</item>
+        <item>Top</item>
+        <item>Glove</item>
+        <item>Shield</item>
+        <item>Overall</item>
+        <item>Test Armor</item>
+    </string-array>
+    <string-array name="Secondary_Weapon">
+        <item>All</item>
+        <item>Charm</item>
+        <item>Card</item>
+        <item>Jewel</item>
+        <item>Iron Chain</item>
+        <item>Medal</item>
+        <item>Core Controller</item>
+        <item>Rosary</item>
+        <item>Magic Marble</item>
+        <item>Bow Thimble</item>
+        <item>Orb</item>
+        <item>Spellbook</item>
+        <item>Arrow Fletching</item>
+        <item>Magic Arrow</item>
+    </string-array>
+    <string-array name="Accessory">
+        <item>All</item>
+        <item>Face Accessory</item>
+        <item>Pendant</item>
+        <item>Earrings</item>
+        <item>Ring</item>
+        <item>Belt</item>
+        <item>Eye Decoration</item>
+        <item>Shoulder Accessory</item>
+        <item>Badge</item>
+        <item>Pocket Item</item>
+        <item>Emblem</item>
+        <item>Medal</item>
+    </string-array>
+    <string-array name="Two_Handed_Weapon">
+        <item>All</item>
+        <item>Claw</item>
+        <item>Bow</item>
+        <item>Two-Handed Sword</item>
+        <item>Spear</item>
+        <item>Knuckle</item>
+        <item>Gun</item>
+        <item>Pole Arm</item>
+        <item>Dual Bowgun</item>
+        <item>Crossbow</item>
+        <item>Katana</item>
+        <item>Two-Handed Blunt</item>
+        <item>Fan</item>
+        <item>Hand Cannon</item>
+        <item>Two-Handed Axe</item>
+    </string-array>
+    <string-array name="Other_Equip">
+        <item>All</item>
+        <item>Mechanical Heart</item>
+        <item>Mechanic Equipment</item>
+        <item>Android</item>
+        <item>Dragon Equipment</item>
+    </string-array>
+    
+    
+    <string-array name="Use">
+        <item>All</item>
+        <item>Consumable</item>
+        <item>Projectile</item>
+        <item>Special Scroll</item>
+        <item>Armor Scroll</item>
+        <item>Monster/Familiar</item>
+        <item>Recipe</item>
+        <item>Weapon Scroll</item>
+        <item>Character Modification</item>
+        <item>Other</item>
+    </string-array>
+    <string-array name="Consumable">
+        <item>All</item>
+        <item>Potion</item>
+        <item>Other-Consumable</item>
+        <item>Pet Food</item>
+        <item>Status Cure</item>
+        <item>Consumable-Consumable</item>
+        <item>Appearance</item>
+        <item>Transformation</item>
+    </string-array>
+    <string-array name="Projectile">
+        <item>All</item>
+        <item>Thrown</item>
+        <item>Arrow</item>
+        <item>Bullet</item>
+        <item>Crossbow Bolt</item>
+    </string-array>
+    <string-array name="Special_Scroll">
+        <item>All</item>
+        <item>Clean Slate Scroll</item>
+        <item>Chaos Scroll</item>
+        <item>Equip Enhancement</item>
+        <item>Potential Scroll</item>
+        <item>Hammer</item>
+        <item>Innocence Scroll</item>
+        <item>Guardian Scroll</item>
+        <item>Soul Weapon</item>
+        <item>Miracle Cube</item>
+        <item>Slot Carver</item>
+        <item>Protection Scroll</item>
+        <item>Bonus Potential Scroll</item>
+        <item>Awakening Stamp</item>
+    </string-array>
+    <string-array name="Armor_Scroll">
+        <item>All</item>
+        <item>Gloves</item>
+        <item>Pet</item>
+        <item>Accessory</item>
+        <item>Shield</item>
+        <item>Armor</item>
+        <item>Helmet</item>
+        <item>Earrings</item>
+    </string-array>
+    <string-array name="Familiar">
+        <item>All</item>
+        <item>Familiar Card</item>
+    </string-array>
+    <string-array name="Recipe">
+        <item>All</item>
+        <item>Alchemy Recipe</item>
+        <item>Smithing Recipe</item>
+        <item>Accessory Crafting Recipe</item>
+    </string-array>
+    <string-array name="Weapon_Scroll">
+        <item>All</item>
+        <item>Claw</item>
+        <item>Bow</item>
+        <item>Crossbow</item>
+        <item>Gun</item>
+        <item>One-Handed Weapon</item>
+        <item>Zero</item>
+        <item>Two-Handed Weapon</item>
+    </string-array>
+    <string-array name="Character_Modification">
+        <item>All</item>
+        <item>Mastery Book</item>
+    </string-array>
+    <string-array name="Other_Use">
+        <item>All</item>
+        <item>Item Pot</item>
+    </string-array>
+    
+    <string-array name="Etc">
+        <item>All</item>
+        <item>Crafting</item>
+        <item>Other</item>
+    </string-array>
+    <string-array name="Crafting">
+        <item>All</item>
+        <item>Crafting Item</item>
+        <item>Rare Processed  Ore</item>
+        <item>Mineral Ore</item>
+        <item>Rare Ore</item>
+        <item>Mineral Processed</item>
+        <item>Herb</item>
+        <item>Herb Oil</item>
+    </string-array>
+    <string-array name="Other_Etc">
+        <item>All</item>
+        <item>Monster Drop</item>
+        <item>Minigame</item>
+        <item>Coin</item>
+        <item>Quest Item</item>
+        <item>Container</item>
+    </string-array>
+    
+    <string-array name="Setup">
+        <item>All</item>
+        <item>Other</item>
+        <item>Nebulite</item>
+    </string-array>
+    <string-array name="Other_Setup">
+        <item>All</item>
+        <item>Chair</item>
+        <item>Decoration</item>
+        <item>Container</item>
+    </string-array>
+    <string-array name="Nebulite">
+        <item>All</item>
+        <item>Rank A Nebulite</item>
+        <item>Rank B Nebulite</item>
+        <item>Rank C Nebulite</item>
+        <item>Rank D Nebulite</item>
+    </string-array>
+    
 	<string name="adBuddizPublishKey">dd03f247-4586-408f-9612-a792fe8e450d</string>
 	<string name="admob_fullscreen">ca-app-pub-4670301653330348/8972451916</string>
 	<string name="myServerUrl">https://radiant-sierra-5346.herokuapp.com/</string>

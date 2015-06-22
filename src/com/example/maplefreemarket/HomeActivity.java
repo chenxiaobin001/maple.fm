@@ -28,6 +28,7 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -67,6 +68,7 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 	private View loadingView;
 	private String selection;
 	private SortAttrViewHolder sortAttrViewHolder;
+	private CategoryViewHolder categoryViewHolder;
 	private Integer[] serverImages;
 	private String[] serverNames;
 	private HandleItemListJSON obj;
@@ -78,7 +80,195 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 	private CheckBox soldItemCheckBox;
 	private Button finishButton;
 	private ActivitySwipeDetector swipe;
+	
+	class CategoryViewHolder {
+		boolean category;				//for category filter selected
+		View categoryView;
+		TextView categoryTextView;
+		Spinner category1;
+		Spinner category2;
+		Spinner category3;
+		int c1;
+		int c2;
+		int c3;
+		HashMap<Integer, Integer> map;
+		
+		public CategoryViewHolder() {
+			category = false;
+			categoryView = findViewById(R.id.categoryLayout);
+			categoryView.setVisibility(View.GONE);
+			categoryTextView = (TextView) findViewById(R.id.filterTextView);
+			setupHashMap();
+			categoryTextView.setOnClickListener(
+	                new OnClickListener() 
+	                {
+	                	@Override
+	                    public void onClick(View arg0) 
+	                    {
+	                		ifClicked(arg0);
+	                    }
+	                });
+			
+			setupSpinner();
+		}
+		
+		public void setupSpinner() {
+			category1 = (Spinner) findViewById(R.id.spinnerCategory1);
+			category2 = (Spinner) findViewById(R.id.spinnerCategory2);
+			category3 = (Spinner) findViewById(R.id.spinnerCategory3);
+			// Create an ArrayAdapter using the string array and a default spinner layout 
+			ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(HomeActivity.this,
+			        R.array.category1, android.R.layout.simple_spinner_item);
+			// Specify the layout to use when the list of choices appears 
+			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			// Apply the adapter to the spinner 
+			category1.setAdapter(adapter);
+			category2.setEnabled(false); 
+			category3.setEnabled(false); 
+			setupSpinner1Listenner();
+			setupSpinner2Listenner();
+			setupSpinner3Listenner();
+		}
+		
+		private void setupSpinner1Listenner() {
+			category1.setOnItemSelectedListener(new OnItemSelectedListener() {
 
+				@Override
+				public void onItemSelected(AdapterView<?> parent, View view,
+						int position, long id) {
+					c1 = position;
+					category3.setEnabled(false);
+					c2 = 0;
+					c3 = 0;
+					if (c1 == 0) {
+						category2.setEnabled(false); 
+						c2 = 0;
+					} else {
+						Integer tmp = map.get(c1);
+						if (tmp == null) {
+							category2.setEnabled(false); 	
+							c2 = 0;
+							return;
+						}
+						ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(HomeActivity.this,
+								tmp, android.R.layout.simple_spinner_item);
+						// Specify the layout to use when the list of choices appears 
+						adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+						// Apply the adapter to the spinner 
+						category2.setEnabled(true); 
+						category2.setAdapter(adapter);
+					}
+//					Toast.makeText(myApp, selection +" is selected", Toast.LENGTH_SHORT).show();
+				
+				}
+
+				@Override
+				public void onNothingSelected(AdapterView<?> arg0) {
+					
+				}
+				
+			});
+		}
+		
+		
+		private void setupSpinner2Listenner() {
+			category2.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+				@Override
+				public void onItemSelected(AdapterView<?> parent, View view,
+						int position, long id) {
+					c2 = position;
+					category3.setEnabled(false);
+					c3 = 0;
+					if (c2 == 0) {
+						category3.setEnabled(false); 
+						c3 = 0;
+					} else {
+						Integer tmp = map.get(c1 * 20 + c2);
+						if (tmp == null) {
+							category3.setEnabled(false);
+							return;
+						}
+						ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(HomeActivity.this,
+								tmp, android.R.layout.simple_spinner_item);
+						// Specify the layout to use when the list of choices appears 
+						adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+						// Apply the adapter to the spinner 
+						category3.setEnabled(true); 
+						category3.setAdapter(adapter);
+					}
+//					Toast.makeText(myApp, selection +" is selected", Toast.LENGTH_SHORT).show();
+				
+				}
+
+				@Override
+				public void onNothingSelected(AdapterView<?> arg0) {
+					
+				}
+				
+			});
+		}
+		
+		private void setupSpinner3Listenner() {
+			category3.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+				@Override
+				public void onItemSelected(AdapterView<?> parent, View view,
+						int position, long id) {
+					c3 = position;
+	
+				}
+
+				@Override
+				public void onNothingSelected(AdapterView<?> arg0) {
+					
+				}
+				
+			});
+		}
+		public void ifClicked(View arg0) {
+			category = !category;
+			if (category) {
+				categoryView.setVisibility(View.VISIBLE);
+				((TextView) arg0).setTextColor(Color.parseColor("#e56193"));
+			} else {
+				categoryView.setVisibility(View.GONE);
+				((TextView) arg0).setTextColor(Color.parseColor("#278bd3"));
+			}
+		}
+		
+		private void setupHashMap() {
+			c1 = 0;
+			c2 = 0;
+			c3 = 0;
+			map = new HashMap<Integer, Integer>();
+			map.put(-1, R.array.category1);
+			map.put(1, R.array.Equip);
+			map.put(2, R.array.Use);
+			map.put(3, R.array.Etc);
+			map.put(4, R.array.Setup);
+			map.put(21, R.array.One_Handed_Weapon);
+			map.put(22, R.array.Armor);
+			map.put(23, R.array.Secondary_Weapon);
+			map.put(24, R.array.Accessory);
+			map.put(25, R.array.Two_Handed_Weapon);
+			map.put(26, R.array.Other_Equip);
+			map.put(41, R.array.Consumable);
+			map.put(42, R.array.Projectile);
+			map.put(43, R.array.Special_Scroll);
+			map.put(44, R.array.Armor_Scroll);
+			map.put(45, R.array.Familiar);
+			map.put(46, R.array.Recipe);
+			map.put(47, R.array.Weapon_Scroll);
+			map.put(48, R.array.Character_Modification);
+			map.put(49, R.array.Other_Use);
+			map.put(61, R.array.Crafting);
+			map.put(62, R.array.Other_Etc);
+			map.put(81, R.array.Other_Setup);
+			map.put(82, R.array.Nebulite);
+		}
+	}
+	
 	class SortAttrViewHolder {
 		int size = 6;
 		int selected;
@@ -172,6 +362,7 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 		myApp = (MapleFreeMarketApplication) this.getApplication();
 		sortAttrViewHolder = new SortAttrViewHolder(myApp.getSortConfiguration());
 		setContentView(R.layout.activity_main);
+		categoryViewHolder = new CategoryViewHolder();
 		spinner = (Spinner) findViewById(R.id.serverSpinner);
 		listView = (ListView) findViewById(R.id.itemListView);
 		findViewById(R.id.loadingPanel).setVisibility(View.GONE);
