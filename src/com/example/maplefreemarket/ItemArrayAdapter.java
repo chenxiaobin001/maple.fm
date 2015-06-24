@@ -168,11 +168,14 @@ public class ItemArrayAdapter extends ArrayAdapter<FMItem> {
 	  }
 	  
 	  public void sortByAttribute(int idx, boolean desc){
+		  int size = filteredDataDisplay == null ? 0 : filteredDataDisplay.size();
 		  Collections.sort(filteredData, FMItem.getComparator(idx));
 		  if (desc){
 			  Collections.reverse(filteredData);
 		  }
-		  resetItemsRefresh(filteredData.subList(0, Math.min(10, filteredData.size())));
+	//	  resetItemsRefresh(filteredData.subList(0, Math.min(10, filteredData.size())));
+		  // keep scroll position after listview get reordered.
+		  resetItemsRefresh(filteredData.subList(0, size));
 	  }
 	  @Override
 	  public View getView(int position, View convertView, ViewGroup parent) {
