@@ -119,7 +119,7 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 			category3 = (Spinner) findViewById(R.id.spinnerCategory3);
 			// Create an ArrayAdapter using the string array and a default spinner layout 
 			ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(HomeActivity.this,
-			        R.array.category1, android.R.layout.simple_spinner_item);
+			        R.array.category1, R.layout.spinner_row);
 			// Specify the layout to use when the list of choices appears 
 			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			// Apply the adapter to the spinner 
@@ -151,8 +151,10 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 							c2 = 0;
 							return;
 						}
+		/*				ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(HomeActivity.this,
+								tmp, android.R.layout.simple_spinner_item);*/
 						ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(HomeActivity.this,
-								tmp, android.R.layout.simple_spinner_item);
+								tmp, R.layout.spinner_row);
 						// Specify the layout to use when the list of choices appears 
 						adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 						// Apply the adapter to the spinner 
@@ -193,8 +195,10 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 							category3.setEnabled(false);
 							return;
 						}
+						/*ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(HomeActivity.this,
+								tmp, android.R.layout.simple_spinner_item);*/
 						ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(HomeActivity.this,
-								tmp, android.R.layout.simple_spinner_item);
+								tmp, R.layout.spinner_row);
 						// Specify the layout to use when the list of choices appears 
 						adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 						// Apply the adapter to the spinner 
