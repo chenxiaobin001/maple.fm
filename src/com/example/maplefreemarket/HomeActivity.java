@@ -51,6 +51,7 @@ import com.example.asyncTasks.RetriveJSONTask;
 import com.example.infoClasses.FMItem;
 import com.example.interfaces.MyDialogFragmentListener;
 import com.example.interfaces.SwipeInterface;
+import com.example.maplefreemarket.HomeActivity.SortAttrViewHolder.myObj;
 import com.nhaarman.listviewanimations.appearance.AnimationAdapter;
 import com.nhaarman.listviewanimations.appearance.simple.AlphaInAnimationAdapter;
 import com.nhaarman.listviewanimations.appearance.simple.ScaleInAnimationAdapter;
@@ -237,9 +238,11 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 			category = !category;
 			if (category) {
 				categoryView.setVisibility(View.VISIBLE);
+				((TextView) arg0).setText("  Category¡ü");
 				((TextView) arg0).setTextColor(Color.parseColor("#e56193"));
 			} else {
 				categoryView.setVisibility(View.GONE);
+				((TextView) arg0).setText("  Category¡ý");
 				((TextView) arg0).setTextColor(Color.parseColor("#278bd3"));
 			}
 		}
@@ -344,7 +347,10 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 			mmap.put("%", new myObj("Percent", 5));
 		}
 		public void performSort(int idx) {
-			sortAttrViewHolder.attrs.get(sortAttrViewHolder.selected).setTextColor(Color.parseColor("#278bd3"));
+			TextView tmpTextView = sortAttrViewHolder.attrs.get(sortAttrViewHolder.selected);
+			String tmpName = tmpTextView.getText().toString();
+			tmpTextView.setText(tmpName.substring(0, tmpName.length() - 1));
+			tmpTextView.setTextColor(Color.parseColor("#278bd3"));
 			TextView newAttr = attrs.get(idx);
 			newAttr.setTextColor(Color.parseColor("#e56193"));
     		String colName = newAttr.getText().toString();
@@ -353,6 +359,14 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
     		animator.reset();
     		adapter.sortByAttribute(idx, sortAttrViewHolder.descs[idx]);
     		sortAttrViewHolder.descs[idx] = !sortAttrViewHolder.descs[idx];
+    		myApp.saveSortConfiguration(idx);
+       		// up/down arrows
+    		tmpTextView = sortAttrViewHolder.attrs.get(sortAttrViewHolder.selected);
+    		if (sortAttrViewHolder.descs[idx]) {
+    			tmpTextView.setText(colName + "¡ü");
+    		} else {
+    			tmpTextView.setText(colName + "¡ý");
+    		}
     		myApp.saveSortConfiguration(idx);
 		}
 		//itemTextView;
@@ -702,21 +716,26 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
                 {
                 	@Override
                     public void onClick(View arg0) 
-                    {
-                		sortAttrViewHolder.attrs.get(sortAttrViewHolder.selected).setTextColor(Color.parseColor("#278bd3"));
-                		((TextView) arg0).setTextColor(Color.parseColor("#e56193"));
+                    {               		
                 		String colName = ((TextView) arg0).getText().toString();
-                		int idx = sortAttrViewHolder.mmap.get(colName).idx;
-                		sortAttrViewHolder.selected = idx;
-                		Toast.makeText(myApp, sortAttrViewHolder.mmap.get(colName).str, Toast.LENGTH_SHORT).show();
-                		adapter.sortByAttribute(idx, sortAttrViewHolder.descs[idx]);
-                		sortAttrViewHolder.descs[idx] = !sortAttrViewHolder.descs[idx];
-                		myApp.saveSortConfiguration(idx);
+                		myObj tmp = sortAttrViewHolder.mmap.get(colName);
+                		int idx = sortAttrViewHolder.selected;
+                		if (tmp != null) {
+                			idx = tmp.idx;
+                		}
+                		sortAttrViewHolder.performSort(idx);
                     }
                 });
         }
 		int idx = myApp.getSortConfiguration();
 		sortAttrViewHolder.attrs.get(idx).setTextColor(Color.parseColor("#e56193"));
+		TextView tmpTextView = sortAttrViewHolder.attrs.get(sortAttrViewHolder.selected);
+		String colName = tmpTextView.getText().toString();
+		if (sortAttrViewHolder.descs[idx]) {
+			tmpTextView.setText(colName + "¡ü");
+		} else {
+			tmpTextView.setText(colName + "¡ý");
+		}
 	}
 	
 	private void setSpinnerContent( )

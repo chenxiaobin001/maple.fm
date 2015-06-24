@@ -159,10 +159,10 @@
     <string-array name="Consumable">
         <item>All</item>
         <item>Potion</item>
-        <item>Other-Consumable</item>
+        <item>Other</item>
         <item>Pet Food</item>
         <item>Status Cure</item>
-        <item>Consumable-Consumable</item>
+        <item>Consumable</item>
         <item>Appearance</item>
         <item>Transformation</item>
     </string-array>
