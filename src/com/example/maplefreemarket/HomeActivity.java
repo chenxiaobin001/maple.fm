@@ -442,6 +442,7 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		boolean isInit = false;
+		Parcelable listViewState = null;
 		super.onCreate(savedInstanceState);   
 		myApp = (MapleFreeMarketApplication) this.getApplication();
 		setContentView(R.layout.activity_main);
@@ -451,15 +452,7 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 		listView = (ListView) findViewById(R.id.itemListView);
 		
 		adapter = new ItemArrayAdapter(HomeActivity.this, new ArrayList<FMItem>());
-
-		ScaleInAnimationAdapter animationAdapter = new ScaleInAnimationAdapter(adapter);
-//		AlphaInAnimationAdapter animationAdapter = new AlphaInAnimationAdapter (adapter);
-//		SwingLeftInAnimationAdapter animationAdapter = new SwingLeftInAnimationAdapter(adapter);
-//		ScaleInAnimationAdapter animationAdapter = new ScaleInAnimationAdapter(adapter);
-//		ScaleInAnimationAdapter animationAdapter = new ScaleInAnimationAdapter(adapter);
-		animator = animationAdapter;
-		animationAdapter.setAbsListView(listView);
-		listView.setAdapter(animationAdapter);
+	
 //		ItemArrayAdapter oriAdapter = new ItemArrayAdapter(HomeActivity.this, new ArrayList<FMItem>());
 		myApp.setItemAdapter(adapter);
 		
@@ -492,6 +485,7 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 				String str = searchEditText.getText().toString();
 				adapter.setFilterCashItem(checkBox.isChecked());
 				adapter.getFilter().filter(str + "1");
+//				Toast.makeText(myApp, "cash", Toast.LENGTH_SHORT).show();
 			}
 		});
 		
@@ -504,19 +498,26 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 				String str = searchEditText.getText().toString();
 				adapter.setFilterSoldItem(checkBox.isChecked());
 				adapter.getFilter().filter(str + "1");
+//				Toast.makeText(myApp, "sold", Toast.LENGTH_SHORT).show();
 			}
 		});
 		
 		
 		searchEditText.addTextChangedListener(new TextWatcher() {
 			//when rotating the screen, the function below will be called ???
+			int check = 0;
 		    @Override
 		    public void onTextChanged(CharSequence s, int start, int before, int count) {
+		    	check++;
+		    	if (check < 2) {
+		    		return;
+		    	}
 		        System.out.println("Text ["+s+"]");
 	//	        adapter.resetItemsRefresh(filteredData.subList(0, Math.min(10, filteredData.size())));
 		        animator.reset();
 		        adapter.getFilter().filter(s.toString()+"2");    
 	        	finishButton.setVisibility(View.VISIBLE);
+	//        	Toast.makeText(myApp, "search", Toast.LENGTH_SHORT).show();
 	//	        refreshButton.setVisibility(View.GONE);
 		    }
 
@@ -598,6 +599,7 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 		listView.setLongClickable(true);
 		setSpinnerContent();
 		sortableColumnSetup();
+		int size = 10;
 	    if (savedInstanceState != null) {
 	    	Parcelable[] parcelableArray = savedInstanceState.getParcelableArray("items");
 	    	FMItem[] items = null;
@@ -613,6 +615,7 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 	    	FMItem[] filteredDisplayItems = null;
 	    	if (parcelableArray != null) {
 	    		filteredDisplayItems = Arrays.copyOf(parcelableArray, parcelableArray.length, FMItem[].class);
+	    		size = filteredDisplayItems.length;
 	    	} 
 	        boolean cash = savedInstanceState.getBoolean("cash");
 		    boolean sold = savedInstanceState.getBoolean("sold");
@@ -622,7 +625,7 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 		    	listView.setOnScrollListener(listViewOnScrollListener);
 		    }*/
 	//		listViewOnScrollListener.setLoading.loading = false;
-		    Parcelable listViewState = savedInstanceState.getParcelable("listViewState");
+		    listViewState = savedInstanceState.getParcelable("listViewState");
 		    adapter.setItems(items);
 		    adapter.setFilteredDataItems(filteredItems);
 		    adapter.setFilteredDataDisplayItems(filteredDisplayItems);
@@ -631,8 +634,7 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 		    adapter.setFilterSoldItem(sold);
 		    adapter.resetItemsRefresh(adapter.getFilteredDataDisplay());
 		    isInit = false;
-		    listView.setAdapter(adapter);
-		    listView.onRestoreInstanceState(listViewState);
+		    
 	    } else {
 	    	isInit = true;
 	    	String result = "[{\"fm_items\":[{\"U\":\"1102484\",\"a\":\"1\",\"b\":\"1\",\"c\":\"3750000000\",\"d\":\"5\",\"e\":\"5\",\"f\":\"Click Me!\",\"g\":\"eurekaG1\",\"O\":\"Tyrant Lycaon Cloak\",\"T\":\"1102481\",\"X\":3471928570,\"Q\":\"Equip\",\"R\":\"Armor\",\"S\":\"Cape\",\"Y\":\"0\",\"h\":\"2\",\"j\":\"999\",\"k\":\"999\",\"l\":\"999\",\"m\":\"999\",\"p\":\"999\",\"q\":\"999\",\"r\":\"999\",\"s\":\"999\",\"F\":\"0\",\"G\":\"4\",\"H\":\"15\",\"W\":\"999\"},{\"U\":\"2049300\",\"a\":\"11\",\"b\":\"1\",\"c\":\"84999999\",\"d\":\"1\",\"e\":\"11\",\"f\":\"Click me!\",\"g\":\"Example\",\"O\":\"Advanced Equip Enhancement Scroll\",\"T\":\"5530246\",\"X\":38872403,\"P\":\"Enhances #cupgraded equipment#.\\nMore successes increase the chance of a good enhancement.\\nThe item is destroyed upon failure. Cannot be used on 15-star+ items.\\n\\n#c[Enhancement Success Rate]#\\n1 success: 100%\\n2 successes: 90%\\n3 successes: 80%\\n4 successes: 70%\\n5 successes: 60%\\n6 successes: 50%\\n7 successes: 40%\\n8 successes: 30%\\n9 successes: 20%\\n10 successes: 10%\\n11+ successes: 5% or lower\",\"Q\":\"Use\",\"R\":\"Armor Scroll\",\"S\":\"Accessory\",\"F\":\"0\",\"G\":\"0\",\"H\":\"0\"},{\"U\":\"1012306\",\"a\":\"1\",\"b\":\"1\",\"c\":\"700000000\",\"d\":\"3\",\"e\":\"3\",\"f\":\"Click Me!\",\"g\":\"Example\",\"O\":\"Lucky Tree Branch Nose\",\"T\":\"1012058\",\"X\":136666666,\"Q\":\"Equip\",\"R\":\"Accessory\",\"S\":\"Face Accessory\",\"i\":\"10\",\"j\":\"10\",\"k\":\"10\",\"l\":\"10\",\"m\":\"14\",\"p\":\"10\",\"r\":\"6\",\"s\":\"6\",\"t\":\"3\",\"u\":\"3\",\"F\":\"0\",\"G\":\"3\",\"H\":\"6\",\"W\":\"10\"},{\"U\":\"1432187\",\"a\":\"1\",\"b\":\"1\",\"c\":\"1500000000\",\"d\":\"3\",\"e\":\"2\",\"f\":\"Click Me!\",\"g\":\"Example\",\"O\":\"Sweetwater Spear\",\"T\":\"1432187\",\"X\":91365064,\"Q\":\"Equip\",\"R\":\"Two-Handed Weapon\",\"S\":\"Spear\",\"Y\":\"0\",\"i\":\"6\",\"j\":\"97\",\"k\":\"85\",\"n\":\"255\",\"o\":\"255\",\"p\":\"294\",\"t\":\"173\",\"C\":\"30\",\"D\":\"10\",\"F\":\"0\",\"G\":\"2\",\"H\":\"0\",\"W\":\"160\"},{\"U\":\"1122057\",\"a\":\"1\",\"b\":\"1\",\"c\":\"5000000000\",\"d\":\"1\",\"e\":\"2\",\"f\":\"Click Me!\",\"g\":\"Example\",\"O\":\"Awakening Mind of Maple Necklace\",\"T\":\"1122052\",\"P\":\"A Mind of Maple Necklace that is beginning to be restored. One more gem, and its mystical powers will be amplified and awakened into a power on another level.\",\"Q\":\"Equip\",\"R\":\"Accessory\",\"S\":\"Pendant\",\"Y\":\"0\",\"p\":\"15\",\"q\":\"15\",\"r\":\"5\",\"F\":\"0\",\"G\":\"1\",\"H\":\"0\",\"W\":\"70\"}]},{\"seconds_ago\":\"999999\"}]";
@@ -645,7 +647,30 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 		}
 		if (this.listViewOnScrollListener == null);
 			this.listViewOnScrollListener = (InfiniteScrollListener) newOnScrollListener();
+		ScaleInAnimationAdapter animationAdapter = new ScaleInAnimationAdapter(adapter);
+//		AlphaInAnimationAdapter animationAdapter = new AlphaInAnimationAdapter (adapter);
+//		SwingLeftInAnimationAdapter animationAdapter = new SwingLeftInAnimationAdapter(adapter);
+//		ScaleInAnimationAdapter animationAdapter = new ScaleInAnimationAdapter(adapter);
+//		ScaleInAnimationAdapter animationAdapter = new ScaleInAnimationAdapter(adapter);
+		animator = animationAdapter;
+		animationAdapter.setAbsListView(listView);
+		listView.setAdapter(animationAdapter);
+//		listView.setAdapter(adapter); 
     	listView.setOnScrollListener(listViewOnScrollListener);
+    	adapter.notifyDataSetChanged();
+/*    	if (listViewState != null) {
+    		listView.onRestoreInstanceState(listViewState);
+    		listViewState = null;
+    	}*/
+    	listView.clearFocus(); 
+    	listView.post(new Runnable() {
+            @Override 
+            public void run() { 
+            	listView.requestFocusFromTouch(); 
+                listView.setSelection(100);
+                listView.requestFocus(); 
+            } 
+        }); 
 	}
 	
 	private void retriveNotification(int mode) {
@@ -800,6 +825,7 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
                 			idx = tmp.idx;
                 		}
                 		sortAttrViewHolder.performSort(idx);
+        //        		Toast.makeText(myApp, String.valueOf(idx), Toast.LENGTH_SHORT).show();
                     }
                 });
         }
