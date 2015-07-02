@@ -66,7 +66,7 @@ public class ItemArrayAdapter extends ArrayAdapter<FMItem> {
 		return filterCashItem;
 	}
 
-	public void setFilterCategory(String[] strs) {
+	public void setCategoryFilter(String[] strs) {
 		if (strs.length != 3) {
 			categoryFilter[0] = "All";
 		    categoryFilter[1] = "All";
@@ -76,6 +76,10 @@ public class ItemArrayAdapter extends ArrayAdapter<FMItem> {
 		for (int i = 0; i < 3; i++) {
 			categoryFilter[i] = strs[i];
 		}
+	}
+	
+	public String[] getCategoryFilter() {
+		return categoryFilter;
 	}
 	
 	public void setFilterCashItem(boolean filterCashItem) {
@@ -136,17 +140,80 @@ public class ItemArrayAdapter extends ArrayAdapter<FMItem> {
 		  notifyDataSetChanged();
 	  }
 	  
+	  public List<FMItem> getFilteredData() {
+		  return filteredData;
+	  }
+
+	  public void setFilteredData(List<FMItem> filteredData) {
+		  this.filteredData = filteredData;
+	  }
+
+	  public List<FMItem> getFilteredDataDisplay() {
+		  return filteredDataDisplay;
+	  }
+
+	  public void setFilteredDataDisplay(List<FMItem> filteredDataDisplay) {
+		  this.filteredDataDisplay = filteredDataDisplay;
+	  }
+		
 	  public List<FMItem> getItems(){
 		  return this.items;
 	  }
-	  
-	  public List<FMItem> getFilteredItems(){
-		  return this.filteredData;
+
+	  public void setItems(List<FMItem> items) {
+		  this.items = items;
+	  }
+		
+	  private FMItem[] getItemsArray0(List<FMItem> list) {
+		  if (list == null) {
+			  return new FMItem[0];
+		  }
+		  FMItem[] ret = new FMItem[list.size()];
+		  //for reference type
+		  list.toArray(ret); 
+		  /*//for primitive type
+		  for (int i = 0; i < items.size(); i++) {
+			  ret[i] = items.get(i);
+		  }*/
+		  return ret;
+	  }
+	  public FMItem[] getItemsArray() {  
+		  return getItemsArray0(this.items);
 	  }
 	  
-	  public List<FMItem> getFilteredDisplayItems(){
-		  return this.filteredDataDisplay;
+	  public FMItem[] getFilteredItemsArray() {
+		  return getItemsArray0(this.filteredData);
 	  }
+
+	  public FMItem[] getFilteredDisplayItemsArray() {
+		  return getItemsArray0(this.filteredDataDisplay);
+	  }
+	  
+	  public void setItems(FMItem[] itemsArray) {
+		  if (this.items != null)	this.items.clear();
+		  this.items = new ArrayList<FMItem>();
+		  for (FMItem item : itemsArray) {
+			  this.items.add(item);
+		  }
+	  }
+	  
+	  public void setFilteredDataItems(FMItem[] itemsArray) {
+		  if (this.filteredData != null)	this.filteredData.clear();
+		  this.filteredData = new ArrayList<FMItem>();
+		  for (FMItem item : itemsArray) {
+			  this.filteredData.add(item);
+		  }
+	  }
+	  
+	  public void setFilteredDataDisplayItems(FMItem[] itemsArray) {
+		  if (this.filteredDataDisplay != null)	this.filteredDataDisplay.clear();
+		  this.filteredDataDisplay = new ArrayList<FMItem>();
+		  for (FMItem item : itemsArray) {
+			  this.filteredDataDisplay.add(item);
+		  }
+	  }
+	  
+	  
 	  public void setItems(List<FMItem> items, int size){
 		  if (this.items != null)	this.items.clear();
 		  if (this.filteredData != null)	this.filteredData.clear();
@@ -286,7 +353,7 @@ public class ItemArrayAdapter extends ArrayAdapter<FMItem> {
 		  return newList;
 	  }
 	  
-	  private String getPercentColor(String percent){
+	private String getPercentColor(String percent){
 		  String result = "#000000";
 		  int percentage = 0;
 		  if ("N/A".equals(percent)){

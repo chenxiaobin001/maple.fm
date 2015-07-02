@@ -2,6 +2,7 @@ package com.example.maplefreemarket;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -18,6 +19,7 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -81,6 +83,7 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 	private CheckBox soldItemCheckBox;
 	private Button finishButton;
 	private ActivitySwipeDetector swipe;
+	private InfiniteScrollListener listViewOnScrollListener;
 	
 	class CategoryViewHolder {
 		boolean category;				//for category filter selected
@@ -161,7 +164,7 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 						category2.setEnabled(true); 
 						category2.setAdapter(adapter);
 					}
-					adapter.setFilterCategory(computeCategoryStrs());
+					adapter.setCategoryFilter(computeCategoryStrs());
 					String str = searchEditText.getText().toString();
 					adapter.getFilter().filter(str + "1");
 //					Toast.makeText(myApp, selection +" is selected", Toast.LENGTH_SHORT).show();
@@ -206,7 +209,7 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 						category3.setAdapter(adapter);
 					}
 //					Toast.makeText(myApp, selection +" is selected", Toast.LENGTH_SHORT).show();
-					adapter.setFilterCategory(computeCategoryStrs());
+					adapter.setCategoryFilter(computeCategoryStrs());
 					String str = searchEditText.getText().toString();
 					adapter.getFilter().filter(str + "1");
 				}
@@ -226,7 +229,7 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 				public void onItemSelected(AdapterView<?> parent, View view,
 						int position, long id) {
 					c3 = position;
-					adapter.setFilterCategory(computeCategoryStrs());
+					adapter.setCategoryFilter(computeCategoryStrs());
 					String str = searchEditText.getText().toString();
 					adapter.getFilter().filter(str + "1");
 				}
@@ -414,19 +417,40 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 		retriveNotification(1);*/
 	}
 	
-
+	@Override
+	public void onSaveInstanceState(Bundle savedState) {
+		 
+	    super.onSaveInstanceState(savedState);
+	 
+	    // save data of ArrayAdapter
+	    FMItem[] items = adapter.getItemsArray(); 
+	    savedState.putParcelableArray("items", items);
+	    FMItem[] filteredItems = adapter.getFilteredItemsArray(); 
+	    savedState.putParcelableArray("filteredItems", filteredItems);
+	    FMItem[] filteredDisplayItems = adapter.getFilteredDisplayItemsArray(); 
+	    savedState.putParcelableArray("filteredDisplayItems", filteredDisplayItems);
+	    boolean cash = adapter.isFilterCashItem();
+	    boolean sold = adapter.isFilterSoldItem();
+	    String[] category = adapter.getCategoryFilter();
+	    savedState.putBoolean("sold", sold);
+	    savedState.putBoolean("cash", cash);
+	    savedState.putStringArray("category", category);
+	    savedState.putParcelable("onScroll", listViewOnScrollListener);
+	} 
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+		boolean isInit = false;
+		super.onCreate(savedInstanceState);   
 		myApp = (MapleFreeMarketApplication) this.getApplication();
-		sortAttrViewHolder = new SortAttrViewHolder(myApp.getSortConfiguration());
 		setContentView(R.layout.activity_main);
+		sortAttrViewHolder = new SortAttrViewHolder(myApp.getSortConfiguration());		
 		categoryViewHolder = new CategoryViewHolder();
 		spinner = (Spinner) findViewById(R.id.serverSpinner);
 		listView = (ListView) findViewById(R.id.itemListView);
-		findViewById(R.id.loadingPanel).setVisibility(View.GONE);
-		adapter = new ItemArrayAdapter(HomeActivity.this, new ArrayList<FMItem>());
 		
+		adapter = new ItemArrayAdapter(HomeActivity.this, new ArrayList<FMItem>());
+
 		ScaleInAnimationAdapter animationAdapter = new ScaleInAnimationAdapter(adapter);
 //		AlphaInAnimationAdapter animationAdapter = new AlphaInAnimationAdapter (adapter);
 //		SwingLeftInAnimationAdapter animationAdapter = new SwingLeftInAnimationAdapter(adapter);
@@ -437,22 +461,57 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 		listView.setAdapter(animationAdapter);
 //		ItemArrayAdapter oriAdapter = new ItemArrayAdapter(HomeActivity.this, new ArrayList<FMItem>());
 		myApp.setItemAdapter(adapter);
+		
 //		listView.setAdapter(adapter);
 		cashItemCheckBox = (CheckBox) findViewById(R.id.cashItemCheckBox);
 		soldItemCheckBox = (CheckBox) findViewById(R.id.soldItemCheckBox);
 		refreshButton = (Button) findViewById(R.id.refreshButton);
 		finishButton = (Button) findViewById(R.id.finishButton);
 		loadingView = findViewById(R.id.loadingPanel);
-		finishButton.setVisibility(View.GONE);
-		setSpinnerContent();
-		sortableColumnSetup();
-		String result = "[{\"fm_items\":[{\"U\":\"1102484\",\"a\":\"1\",\"b\":\"1\",\"c\":\"3750000000\",\"d\":\"5\",\"e\":\"5\",\"f\":\"Click Me!\",\"g\":\"eurekaG1\",\"O\":\"Tyrant Lycaon Cloak\",\"T\":\"1102481\",\"X\":3471928570,\"Q\":\"Equip\",\"R\":\"Armor\",\"S\":\"Cape\",\"Y\":\"0\",\"h\":\"2\",\"j\":\"999\",\"k\":\"999\",\"l\":\"999\",\"m\":\"999\",\"p\":\"999\",\"q\":\"999\",\"r\":\"999\",\"s\":\"999\",\"F\":\"0\",\"G\":\"4\",\"H\":\"15\",\"W\":\"999\"},{\"U\":\"2049300\",\"a\":\"11\",\"b\":\"1\",\"c\":\"84999999\",\"d\":\"1\",\"e\":\"11\",\"f\":\"Click me!\",\"g\":\"Example\",\"O\":\"Advanced Equip Enhancement Scroll\",\"T\":\"5530246\",\"X\":38872403,\"P\":\"Enhances #cupgraded equipment#.\\nMore successes increase the chance of a good enhancement.\\nThe item is destroyed upon failure. Cannot be used on 15-star+ items.\\n\\n#c[Enhancement Success Rate]#\\n1 success: 100%\\n2 successes: 90%\\n3 successes: 80%\\n4 successes: 70%\\n5 successes: 60%\\n6 successes: 50%\\n7 successes: 40%\\n8 successes: 30%\\n9 successes: 20%\\n10 successes: 10%\\n11+ successes: 5% or lower\",\"Q\":\"Use\",\"R\":\"Armor Scroll\",\"S\":\"Accessory\",\"F\":\"0\",\"G\":\"0\",\"H\":\"0\"},{\"U\":\"1012306\",\"a\":\"1\",\"b\":\"1\",\"c\":\"700000000\",\"d\":\"3\",\"e\":\"3\",\"f\":\"Click Me!\",\"g\":\"Example\",\"O\":\"Lucky Tree Branch Nose\",\"T\":\"1012058\",\"X\":136666666,\"Q\":\"Equip\",\"R\":\"Accessory\",\"S\":\"Face Accessory\",\"i\":\"10\",\"j\":\"10\",\"k\":\"10\",\"l\":\"10\",\"m\":\"14\",\"p\":\"10\",\"r\":\"6\",\"s\":\"6\",\"t\":\"3\",\"u\":\"3\",\"F\":\"0\",\"G\":\"3\",\"H\":\"6\",\"W\":\"10\"},{\"U\":\"1432187\",\"a\":\"1\",\"b\":\"1\",\"c\":\"1500000000\",\"d\":\"3\",\"e\":\"2\",\"f\":\"Click Me!\",\"g\":\"Example\",\"O\":\"Sweetwater Spear\",\"T\":\"1432187\",\"X\":91365064,\"Q\":\"Equip\",\"R\":\"Two-Handed Weapon\",\"S\":\"Spear\",\"Y\":\"0\",\"i\":\"6\",\"j\":\"97\",\"k\":\"85\",\"n\":\"255\",\"o\":\"255\",\"p\":\"294\",\"t\":\"173\",\"C\":\"30\",\"D\":\"10\",\"F\":\"0\",\"G\":\"2\",\"H\":\"0\",\"W\":\"160\"},{\"U\":\"1122057\",\"a\":\"1\",\"b\":\"1\",\"c\":\"5000000000\",\"d\":\"1\",\"e\":\"2\",\"f\":\"Click Me!\",\"g\":\"Example\",\"O\":\"Awakening Mind of Maple Necklace\",\"T\":\"1122052\",\"P\":\"A Mind of Maple Necklace that is beginning to be restored. One more gem, and its mystical powers will be amplified and awakened into a power on another level.\",\"Q\":\"Equip\",\"R\":\"Accessory\",\"S\":\"Pendant\",\"Y\":\"0\",\"p\":\"15\",\"q\":\"15\",\"r\":\"5\",\"F\":\"0\",\"G\":\"1\",\"H\":\"0\",\"W\":\"70\"}]},{\"seconds_ago\":\"999999\"}]";
-	//	[{"fm_items":[{"U":"1102484","a":"1","b":"1","c":"3750000000","d":"5","e":"5","f":"Click Me!","g":"eurekaG1","O":"Tyrant Lycaon Cloak","T":"1102481","X":3471928570,"Q":"Equip","R":"Armor","S":"Cape","Y":"0","h":"2","j":"999","k":"999","l":"999","m":"999","p":"999","q":"999","r":"999","s":"999","F":"0","G":"4","H":"15","W":"999"},{"U":"2049300","a":"11","b":"1","c":"84999999","d":"1","e":"11","f":"Click me!","g":"Example","O":"Advanced Equip Enhancement Scroll","T":"5530246","X":38872403,"P":"Enhances #cupgraded equipment#.\\nMore successes increase the chance of a good enhancement.\\nThe item is destroyed upon failure. Cannot be used on 15-star+ items.\\n\\n#c[Enhancement Success Rate]#\\n1 success: 100%\\n2 successes: 90%\\n3 successes: 80%\\n4 successes: 70%\\n5 successes: 60%\\n6 successes: 50%\\n7 successes: 40%\\n8 successes: 30%\\n9 successes: 20%\\n10 successes: 10%\\n11+ successes: 5% or lower","Q":"Use","R":"Armor Scroll","S":"Accessory","F":"0","G":"0","H":"0"},{"U":"1012306","a":"1","b":"1","c":"700000000","d":"3","e":"3","f":"Click Me!","g":"Example","O":"Lucky Tree Branch Nose","T":"1012058","X":136666666,"Q":"Equip","R":"Accessory","S":"Face Accessory","i":"10","j":"10","k":"10","l":"10","m":"14","p":"10","r":"6","s":"6","t":"3","u":"3","F":"0","G":"3","H":"6","W":"10"},{"U":"1432187","a":"1","b":"1","c":"1500000000","d":"3","e":"2","f":"Click Me!","g":"Example","O":"Sweetwater Spear","T":"1432187","X":91365064,"Q":"Equip","R":"Two-Handed Weapon","S":"Spear","Y":"0","i":"6","j":"97","k":"85","n":"255","o":"255","p":"294","t":"173","C":"30","D":"10","F":"0","G":"2","H":"0","W":"160"},{"U":"1122057","a":"1","b":"1","c":"5000000000","d":"1","e":"2","f":"Click Me!","g":"Example","O":"Awakening Mind of Maple Necklace","T":"1122052","P":"A Mind of Maple Necklace that is beginning to be restored. One more gem, and its mystical powers will be amplified and awakened into a power on another level.","Q":"Equip","R":"Accessory","S":"Pendant","Y":"0","p":"15","q":"15","r":"5","F":"0","G":"1","H":"0","W":"70"}]},{"seconds_ago":"999999"}]
-		obj = new HandleItemListJSON(HomeActivity.this, 0);
-		obj.execute(result);
+		finishButton.setVisibility(View.GONE);	
+		loadingView.setVisibility(View.GONE);
+
+	 if (savedInstanceState != null) {
+	    	/*Parcelable[] parcelableArray = savedInstanceState.getParcelableArray("items");
+	    	FMItem[] items = null;
+	    	if (parcelableArray != null) {
+	    		items = Arrays.copyOf(parcelableArray, parcelableArray.length, FMItem[].class);
+	    	} 
+	    	parcelableArray = savedInstanceState.getParcelableArray("filteredItems");
+	    	FMItem[] filteredItems = null;
+	    	if (parcelableArray != null) {
+	    		filteredItems = Arrays.copyOf(parcelableArray, parcelableArray.length, FMItem[].class);
+	    	} 
+	    	parcelableArray = savedInstanceState.getParcelableArray("filteredDisplayItems");
+	    	FMItem[] filteredDisplayItems = null;
+	    	if (parcelableArray != null) {
+	    		filteredDisplayItems = Arrays.copyOf(parcelableArray, parcelableArray.length, FMItem[].class);
+	    	} 
+	        boolean cash = savedInstanceState.getBoolean("cash");
+		    boolean sold = savedInstanceState.getBoolean("sold");
+		    String[] category = savedInstanceState.getStringArray("category");
+		    this.listViewOnScrollListener = savedInstanceState.getParcelable("onScroll");
+		    adapter.setItems(items);
+		    adapter.setFilteredDataItems(filteredItems);
+		    adapter.setFilteredDataDisplayItems(filteredDisplayItems);
+		    adapter.setCategoryFilter(category);
+		    adapter.setFilterCashItem(cash);
+		    adapter.setFilterSoldItem(sold);*/
+		    isInit = false;
+	    } else {
+	    	isInit = true;
+	    	String result = "[{\"fm_items\":[{\"U\":\"1102484\",\"a\":\"1\",\"b\":\"1\",\"c\":\"3750000000\",\"d\":\"5\",\"e\":\"5\",\"f\":\"Click Me!\",\"g\":\"eurekaG1\",\"O\":\"Tyrant Lycaon Cloak\",\"T\":\"1102481\",\"X\":3471928570,\"Q\":\"Equip\",\"R\":\"Armor\",\"S\":\"Cape\",\"Y\":\"0\",\"h\":\"2\",\"j\":\"999\",\"k\":\"999\",\"l\":\"999\",\"m\":\"999\",\"p\":\"999\",\"q\":\"999\",\"r\":\"999\",\"s\":\"999\",\"F\":\"0\",\"G\":\"4\",\"H\":\"15\",\"W\":\"999\"},{\"U\":\"2049300\",\"a\":\"11\",\"b\":\"1\",\"c\":\"84999999\",\"d\":\"1\",\"e\":\"11\",\"f\":\"Click me!\",\"g\":\"Example\",\"O\":\"Advanced Equip Enhancement Scroll\",\"T\":\"5530246\",\"X\":38872403,\"P\":\"Enhances #cupgraded equipment#.\\nMore successes increase the chance of a good enhancement.\\nThe item is destroyed upon failure. Cannot be used on 15-star+ items.\\n\\n#c[Enhancement Success Rate]#\\n1 success: 100%\\n2 successes: 90%\\n3 successes: 80%\\n4 successes: 70%\\n5 successes: 60%\\n6 successes: 50%\\n7 successes: 40%\\n8 successes: 30%\\n9 successes: 20%\\n10 successes: 10%\\n11+ successes: 5% or lower\",\"Q\":\"Use\",\"R\":\"Armor Scroll\",\"S\":\"Accessory\",\"F\":\"0\",\"G\":\"0\",\"H\":\"0\"},{\"U\":\"1012306\",\"a\":\"1\",\"b\":\"1\",\"c\":\"700000000\",\"d\":\"3\",\"e\":\"3\",\"f\":\"Click Me!\",\"g\":\"Example\",\"O\":\"Lucky Tree Branch Nose\",\"T\":\"1012058\",\"X\":136666666,\"Q\":\"Equip\",\"R\":\"Accessory\",\"S\":\"Face Accessory\",\"i\":\"10\",\"j\":\"10\",\"k\":\"10\",\"l\":\"10\",\"m\":\"14\",\"p\":\"10\",\"r\":\"6\",\"s\":\"6\",\"t\":\"3\",\"u\":\"3\",\"F\":\"0\",\"G\":\"3\",\"H\":\"6\",\"W\":\"10\"},{\"U\":\"1432187\",\"a\":\"1\",\"b\":\"1\",\"c\":\"1500000000\",\"d\":\"3\",\"e\":\"2\",\"f\":\"Click Me!\",\"g\":\"Example\",\"O\":\"Sweetwater Spear\",\"T\":\"1432187\",\"X\":91365064,\"Q\":\"Equip\",\"R\":\"Two-Handed Weapon\",\"S\":\"Spear\",\"Y\":\"0\",\"i\":\"6\",\"j\":\"97\",\"k\":\"85\",\"n\":\"255\",\"o\":\"255\",\"p\":\"294\",\"t\":\"173\",\"C\":\"30\",\"D\":\"10\",\"F\":\"0\",\"G\":\"2\",\"H\":\"0\",\"W\":\"160\"},{\"U\":\"1122057\",\"a\":\"1\",\"b\":\"1\",\"c\":\"5000000000\",\"d\":\"1\",\"e\":\"2\",\"f\":\"Click Me!\",\"g\":\"Example\",\"O\":\"Awakening Mind of Maple Necklace\",\"T\":\"1122052\",\"P\":\"A Mind of Maple Necklace that is beginning to be restored. One more gem, and its mystical powers will be amplified and awakened into a power on another level.\",\"Q\":\"Equip\",\"R\":\"Accessory\",\"S\":\"Pendant\",\"Y\":\"0\",\"p\":\"15\",\"q\":\"15\",\"r\":\"5\",\"F\":\"0\",\"G\":\"1\",\"H\":\"0\",\"W\":\"70\"}]},{\"seconds_ago\":\"999999\"}]";
+	    	//	[{"fm_items":[{"U":"1102484","a":"1","b":"1","c":"3750000000","d":"5","e":"5","f":"Click Me!","g":"eurekaG1","O":"Tyrant Lycaon Cloak","T":"1102481","X":3471928570,"Q":"Equip","R":"Armor","S":"Cape","Y":"0","h":"2","j":"999","k":"999","l":"999","m":"999","p":"999","q":"999","r":"999","s":"999","F":"0","G":"4","H":"15","W":"999"},{"U":"2049300","a":"11","b":"1","c":"84999999","d":"1","e":"11","f":"Click me!","g":"Example","O":"Advanced Equip Enhancement Scroll","T":"5530246","X":38872403,"P":"Enhances #cupgraded equipment#.\\nMore successes increase the chance of a good enhancement.\\nThe item is destroyed upon failure. Cannot be used on 15-star+ items.\\n\\n#c[Enhancement Success Rate]#\\n1 success: 100%\\n2 successes: 90%\\n3 successes: 80%\\n4 successes: 70%\\n5 successes: 60%\\n6 successes: 50%\\n7 successes: 40%\\n8 successes: 30%\\n9 successes: 20%\\n10 successes: 10%\\n11+ successes: 5% or lower","Q":"Use","R":"Armor Scroll","S":"Accessory","F":"0","G":"0","H":"0"},{"U":"1012306","a":"1","b":"1","c":"700000000","d":"3","e":"3","f":"Click Me!","g":"Example","O":"Lucky Tree Branch Nose","T":"1012058","X":136666666,"Q":"Equip","R":"Accessory","S":"Face Accessory","i":"10","j":"10","k":"10","l":"10","m":"14","p":"10","r":"6","s":"6","t":"3","u":"3","F":"0","G":"3","H":"6","W":"10"},{"U":"1432187","a":"1","b":"1","c":"1500000000","d":"3","e":"2","f":"Click Me!","g":"Example","O":"Sweetwater Spear","T":"1432187","X":91365064,"Q":"Equip","R":"Two-Handed Weapon","S":"Spear","Y":"0","i":"6","j":"97","k":"85","n":"255","o":"255","p":"294","t":"173","C":"30","D":"10","F":"0","G":"2","H":"0","W":"160"},{"U":"1122057","a":"1","b":"1","c":"5000000000","d":"1","e":"2","f":"Click Me!","g":"Example","O":"Awakening Mind of Maple Necklace","T":"1122052","P":"A Mind of Maple Necklace that is beginning to be restored. One more gem, and its mystical powers will be amplified and awakened into a power on another level.","Q":"Equip","R":"Accessory","S":"Pendant","Y":"0","p":"15","q":"15","r":"5","F":"0","G":"1","H":"0","W":"70"}]},{"seconds_ago":"999999"}]
+	    		obj = new HandleItemListJSON(HomeActivity.this, 0);
+	    		adapter.setItems(obj.handleJsonJacksonStreaming0(result), 10);
+	    }
+		    
     	searchEditText = (EditText) findViewById(R.id.searchEditText);
     	swipe = new ActivitySwipeDetector(HomeActivity.this);
-    	
+    	if (this.listViewOnScrollListener == null) {
+	    	this.listViewOnScrollListener = (InfiniteScrollListener) newOnScrollListener();
+	    }
+    	listView.setOnScrollListener(listViewOnScrollListener);
 /*		searchEditText.setOnTouchListener(new View.OnTouchListener(){
 			@Override
 			public boolean onTouch(View arg0, MotionEvent arg1) {
@@ -530,10 +589,6 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 			}
 		});
 		
-		refreshButton.setVisibility(View.GONE);
-		
-		listView.setOnScrollListener(newOnScrollListener());
-		
 		listView.setOnItemClickListener(new OnItemClickListener(){
 
 			@Override
@@ -577,6 +632,14 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
             } 
         });
 		listView.setLongClickable(true);
+		setSpinnerContent();
+		sortableColumnSetup();
+		
+		findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+
+		if (isInit) {
+			retriveServerData();
+		}
 	}
 	
 	private void retriveNotification(int mode) {
@@ -594,8 +657,8 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 			preTask.cancel(true);
 //			Toast.makeText(myApp, "Previous task canceled.", Toast.LENGTH_SHORT).show();
 		}
-		loadingView.setVisibility(View.VISIBLE);
-		refreshButton.setVisibility(View.GONE);
+		findViewById(R.id.refreshButton).setVisibility(View.GONE);
+		findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
 		AsyncTask<String, Void, String> asyncTask;
 		asyncTask = new HandleItemListJSON(HomeActivity.this, 1);
 		myApp.setPreTask(asyncTask);
@@ -607,10 +670,10 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 		OnScrollListener onScrollListener = new InfiniteScrollListener(adapter.setLoading) {
 	        @Override
 	        public void loadMore(int page, int totalItemsCount) {
-	        	List<FMItem> curDataList = adapter.getFilteredDisplayItems();
+	        	List<FMItem> curDataList = adapter.getFilteredDataDisplay();
 	//        	System.out.print(totalItemsCount + "load more");
 	        	int size = curDataList.size();
-	        	List<FMItem> items = adapter.getFilteredItems();
+	        	List<FMItem> items = adapter.getFilteredData();
 	        	if (size >= items.size())	return;
 	        	adapter.addItemsRefresh(items.subList(size, Math.min(page * 50, items.size())));
 	        }
@@ -669,7 +732,7 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 	
 	private String getWhatIsNew() {
 		StringBuilder sb = new StringBuilder();
-    	sb.append("V 2.012\n\n");
+    	sb.append("V 2.017\n\n");
     	sb.append("What's new:\n\n");
     	sb.append("-add category filter \n");
     	sb.append("-fix a bug\n\n");
@@ -755,14 +818,15 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 		if (pos < 0 || pos >= size) {	// error check
 			pos = 0;
 		}
-		spinner.setSelection(pos);
-		spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-
+		OnItemSelectedListener listener = new OnItemSelectedListener() {
+			int spinnerInit = 0;
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view,
 					int position, long id) {
 				myApp.setServer(position);
-				findViewById(R.id.refreshButton).setVisibility(View.VISIBLE);
+				findViewById(R.id.refreshButton).setVisibility(View.GONE);
+				findViewById(R.id.finishButton).setVisibility(View.GONE);
+				spinnerInit++;
 				switch(position) {
 				case 0:
 					selection = "Scania";
@@ -794,19 +858,23 @@ public class HomeActivity extends ActionBarActivity implements MyDialogFragmentL
 				}
 				myApp.saveServerConfiguration(position);
 //				Toast.makeText(myApp, selection +" is selected", Toast.LENGTH_SHORT).show();
-				retriveServerData();
+				if (spinnerInit > 1) {
+					retriveServerData();
+				}
 				if (myApp.init == 1 || myApp.init == -1) {
 					retriveNotification(1);		//0-show as needed, 1-show 
 				} 
 				
 			}
-
+			
 			@Override
 			public void onNothingSelected(AdapterView<?> arg0) {
 				
 			}
 			
-		});
+		};
+		spinner.setSelection(pos);
+		spinner.setOnItemSelectedListener(listener);
 
 	}
 

@@ -1,9 +1,11 @@
 package com.example.maplefreemarket;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 
-public abstract class InfiniteScrollListener implements OnScrollListener{
+public class InfiniteScrollListener implements OnScrollListener, Parcelable{
 	
 	static class SetLoading{
 		boolean loading;
@@ -43,7 +45,8 @@ public abstract class InfiniteScrollListener implements OnScrollListener{
 		this.bufferItemCount = bufferItemCount;
 	}
 	
-    public abstract void loadMore(int page, int totalItemsCount);
+    public void loadMore(int page, int totalItemsCount) {
+    }
     
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -80,4 +83,40 @@ public abstract class InfiniteScrollListener implements OnScrollListener{
             loading = true;
         }
     }
+    
+    
+    protected InfiniteScrollListener(Parcel in) {
+        bufferItemCount = in.readInt();
+        currentPage = in.readInt();
+        previousTotalItemCount = in.readInt();
+        loading = in.readByte() != 0x00;
+        startingPageIndex = in.readInt();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(bufferItemCount);
+        dest.writeInt(currentPage);
+        dest.writeInt(previousTotalItemCount);
+        dest.writeByte((byte) (loading ? 0x01 : 0x00));
+        dest.writeInt(startingPageIndex);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<InfiniteScrollListener> CREATOR = new Parcelable.Creator<InfiniteScrollListener>() {
+        @Override
+        public InfiniteScrollListener createFromParcel(Parcel in) {
+            return new InfiniteScrollListener(in);
+        }
+
+        @Override
+        public InfiniteScrollListener[] newArray(int size) {
+            return new InfiniteScrollListener[size];
+        }
+    };
 }

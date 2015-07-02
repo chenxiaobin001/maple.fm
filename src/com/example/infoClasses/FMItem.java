@@ -2,10 +2,13 @@ package com.example.infoClasses;
 
 import java.util.Comparator;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
-public class FMItem {
+public class FMItem implements Parcelable{
 	@JsonProperty("U")
 	private int id;		//The item ID of the item
 	@JsonProperty("a")
@@ -79,7 +82,7 @@ public class FMItem {
 	@JsonProperty("J")
 	private String potential2;		//second line of potential 
 	@JsonProperty("K")
-	private String	potential3;		//third line of potential
+	private String potential3;		//third line of potential
 	@JsonProperty("L")
 	private String bonusPotential1;		//bonusPotential1;
 	@JsonProperty("M")
@@ -555,6 +558,131 @@ public class FMItem {
 		  }
 	}
 	
-	
+	//Introducing the dummy constructor 
+    public FMItem() { 
+    } 
+    
+	protected FMItem(Parcel in) {
+        id = in.readInt();
+        quantity = in.readInt();
+        bundle = in.readInt();
+        price = in.readLong();
+        channel = in.readInt();
+        room = in.readInt();
+        shopName = in.readString();
+        characterName = in.readString();
+        upgradeAvailable = in.readInt();
+        scrollApplied = in.readInt();
+        str = in.readInt();
+        dex = in.readInt();
+        intellegence = in.readInt();
+        luk = in.readInt();
+        maxHP = in.readInt();
+        maxMP = in.readInt();
+        weaponAttack = in.readInt();
+        magicAttack = in.readInt();
+        weaponDefence = in.readInt();
+        magicDefence = in.readInt();
+        accuracy = in.readInt();
+        avoidability = in.readInt();
+        diligence = in.readInt();
+        speed = in.readInt();
+        jump = in.readInt();
+        growth = in.readInt();
+        hammerApplied = in.readInt();
+        battleModeAttack = in.readInt();
+        bossDamage = in.readInt();
+        igDEF = in.readInt();
+        crafter = in.readString();
+        potentialIdtf = in.readString();
+        potentialRank = in.readString();
+        enhancements = in.readInt();
+        potential1 = in.readString();
+        potential2 = in.readString();
+        potential3 = in.readString();
+        bonusPotential1 = in.readString();
+        bonusPotential2 = in.readString();
+        bonusPotential3 = in.readString();
+        nebuliteId = in.readString();
+        avgPrice = in.readLong();
+        itemName = in.readString();
+        description = in.readString();
+        category = in.readString();
+        subcategory = in.readString();
+        detailcategory = in.readString();
+        iconID = in.readString();
+        reqLevel = in.readInt();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeInt(quantity);
+        dest.writeInt(bundle);
+        dest.writeLong(price);
+        dest.writeInt(channel);
+        dest.writeInt(room);
+        dest.writeString(shopName);
+        dest.writeString(characterName);
+        dest.writeInt(upgradeAvailable);
+        dest.writeInt(scrollApplied);
+        dest.writeInt(str);
+        dest.writeInt(dex);
+        dest.writeInt(intellegence);
+        dest.writeInt(luk);
+        dest.writeInt(maxHP);
+        dest.writeInt(maxMP);
+        dest.writeInt(weaponAttack);
+        dest.writeInt(magicAttack);
+        dest.writeInt(weaponDefence);
+        dest.writeInt(magicDefence);
+        dest.writeInt(accuracy);
+        dest.writeInt(avoidability);
+        dest.writeInt(diligence);
+        dest.writeInt(speed);
+        dest.writeInt(jump);
+        dest.writeInt(growth);
+        dest.writeInt(hammerApplied);
+        dest.writeInt(battleModeAttack);
+        dest.writeInt(bossDamage);
+        dest.writeInt(igDEF);
+        dest.writeString(crafter);
+        dest.writeString(potentialIdtf);
+        dest.writeString(potentialRank);
+        dest.writeInt(enhancements);
+        dest.writeString(potential1);
+        dest.writeString(potential2);
+        dest.writeString(potential3);
+        dest.writeString(bonusPotential1);
+        dest.writeString(bonusPotential2);
+        dest.writeString(bonusPotential3);
+        dest.writeString(nebuliteId);
+        dest.writeLong(avgPrice);
+        dest.writeString(itemName);
+        dest.writeString(description);
+        dest.writeString(category);
+        dest.writeString(subcategory);
+        dest.writeString(detailcategory);
+        dest.writeString(iconID);
+        dest.writeInt(reqLevel);
+    }
+    //http://www.parcelabler.com/
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<FMItem> CREATOR = new Parcelable.Creator<FMItem>() {
+        @Override
+        public FMItem createFromParcel(Parcel in) {
+            return new FMItem(in);
+        }
+
+        @Override
+        public FMItem[] newArray(int size) {
+            return new FMItem[size];
+        }
+    };
 	
 }
