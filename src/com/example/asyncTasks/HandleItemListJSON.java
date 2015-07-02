@@ -57,6 +57,35 @@ public class HandleItemListJSON extends AsyncTask<String, Void, String> {
 		this.myApp = (MapleFreeMarketApplication) mContext.getApplication();
 	}
 	
+	public ArrayList<FMItem> handleJsonJacksonStreaming0(String... JSonString) {
+		String result = JSonString[0];
+		ArrayList<FMItem> ret = new ArrayList<FMItem>();
+		if (result == null) return ret;
+		ObjectMapper mapper = new ObjectMapper();
+		JsonFactory factory = mapper.getFactory();
+		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);	
+		try {
+			JsonParser parser = factory.createParser(result);
+	        while (!parser.isClosed()) {
+	        	JsonToken token = parser.nextToken();
+	        	// if its the last token then we are done
+	            if (token == null)
+	                break;
+	            if (JsonToken.FIELD_NAME.equals(token) && "fm_items".equals(parser.getCurrentName())){
+	            	token = parser.nextToken();
+	            	TypeReference<List<FMItem>> typeRef = new TypeReference<List<FMItem>>(){};
+	            	ret = parser.readValueAs(typeRef);
+	            }
+	            if (JsonToken.FIELD_NAME.equals(token) && "seconds_ago".equals(parser.getCurrentName())){
+	            	token = parser.nextToken();
+	            	secondsAgo = parser.getText();
+	            }
+	        }
+		}catch (Exception e) {
+			
+		}
+		return ret;
+	}
 	private void handleJsonJacksonStreaming(String[] strs) throws JsonParseException, JsonMappingException, IOException{
 		String result = strs[0];
 		if (result == null) return;

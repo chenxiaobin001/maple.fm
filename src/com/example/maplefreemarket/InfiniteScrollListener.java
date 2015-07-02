@@ -20,7 +20,7 @@ public class InfiniteScrollListener implements OnScrollListener, Parcelable{
     // Sets the starting page index
     private int startingPageIndex = 1;
     
-    private SetLoading setLoading = new SetLoading();
+    public SetLoading setLoading = new SetLoading();
     
     public InfiniteScrollListener() {
     	bufferItemCount  = 3;
@@ -88,9 +88,11 @@ public class InfiniteScrollListener implements OnScrollListener, Parcelable{
     protected InfiniteScrollListener(Parcel in) {
         bufferItemCount = in.readInt();
         currentPage = in.readInt();
-        previousTotalItemCount = in.readInt();
+        previousTotalItemCount = in.readInt() - 1;
         loading = in.readByte() != 0x00;
         startingPageIndex = in.readInt();
+        setLoading = new SetLoading();
+        setLoading.loading = in.readByte() != 0x00;
     }
 
     @Override
@@ -105,6 +107,7 @@ public class InfiniteScrollListener implements OnScrollListener, Parcelable{
         dest.writeInt(previousTotalItemCount);
         dest.writeByte((byte) (loading ? 0x01 : 0x00));
         dest.writeInt(startingPageIndex);
+        dest.writeByte((byte) (setLoading.loading ? 0x01 : 0x00));
     }
 
     @SuppressWarnings("unused")
